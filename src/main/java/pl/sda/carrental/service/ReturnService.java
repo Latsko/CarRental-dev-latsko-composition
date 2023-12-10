@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.ReturnAlreadyExistsForReservation;
-import pl.sda.carrental.model.*;
+import pl.sda.carrental.model.ReservationModel;
+import pl.sda.carrental.model.ReturnDTO;
+import pl.sda.carrental.model.ReturnModel;
 import pl.sda.carrental.repository.ReservationRepository;
 import pl.sda.carrental.repository.ReturnRepository;
 

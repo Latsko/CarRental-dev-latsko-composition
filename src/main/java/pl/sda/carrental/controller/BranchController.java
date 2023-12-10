@@ -71,10 +71,27 @@ public class BranchController {
         branchService.removeBranch(id);
     }
 
-    @PatchMapping("deleteCar/{car_id}/fromBranch/{branch_id}")
+    @PatchMapping("/removeCar/{car_id}/fromBranch/{branch_id}")
     public void removeCarFromBranch(@PathVariable Long car_id, @PathVariable Long branch_id) {
         branchService.removeCarFromBranch(car_id, branch_id);
     }
+
+    @PatchMapping("/assignCar/{car_id}/toBranch/{branch_id}")
+    public void assignCarToBranch(@PathVariable Long car_id, @PathVariable Long branch_id) {
+        branchService.assignCarToBranch(car_id, branch_id);
+    }
+
+    @PatchMapping("/removeEmployee/{employee_id}/fromBranch/{branch_id}")
+    public void removeEmployeeFromBranch(@PathVariable Long employee_id, @PathVariable Long branch_id) {
+        branchService.removeEmployeeFromBranch(employee_id, branch_id);
+    }
+
+    @PatchMapping("/assignEmployee/{employee_id}/toBranch/{branch_id}")
+    public void assignEmployeeToBranch(@PathVariable Long employee_id, @PathVariable Long branch_id) {
+        branchService.assignEmployeeToBranch(employee_id, branch_id);
+    }
+
+
 }
 
 record BranchDTO(Long branchId, String branchName, HQDetails mainBranchDetails) {

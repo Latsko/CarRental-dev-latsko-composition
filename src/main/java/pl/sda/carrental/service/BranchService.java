@@ -5,21 +5,22 @@ import org.springframework.stereotype.Service;
 import pl.sda.carrental.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.BranchModel;
 import pl.sda.carrental.model.CarModel;
-import pl.sda.carrental.model.CarRentalModel;
+import pl.sda.carrental.model.EmployeeModel;
 import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.repository.CarRentalRepository;
 import pl.sda.carrental.repository.CarRepository;
+import pl.sda.carrental.repository.ClientRepository;
+import pl.sda.carrental.repository.EmployeeRepository;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class BranchService {
     private final BranchRepository branchRepository;
     private final CarRepository carRepository;
-    private final CarRentalRepository carRentalRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ClientRepository clientRepository;
 
     public void addBranch(BranchModel branch) {
         branchRepository.save(branch);
@@ -29,11 +30,6 @@ public class BranchService {
         return branchRepository.findAll();
     }
 
-    /*  WARNING     WARNING     WARNING     WARNING     WARNING     WARNING     */
-    /*  Cannot use findById() for branches that are not assigned to CarRental   */
-    /*  =====================================================================   */
-    /*  Instead i create and delete it from CarRental perspective, where i am
-     *   able to assign it to CarRental  */
     public void removeBranch(Long id) {
         branchRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under  ID #" + id));
@@ -50,10 +46,8 @@ public class BranchService {
         branchRepository.deleteById(id);
 
         return branchRepository.save(found);
-
     }
 
-    // how to handle exceptions better
     public BranchModel getById(Long id) {
         return branchRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + id));
@@ -73,52 +67,72 @@ public class BranchService {
     }
 
     public void removeCarFromBranch(Long carId, Long branchId) {
-        CarRentalModel carRentalModel = carRentalRepository.findAll().stream().findAny()
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Car rental does not exist!"));
-
         BranchModel foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
 
         CarModel foundCar = foundBranch.getCars().stream()
-                .filter(car -> car.getCar_id() == carId)
+                .filter(car -> Objects.equals(car.getCar_id(), carId))
                 .findFirst()
                 .orElseThrow(() ->
                         new ObjectNotFoundInRepositoryException("No car under ID #"
                                 + carId + " is assigned to branch under ID #" + branchId));
 
-        //neither removal from repository nor actualizing fields manually does work, don't know why
-        // will try to modify it up to the root parent
-
-        //copying set of cars and modifying it with removal of the car
-        Set<CarModel> modifiedCarSet = new HashSet<>(foundBranch.getCars());
-        modifiedCarSet.remove(foundCar);
-
-        // copying branch and modifying that copy, giving new set of cars without that one car
-        BranchModel modifiedBranch = new BranchModel(foundBranch.getBranch_id(),
-                                                     foundBranch.getName(),
-                                                     foundBranch.getAddress(),
-                                                     foundBranch.getEmployees(),
-                                                     modifiedCarSet,
-                                                     foundBranch.getClients(),
-                                                     foundBranch.getCarRental());
-
-        // copying rental and modifying it branches field with new set of branches
-        Set<BranchModel> modifiedBranches = new HashSet<>(carRentalModel.getBranches());
-        modifiedBranches.remove(foundBranch);
-        modifiedBranches.add(modifiedBranch);
-
-        CarRentalModel modifiedRental = new CarRentalModel(carRentalModel.getCar_rental_id(),
-                                                           carRentalModel.getName(),
-                                                           carRentalModel.getDomain(),
-                                                           carRentalModel.getAddress(),
-                                                           carRentalModel.getOwner(),
-                                                           carRentalModel.getLogo(),
-                                                           modifiedBranches);
-
-        // setting car branch to null
+        foundBranch.getCars().remove(foundCar);
         foundCar.setBranch(null);
 
-        carRentalRepository.deleteAll();
-        carRentalRepository.save(modifiedRental);
+        branchRepository.save(foundBranch);
+        carRepository.save(foundCar);
     }
+
+    public void assignCarToBranch(Long carId, Long branchId) {
+        CarModel foundCar = carRepository.findById(carId)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under ID #" + carId));
+        if(foundCar.getBranch() != null) {
+            throw new RuntimeException("Car already assigned to existing branch!");
+        }
+        BranchModel foundBranch = branchRepository.findById(branchId)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
+
+        foundBranch.getCars().add(foundCar);
+        foundCar.setBranch(foundBranch);
+
+        branchRepository.save(foundBranch);
+        carRepository.save(foundCar);
+    }
+
+    public void assignEmployeeToBranch(Long employeeId, Long branchId) {
+        EmployeeModel foundEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + employeeId));
+        if(foundEmployee.getBranch() != null) {
+            throw new RuntimeException("Car already assigned to existing branch!");
+        }
+        BranchModel foundBranch = branchRepository.findById(branchId)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
+
+        foundBranch.getEmployees().add(foundEmployee);
+        foundEmployee.setBranch(foundBranch);
+
+        branchRepository.save(foundBranch);
+        employeeRepository.save(foundEmployee);
+    }
+
+    public void removeEmployeeFromBranch(Long employeeId, Long branchId) {
+        BranchModel foundBranch = branchRepository.findById(branchId)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
+
+        EmployeeModel foundEmployee = foundBranch.getEmployees().stream()
+                .filter(employee -> Objects.equals(employee.getEmployee_id(), employeeId))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ObjectNotFoundInRepositoryException("No employee under ID #"
+                                + employeeId + " is assigned to branch under ID #" + branchId));
+
+        foundBranch.getEmployees().remove(foundEmployee);
+        foundEmployee.setBranch(null);
+
+        branchRepository.save(foundBranch);
+        employeeRepository.save(foundEmployee);
+    }
+
+
 }

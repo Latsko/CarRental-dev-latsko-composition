@@ -1,8 +1,6 @@
 package pl.sda.carrental.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.model.EmployeeModel;
 import pl.sda.carrental.service.EmployeeService;

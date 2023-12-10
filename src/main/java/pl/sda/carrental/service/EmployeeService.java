@@ -24,7 +24,7 @@ public class EmployeeService {
 
     public EmployeeModel editEmployee(Long id, EmployeeModel employee) {
         EmployeeModel edit = employeeRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under that id!"));
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + id));
 
         edit.setName(employee.getName());
         edit.setSurname(employee.getSurname());

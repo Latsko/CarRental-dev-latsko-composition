@@ -17,11 +17,7 @@ public class CarService {
         return carRepository.findById(id).orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car with selected id"));
     }
 
-    // isn't having empty database appropriate?
     public List<CarModel> getCars() {
-        if (carRepository.findAll().isEmpty()){
-            throw new ObjectNotFoundInRepositoryException("Database is Empty");
-        }
         return carRepository.findAll();
     }
 

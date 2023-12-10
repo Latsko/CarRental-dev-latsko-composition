@@ -28,7 +28,7 @@ public class ClientModel {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "branch_id")
     @JsonBackReference
     private BranchModel branch;
 }

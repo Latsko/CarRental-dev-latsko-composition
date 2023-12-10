@@ -38,4 +38,14 @@ public class ClientController {
         clientService.removeClient(id);
     }
 
+    @PatchMapping("/client/{client_id}/assignToBranch/{branch_id}")
+    public void assignClientToBranch(@PathVariable Long client_id, @PathVariable Long branch_id) {
+        clientService.assignClientToBranch(client_id, branch_id);
+    }
+
+    @PatchMapping("/client/{client_id}/detachFromBranch/{branch_id}")
+    public void detachClientFromBranch(@PathVariable Long client_id, @PathVariable Long branch_id) {
+        clientService.removeClientFromBranch(client_id, branch_id);
+    }
+
 }

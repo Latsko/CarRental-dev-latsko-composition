@@ -23,7 +23,7 @@ public class EmployeeModel {
     private Position position;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @JoinColumn(name = "branch_id")
     @JsonBackReference
     private BranchModel branch;
 }
