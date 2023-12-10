@@ -48,6 +48,11 @@ public class BranchService {
         return branchRepository.save(found);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public BranchModel getById(Long id) {
         return branchRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + id));
