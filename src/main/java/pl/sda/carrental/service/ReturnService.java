@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.exceptionHandling.ReturnAlreadyExistsForReservation;
+import pl.sda.carrental.exceptionHandling.ReturnAlreadyExistsForReservationException;
 import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.model.DTO.ReturnDTO;
 import pl.sda.carrental.model.Returnal;
@@ -28,7 +28,7 @@ public class ReturnService {
     public Returnal saveReturn(ReturnDTO returnDTO) {
         List<Long> reservationsIds = returnRepository.findReturnsWithReservationId(returnDTO.reservationId());
         if(!reservationsIds.isEmpty()) {
-            throw new ReturnAlreadyExistsForReservation("Return already exists for reservation with id " + returnDTO.reservationId());
+            throw new ReturnAlreadyExistsForReservationException("Return already exists for reservation with id " + returnDTO.reservationId());
         }
 
         Returnal returnal = new Returnal();

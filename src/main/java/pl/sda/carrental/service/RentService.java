@@ -3,7 +3,7 @@ package pl.sda.carrental.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.exceptionHandling.RentAlreadyExistsForReservation;
+import pl.sda.carrental.exceptionHandling.RentAlreadyExistsForReservationException;
 import pl.sda.carrental.model.Employee;
 import pl.sda.carrental.model.DTO.RentDTO;
 import pl.sda.carrental.model.Rent;
@@ -50,7 +50,7 @@ public class RentService {
     private void updateRentDetails(RentDTO rentDTO, Rent rent) {
         List<Long> reservationsIds = rentRepository.findRentalsWithReservationId(rentDTO.reservationId());
         if(!reservationsIds.isEmpty()) {
-            throw new RentAlreadyExistsForReservation("Rent already exists for reservation with id "
+            throw new RentAlreadyExistsForReservationException("Rent already exists for reservation with id "
                     + rentDTO.reservationId());
         }
 

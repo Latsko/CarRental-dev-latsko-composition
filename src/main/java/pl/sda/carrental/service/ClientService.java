@@ -2,6 +2,7 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.sda.carrental.exceptionHandling.ObjectAlreadyAssignedToBranchException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Client;
@@ -55,7 +56,7 @@ public class ClientService {
         Client foundClient = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No client under ID #" + clientId));
         if(foundClient.getBranch() != null) {
-            throw new RuntimeException("This client is already assigned to existing branch!");
+            throw new ObjectAlreadyAssignedToBranchException("This client is already assigned to existing branch!");
         }
         Branch foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + clientId));

@@ -2,7 +2,7 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.exceptionHandling.BranchAlreadyOpenInCity;
+import pl.sda.carrental.exceptionHandling.BranchAlreadyOpenInCityException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.CarRental;
@@ -58,7 +58,7 @@ public class CarRentalService {
                 .filter(address -> address.equals(branch.getAddress()))
                 .count();
         if(branchAlreadyOpenInCity > 0) {
-            throw new BranchAlreadyOpenInCity("Branch " + branch.getName() + " is already open in city"
+            throw new BranchAlreadyOpenInCityException("Branch " + branch.getName() + " is already open in city"
             + branch.getAddress());
         }
             branchRepository.save(branch);

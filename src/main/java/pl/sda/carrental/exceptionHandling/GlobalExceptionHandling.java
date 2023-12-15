@@ -17,23 +17,23 @@ public class GlobalExceptionHandling {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
-    @ExceptionHandler(BranchAlreadyOpenInCity.class)
-    public ProblemDetail handleBranchAlreadyOpenInCity(BranchAlreadyOpenInCity exception) {
+    @ExceptionHandler(ObjectAlreadyAssignedToBranchException.class)
+    public ProblemDetail ClientAlreadyAssignedToBranch(ObjectAlreadyAssignedToBranchException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ExceptionHandler(CarAlreadyAssignedToBranch.class)
-    public ProblemDetail handleCarAlreadyAssignedToBranch(CarAlreadyAssignedToBranch exception) {
+    @ExceptionHandler(BranchAlreadyOpenInCityException.class)
+    public ProblemDetail handleBranchAlreadyOpenInCity(BranchAlreadyOpenInCityException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ExceptionHandler(RentAlreadyExistsForReservation.class)
-    public ProblemDetail handleRentAlreadyExistsForReservation(RentAlreadyExistsForReservation exception) {
+    @ExceptionHandler(RentAlreadyExistsForReservationException.class)
+    public ProblemDetail handleRentAlreadyExistsForReservation(RentAlreadyExistsForReservationException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
-    @ExceptionHandler(ReturnAlreadyExistsForReservation.class)
-    public ProblemDetail handleReturnAlreadyExistsForReservation(ReturnAlreadyExistsForReservation exception) {
+    @ExceptionHandler(ReturnAlreadyExistsForReservationException.class)
+    public ProblemDetail handleReturnAlreadyExistsForReservation(ReturnAlreadyExistsForReservationException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 

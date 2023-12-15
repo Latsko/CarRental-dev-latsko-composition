@@ -2,14 +2,13 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.exceptionHandling.CarAlreadyAssignedToBranch;
+import pl.sda.carrental.exceptionHandling.ObjectAlreadyAssignedToBranchException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.Employee;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.repository.ClientRepository;
 import pl.sda.carrental.repository.EmployeeRepository;
 
 import java.util.List;
@@ -93,7 +92,7 @@ public class BranchService {
         Car foundCar = carRepository.findById(carId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under ID #" + carId));
         if(foundCar.getBranch() != null) {
-            throw new CarAlreadyAssignedToBranch("Car already assigned to existing branch!");
+            throw new ObjectAlreadyAssignedToBranchException("Car already assigned to existing branch!");
         }
         Branch foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
@@ -109,7 +108,7 @@ public class BranchService {
         Employee foundEmployee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + employeeId));
         if(foundEmployee.getBranch() != null) {
-            throw new RuntimeException("Car already assigned to existing branch!");
+            throw new ObjectAlreadyAssignedToBranchException("Employee already assigned to existing branch!");
         }
         Branch foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));

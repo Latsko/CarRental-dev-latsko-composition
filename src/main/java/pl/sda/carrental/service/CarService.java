@@ -15,8 +15,7 @@ public class CarService {
 
     public Car getCarById(Long id) {
         return carRepository.findById(id).
-                orElseThrow(() ->
-                        new ObjectNotFoundInRepositoryException("There is no car with selected id"));
+                orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car with selected id"));
     }
 
     public List<Car> getCars() {
