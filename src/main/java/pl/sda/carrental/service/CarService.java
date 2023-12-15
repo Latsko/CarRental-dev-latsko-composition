@@ -2,8 +2,8 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.CarModel;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.model.Car;
 import pl.sda.carrental.repository.CarRepository;
 
 import java.util.List;
@@ -13,20 +13,22 @@ import java.util.List;
 public class CarService {
     private final CarRepository carRepository;
 
-    public CarModel getCarById(Long id) {
-        return carRepository.findById(id).orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car with selected id"));
+    public Car getCarById(Long id) {
+        return carRepository.findById(id).
+                orElseThrow(() ->
+                        new ObjectNotFoundInRepositoryException("There is no car with selected id"));
     }
 
-    public List<CarModel> getCars() {
+    public List<Car> getCars() {
         return carRepository.findAll();
     }
 
-    public void addCar(CarModel car) {
+    public void addCar(Car car) {
         carRepository.save(car);
     }
 
-    public void editCar(Long id, CarModel car) {
-        CarModel editedCar = carRepository.findById(id)
+    public void editCar(Long id, Car car) {
+        Car editedCar = carRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under ID #" + id));
         editedCar.setCar_id(id);
         editedCar.setMake(car.getMake());

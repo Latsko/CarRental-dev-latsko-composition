@@ -2,11 +2,12 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.ReturnAlreadyExistsForReservation;
-import pl.sda.carrental.model.ReservationModel;
-import pl.sda.carrental.model.ReturnDTO;
-import pl.sda.carrental.model.ReturnModel;
+import org.springframework.transaction.annotation.Transactional;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.exceptionHandling.ReturnAlreadyExistsForReservation;
+import pl.sda.carrental.model.Reservation;
+import pl.sda.carrental.model.DTO.ReturnDTO;
+import pl.sda.carrental.model.Returnal;
 import pl.sda.carrental.repository.ReservationRepository;
 import pl.sda.carrental.repository.ReturnRepository;
 
@@ -18,24 +19,51 @@ public class ReturnService {
     private final ReservationRepository reservationRepository;
     private final ReturnRepository returnRepository;
 
-    public ReturnModel saveReturn(ReturnDTO returnDTO) {
-        List<Object[]> reservationsIds = returnRepository.findReturnsWithReservationId(returnDTO.reservationId());
+
+    public List<Returnal> getAllReturnals() {
+        return returnRepository.findAll();
+    }
+
+    @Transactional
+    public Returnal saveReturn(ReturnDTO returnDTO) {
+        List<Long> reservationsIds = returnRepository.findReturnsWithReservationId(returnDTO.reservationId());
         if(!reservationsIds.isEmpty()) {
             throw new ReturnAlreadyExistsForReservation("Return already exists for reservation with id " + returnDTO.reservationId());
         }
 
-        ReturnModel returnToSave = new ReturnModel();
-        returnToSave.setEmployee(returnDTO.employee());
-        returnToSave.setReturnDate(returnDTO.returnDate());
-        returnToSave.setComments(returnDTO.comments());
-        returnToSave.setUpcharge(returnDTO.upcharge());
+        Returnal returnal = new Returnal();
+        updateReturnalDetails(returnDTO, returnal);
 
-        ReservationModel reservationFromRepository = reservationRepository.findById(returnDTO.reservationId())
+        return returnRepository.save(returnal);
+    }
+
+    @Transactional
+    public Returnal editReturnal(Long id, ReturnDTO returnDTO) {
+        Returnal returnal = returnRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No returnal under ID #" + id));
+        updateReturnalDetails(returnDTO, returnal);
+
+        return returnRepository.save(returnal);
+    }
+
+    private void updateReturnalDetails(ReturnDTO returnDTO, Returnal returnalToSave) {
+
+        returnalToSave.setEmployee(returnDTO.employee());
+        returnalToSave.setReturnDate(returnDTO.returnDate());
+        returnalToSave.setComments(returnDTO.comments());
+        returnalToSave.setUpcharge(returnDTO.upcharge());
+
+        Reservation reservationFromRepository = reservationRepository.findById(returnDTO.reservationId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
                         + returnDTO.reservationId() + " not found"));
 
-        returnToSave.setReservation(reservationFromRepository);
+        returnalToSave.setReservation(reservationFromRepository);
+    }
 
-        return returnRepository.save(returnToSave);
+    @Transactional
+    public void deleteReturnal(Long id) {
+        returnRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No returnal under ID #" + id));
+        returnRepository.deleteById(id);
     }
 }

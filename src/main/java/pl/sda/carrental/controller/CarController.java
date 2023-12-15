@@ -3,7 +3,7 @@ package pl.sda.carrental.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.model.CarModel;
+import pl.sda.carrental.model.Car;
 import pl.sda.carrental.service.CarService;
 
 import java.util.List;
@@ -15,23 +15,23 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping("/{id}")
-    public CarModel getCarById(@PathVariable Long id) {
+    public Car getCarById(@PathVariable Long id) {
         return carService.getCarById(id);
     }
 
     @GetMapping
-    public List<CarModel> getCars(){
+    public List<Car> getCars(){
         return carService.getCars();
     }
 
     @PostMapping
-    public void addCar(@RequestBody @Valid CarModel carModel) {
-        carService.addCar(carModel);
+    public void addCar(@RequestBody @Valid Car car) {
+        carService.addCar(car);
     }
 
     @PutMapping("/{id}")
-    public void editCar(@PathVariable Long id, @RequestBody @Valid CarModel carModel) {
-        carService.editCar(id, carModel);
+    public void editCar(@PathVariable Long id, @RequestBody @Valid Car car) {
+        carService.editCar(id, car);
     }
 
     @DeleteMapping("/{id}")

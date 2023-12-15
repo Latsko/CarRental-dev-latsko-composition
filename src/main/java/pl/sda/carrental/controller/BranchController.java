@@ -2,9 +2,9 @@ package pl.sda.carrental.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.model.BranchModel;
-import pl.sda.carrental.model.CarModel;
-import pl.sda.carrental.model.CarRentalModel;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.service.BranchService;
 
 import java.util.List;
@@ -25,12 +25,12 @@ public class BranchController {
 
     @GetMapping("/{id}")
     public BranchDTO getById(@PathVariable Long id) {
-        BranchModel branch = branchService.getById(id);
+        Branch branch = branchService.getById(id);
         return mapToBranchDTO(branch);
     }
 
-    private BranchDTO mapToBranchDTO(BranchModel branch) {
-        CarRentalModel carRental = branch.getCarRental();
+    private BranchDTO mapToBranchDTO(Branch branch) {
+        CarRental carRental = branch.getCarRental();
 
         if(branch.getCarRental() == null) {
             return new BranchDTO(
@@ -52,17 +52,17 @@ public class BranchController {
     }
 
     @PostMapping
-    public void addBranch(@RequestBody BranchModel branch) {
+    public void addBranch(@RequestBody Branch branch) {
         branchService.addBranch(branch);
     }
 
     @PutMapping("/addCar/toBranchUnderId/{id}")
-    public void addCarToBranch(@PathVariable Long id, @RequestBody CarModel car) {
+    public void addCarToBranch(@PathVariable Long id, @RequestBody Car car) {
         branchService.addCarToBranchByAccordingId(id, car);
     }
 
     @PutMapping("/{id}")
-    public BranchModel modifyBranch(@PathVariable Long id, @RequestBody BranchModel branch) {
+    public Branch modifyBranch(@PathVariable Long id, @RequestBody Branch branch) {
         return branchService.editBranch(id, branch);
     }
 

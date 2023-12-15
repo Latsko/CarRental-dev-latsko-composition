@@ -2,9 +2,9 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.BranchModel;
-import pl.sda.carrental.model.ClientModel;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Client;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.ClientRepository;
 
@@ -17,21 +17,21 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final BranchRepository branchRepository;
 
-    public ClientModel findById(Long id) {
+    public Client findById(Long id) {
             return clientRepository.findById(id)
                     .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Client not found"));
     }
 
-    public List<ClientModel> getAllClients() {
+    public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
 
-    public void addClient(ClientModel client) {
+    public void addClient(Client client) {
         clientRepository.save(client);
     }
 
-    public ClientModel editClient(Long id, ClientModel client) {
-        ClientModel found = clientRepository.findById(id)
+    public Client editClient(Long id, Client client) {
+        Client found = clientRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No client under that ID!"));
 
         found.setName(client.getName());
@@ -52,12 +52,12 @@ public class ClientService {
     }
 
     public void assignClientToBranch(Long clientId, Long branchId) {
-        ClientModel foundClient = clientRepository.findById(clientId)
+        Client foundClient = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No client under ID #" + clientId));
         if(foundClient.getBranch() != null) {
             throw new RuntimeException("This client is already assigned to existing branch!");
         }
-        BranchModel foundBranch = branchRepository.findById(branchId)
+        Branch foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + clientId));
 
         foundBranch.getClients().add(foundClient);
@@ -68,9 +68,9 @@ public class ClientService {
     }
 
     public void removeClientFromBranch(Long clientId, Long branchId) {
-        BranchModel foundBranch = branchRepository.findById(branchId)
+        Branch foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
-        ClientModel foundClient = foundBranch.getClients().stream()
+        Client foundClient = foundBranch.getClients().stream()
                 .filter(client -> Objects.equals(client.getClient_id(), clientId))
                 .findFirst()
                 .orElseThrow(() ->

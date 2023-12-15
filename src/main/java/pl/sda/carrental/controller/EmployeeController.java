@@ -2,7 +2,7 @@ package pl.sda.carrental.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.model.EmployeeModel;
+import pl.sda.carrental.model.Employee;
 import pl.sda.carrental.service.EmployeeService;
 
 import java.util.List;
@@ -14,17 +14,17 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    public List<EmployeeModel> getEmployees() {
+    public List<Employee> getEmployees() {
         return employeeService.getAllEmployees();
     }
 
     @PostMapping
-    public EmployeeModel addEmployee(@RequestBody EmployeeModel employee) {
+    public Employee addEmployee(@RequestBody Employee employee) {
         return employeeService.addEmployee(employee);
     }
 
     @PutMapping("/{id}")
-    public EmployeeModel editEmployee(@PathVariable Long id, @RequestBody EmployeeModel employee) {
+    public Employee editEmployee(@PathVariable Long id, @RequestBody Employee employee) {
         return employeeService.editEmployee(id, employee);
     }
 

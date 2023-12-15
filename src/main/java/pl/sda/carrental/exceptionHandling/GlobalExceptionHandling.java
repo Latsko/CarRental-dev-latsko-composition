@@ -1,4 +1,4 @@
-package pl.sda.carrental;
+package pl.sda.carrental.exceptionHandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -17,8 +17,23 @@ public class GlobalExceptionHandling {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(BranchAlreadyOpenInCity.class)
+    public ProblemDetail handleBranchAlreadyOpenInCity(BranchAlreadyOpenInCity exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(CarAlreadyAssignedToBranch.class)
+    public ProblemDetail handleCarAlreadyAssignedToBranch(CarAlreadyAssignedToBranch exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
     @ExceptionHandler(RentAlreadyExistsForReservation.class)
     public ProblemDetail handleRentAlreadyExistsForReservation(RentAlreadyExistsForReservation exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(ReturnAlreadyExistsForReservation.class)
+    public ProblemDetail handleReturnAlreadyExistsForReservation(ReturnAlreadyExistsForReservation exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 

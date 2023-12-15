@@ -2,7 +2,7 @@ package pl.sda.carrental.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.model.ClientModel;
+import pl.sda.carrental.model.Client;
 import pl.sda.carrental.service.ClientService;
 
 import java.util.List;
@@ -14,22 +14,22 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/{id}")
-    public ClientModel findById(@PathVariable Long id) {
+    public Client findById(@PathVariable Long id) {
         return clientService.findById(id);
     }
 
     @GetMapping
-    public List<ClientModel> getAllClients() {
+    public List<Client> getAllClients() {
         return clientService.getAllClients();
     }
 
     @PostMapping
-    public void addClient(@RequestBody ClientModel client) {
+    public void addClient(@RequestBody Client client) {
         clientService.addClient(client);
     }
 
     @PutMapping("/{id}")
-    public ClientModel modifyClient(@PathVariable Long id, @RequestBody ClientModel client) {
+    public Client modifyClient(@PathVariable Long id, @RequestBody Client client) {
         return clientService.editClient(id, client);
     }
 

@@ -2,9 +2,10 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.BranchModel;
-import pl.sda.carrental.model.CarRentalModel;
+import pl.sda.carrental.exceptionHandling.BranchAlreadyOpenInCity;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRentalRepository;
 
@@ -14,24 +15,26 @@ public class CarRentalService {
     private final CarRentalRepository carRentalRepository;
     private final BranchRepository branchRepository;
 
-    public CarRentalModel getCarRental() {
-        CarRentalModel carRentalModel = carRentalRepository.findAll().stream().findFirst().orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company"));
-        return carRentalModel;
+    public CarRental getCarRental() {
+        return carRentalRepository.findAll()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company"));
     }
 
-    public void saveCarRental(CarRentalModel carRental) {
+    public void saveCarRental(CarRental carRental) {
         carRentalRepository.save(carRental);
     }
 
 
-    public void editCarRental(CarRentalModel carRentalModel) {
-        CarRentalModel edited = carRentalRepository.findAll().stream().findFirst()
+    public void editCarRental(CarRental carRental) {
+        CarRental edited = carRentalRepository.findAll().stream().findFirst()
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company to edit"));
 
-        edited.setName(carRentalModel.getName());
-        edited.setAddress(carRentalModel.getAddress());
-        edited.setOwner(carRentalModel.getOwner());
-        edited.setLogo(carRentalModel.getLogo());
+        edited.setName(carRental.getName());
+        edited.setAddress(carRental.getAddress());
+        edited.setOwner(carRental.getOwner());
+        edited.setLogo(carRental.getLogo());
 
         carRentalRepository.deleteAll();
 
@@ -45,19 +48,21 @@ public class CarRentalService {
         carRentalRepository.deleteAll();
     }
 
-    public void openNewBranch(BranchModel branch) {
-        // check branch already exists in given city
-
-        CarRentalModel carRentalModel = carRentalRepository.findById(1L)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no rental company"));
-        branch.setCarRental(carRentalModel);
-
-        if(!carRentalRepository.findAll().isEmpty()) {
+    public void openNewBranch(Branch branch) {
+        long branchAlreadyOpenInCity = carRentalRepository.findAll().stream()
+                .findFirst()
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Car Rental has not been created yet"))
+                .getBranches()
+                .stream()
+                .map(Branch::getName)
+                .filter(address -> address.equals(branch.getAddress()))
+                .count();
+        if(branchAlreadyOpenInCity > 0) {
+            throw new BranchAlreadyOpenInCity("Branch " + branch.getName() + " is already open in city"
+            + branch.getAddress());
+        }
             branchRepository.save(branch);
             carRentalRepository.findAll().get(0).getBranches().add(branch);
-        } else {
-            throw new ObjectNotFoundInRepositoryException("There are no Car Rentals for branch to be assigned to!");
-        }
     }
 
     public void deleteBranchUnderId(Long id) {

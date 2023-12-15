@@ -1,16 +1,18 @@
 package pl.sda.carrental.service;
 
-//import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.*;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.Client;
+import pl.sda.carrental.model.DTO.ReservationDTO;
+import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
 import pl.sda.carrental.repository.ClientRepository;
 import pl.sda.carrental.repository.ReservationRepository;
-
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
@@ -25,31 +27,35 @@ public class ReservationService {
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
 
+    public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
+
     @Transactional
-    public ReservationModel saveReservation(ReservationDTO reservationDto) {
-        ReservationModel reservation = new ReservationModel();
+    public Reservation saveReservation(ReservationDTO reservationDto) {
+        Reservation reservation = new Reservation();
         updateReservationDetails(reservationDto, reservation);
         return reservationRepository.save(reservation);
     }
 
     @Transactional
-    public ReservationModel editReservation(Long id, ReservationDTO reservationDTO) {
-        ReservationModel foundReservation = reservationRepository.findById(id)
+    public Reservation editReservation(Long id, ReservationDTO reservationDTO) {
+        Reservation foundReservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No reservation under ID #" + id));
         updateReservationDetails(reservationDTO, foundReservation);
         return reservationRepository.save(foundReservation);
     }
 
-    private void updateReservationDetails(ReservationDTO reservationDto, ReservationModel reservation) {
+    private void updateReservationDetails(ReservationDTO reservationDto, Reservation reservation) {
         setStartEndBranch(reservationDto, reservation);
         reservation.setStartDate(reservationDto.startDate());
         reservation.setEndDate(reservationDto.endDate());
 
-        CarModel carFromRepo = carRepository.findById(reservationDto.car_id())
+        Car carFromRepo = carRepository.findById(reservationDto.car_id())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under that ID"));
         reservation.setCar(carFromRepo);
 
-        ClientModel clientFromRepo = clientRepository.findById(reservationDto.customer_id())
+        Client clientFromRepo = clientRepository.findById(reservationDto.customer_id())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No customer under that ID"));
         reservation.setCustomer(clientFromRepo);
 
@@ -58,22 +64,18 @@ public class ReservationService {
         reservation.setPrice(price);
     }
 
-    private void setStartEndBranch(ReservationDTO reservationDto, ReservationModel reservation) {
-        BranchModel startBranch = branchRepository.findById(reservationDto.startBranchId())
+    private void setStartEndBranch(ReservationDTO reservationDto, Reservation reservation) {
+        Branch startBranch = branchRepository.findById(reservationDto.startBranchId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Branch not found"));
         reservation.setStartBranch(startBranch);
-        BranchModel endBranch = branchRepository.findById(reservationDto.endBranchId())
+        Branch endBranch = branchRepository.findById(reservationDto.endBranchId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Branch not found"));
         reservation.setEndBranch(endBranch);
     }
 
-    public List<ReservationModel> getAllReservations() {
-        return reservationRepository.findAll();
-    }
-
     @Transactional
     public void deleteReservationById(Long id) {
-        ReservationModel reservation = reservationRepository.findById(id)
+        Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No reservation under ID #" + id));
         reservationRepository.delete(reservation);
     }

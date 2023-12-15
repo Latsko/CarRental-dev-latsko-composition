@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "return_process")
-public class ReturnModel {
+public class Returnal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class ReturnModel {
     private BigDecimal upcharge;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "reservation_id")
-    private ReservationModel reservation;
+    private Reservation reservation;
 }

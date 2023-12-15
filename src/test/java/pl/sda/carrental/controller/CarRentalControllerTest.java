@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import pl.sda.carrental.model.BranchModel;
-import pl.sda.carrental.model.CarRentalModel;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.CarRental;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,10 +20,17 @@ class CarRentalControllerTest {
 
     @Test
     void shouldSaveCarRental() {
-        Set<BranchModel> branches = new HashSet<>();
-        branches.add(new BranchModel(1L, "Radom", " inne", new HashSet<>(), null));
+        Set<Branch> branches = new HashSet<>();
+        branches.add(new Branch(
+                                1L,
+                                "Radom",
+                                " inne",
+                                new HashSet<>(),
+                                new HashSet<>(),
+                                new HashSet<>(),
+                                null));
 
-        CarRentalModel carRental = new CarRentalModel(
+        CarRental carRental = new CarRental(
                 null,
                 "Car Rental",
                 "www.cars.pl",

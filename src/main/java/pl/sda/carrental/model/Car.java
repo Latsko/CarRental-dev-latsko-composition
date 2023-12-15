@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "car")
-public class CarModel {
+public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long car_id;
@@ -32,12 +32,12 @@ public class CarModel {
     private Status status;
     @DecimalMin(value = "1.00", message = "Price must be grater than 1.00")
     @DecimalMax(value = "10000.00", message = "Price must be lesser than 10000.00")
-    @Digits(integer = 7, fraction = 2, message = "Price must have up to 7 digits in total and 2 decimal places")
+    @Digits(integer = 9, fraction = 2, message = "Price must have up to 7 digits in total and 2 decimal places")
     private BigDecimal price;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "branch_id")
     @JsonBackReference
-    private BranchModel branch;
+    private Branch branch;
 
 }

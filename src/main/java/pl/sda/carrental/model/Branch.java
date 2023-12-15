@@ -16,27 +16,24 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "branch")
-public class BranchModel {
+public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long branch_id;
     private String name;
     private String address;
     
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "branch_id")
-    private Set<EmployeeModel> employees = new HashSet<>();
+    @OneToMany(mappedBy = "branch")
+    private Set<Employee> employees = new HashSet<>();
 
     @OneToMany(mappedBy = "branch")
-    //@JoinColumn(name = "branch_id")
-    private Set<CarModel> cars = new HashSet<>();
+    private Set<Car> cars = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "branch_id")
-    private Set<ClientModel> clients = new HashSet<>();
+    @OneToMany(mappedBy = "branch")
+    private Set<Client> clients = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
     @JsonBackReference
-    private CarRentalModel carRental;
+    private CarRental carRental;
 }

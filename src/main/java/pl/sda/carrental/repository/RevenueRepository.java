@@ -2,8 +2,7 @@ package pl.sda.carrental.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.sda.carrental.model.RevenueModel;
+import pl.sda.carrental.model.Revenue;
 
-@Repository
-public interface RevenueRepository extends JpaRepository<RevenueModel, Long> {
+public interface RevenueRepository extends JpaRepository<Revenue, Long> {
 }

@@ -1,4 +1,4 @@
-package pl.sda.carrental;
+package pl.sda.carrental.exceptionHandling;
 
 public class ReturnAlreadyExistsForReservation extends RuntimeException {
     public ReturnAlreadyExistsForReservation(String message) {

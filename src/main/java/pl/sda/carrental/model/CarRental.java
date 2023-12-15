@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "car_rental")
-public class CarRentalModel {
+public class CarRental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long car_rental_id;
@@ -27,7 +27,7 @@ public class CarRentalModel {
     private String owner;
     private String logo;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "car_rental_id")
-    private Set<BranchModel> branches = new HashSet<>();
+    private Set<Branch> branches = new HashSet<>();
 }

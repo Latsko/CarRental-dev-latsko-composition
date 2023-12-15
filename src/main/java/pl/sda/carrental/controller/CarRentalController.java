@@ -3,8 +3,8 @@ package pl.sda.carrental.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.model.BranchModel;
-import pl.sda.carrental.model.CarRentalModel;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.service.CarRentalService;
 
 @RestController
@@ -14,22 +14,22 @@ public class CarRentalController {
     private final CarRentalService carRentalService;
 
     @GetMapping
-    public CarRentalModel getCarRental(){
+    public CarRental getCarRental(){
         return carRentalService.getCarRental();
     }
     @PostMapping
-    public void addCarRental(@RequestBody @Valid CarRentalModel carRentalModel){
-        carRentalService.saveCarRental(carRentalModel);
+    public void addCarRental(@RequestBody @Valid CarRental carRental){
+        carRentalService.saveCarRental(carRental);
     }
 
     @PostMapping("/addBranch")
-    public void openBranch(@RequestBody @Valid BranchModel branch) {
+    public void openBranch(@RequestBody @Valid Branch branch) {
         carRentalService.openNewBranch(branch);
     }
 
     @PutMapping
-    public void editCarRental(@RequestBody CarRentalModel carRentalModel){
-        carRentalService.editCarRental(carRentalModel);
+    public void editCarRental(@RequestBody CarRental carRental){
+        carRentalService.editCarRental(carRental);
     }
 
     @DeleteMapping

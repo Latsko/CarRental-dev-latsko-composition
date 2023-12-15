@@ -2,8 +2,8 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.RevenueModel;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.model.Revenue;
 import pl.sda.carrental.repository.RevenueRepository;
 
 import java.util.List;
@@ -13,17 +13,17 @@ import java.util.List;
 public class RevenueService {
     private final RevenueRepository revenueRepository;
 
-    public List<RevenueModel> getRevenue() {
+    public List<Revenue> getRevenue() {
         return revenueRepository.findAll();
     }
 
-    public RevenueModel addRevenue(RevenueModel revenue) {
+    public Revenue addRevenue(Revenue revenue) {
         return revenueRepository.save(revenue);
     }
 
 
-    public RevenueModel editRevenue(Long id, RevenueModel revenue) {
-        RevenueModel edit = revenueRepository.findById(id)
+    public Revenue editRevenue(Long id, Revenue revenue) {
+        Revenue edit = revenueRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No revenue under ID" + id + "!"));
 
         edit.setAmount(revenue.getAmount());

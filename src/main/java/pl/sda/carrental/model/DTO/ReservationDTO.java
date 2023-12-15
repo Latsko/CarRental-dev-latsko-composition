@@ -1,4 +1,4 @@
-package pl.sda.carrental.model;
+package pl.sda.carrental.model.DTO;
 
 import jakarta.validation.constraints.NotNull;
 

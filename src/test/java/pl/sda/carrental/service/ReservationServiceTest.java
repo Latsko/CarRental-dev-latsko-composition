@@ -6,10 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sda.carrental.model.BranchModel;
-import pl.sda.carrental.model.CarModel;
-import pl.sda.carrental.model.ReservationDTO;
-import pl.sda.carrental.model.ReservationModel;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.DTO.ReservationDTO;
+import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.model.enums.Status;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
@@ -39,7 +39,7 @@ class ReservationServiceTest {
     void shouldSaveReservation() {
         //given
         ReservationDTO reservationDto = new ReservationDTO(
-                "Ted",
+                1L,
                 1L,
                 LocalDate.of(2023, 11, 20),
                 LocalDate.of(2023, 11, 22),
@@ -47,14 +47,16 @@ class ReservationServiceTest {
                 1L
         );
 
-        BranchModel branch = new BranchModel(
+        Branch branch = new Branch(
                 1L,
                 "Warszawa",
                 "ul. Przykladowa",
                 new HashSet<>(),
+                new HashSet<>(),
+                new HashSet<>(),
                 null);
         Mockito.when(branchRepositoryMock.findById(1L)).thenReturn(Optional.of(branch));
-        CarModel car = new CarModel(
+        Car car = new Car(
                 1L,
                 "Kia",
                 "Ceed",
@@ -63,7 +65,8 @@ class ReservationServiceTest {
                 "Gray",
                 20000,
                 Status.AVAILABLE,
-                BigDecimal.valueOf(100)
+                BigDecimal.valueOf(100),
+                null
         );
         Mockito.when(carRepositoryMock.findById(1L)).thenReturn(Optional.of(car));
 
@@ -73,9 +76,9 @@ class ReservationServiceTest {
         //then
         Mockito.verify(carRepositoryMock).findById(1L);
 
-        ArgumentCaptor<ReservationModel> captor = ArgumentCaptor.forClass(ReservationModel.class);
+        ArgumentCaptor<Reservation> captor = ArgumentCaptor.forClass(Reservation.class);
         Mockito.verify(reservationRepositoryMock).save(captor.capture());
-        ReservationModel result = captor.getValue();
+        Reservation result = captor.getValue();
 
         assertThat(result.getEndDate()).isEqualTo("2023-11-22");
         assertThat(result.getStartDate()).isEqualTo("2023-11-20");

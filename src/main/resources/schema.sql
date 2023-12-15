@@ -37,7 +37,7 @@ CREATE TABLE car
     colour     VARCHAR(255)  NOT NULL,
     mileage    INT,
     status     TINYINT       NOT NULL,
-    price      DECIMAL(7, 2) NOT NULL,
+    price      DECIMAL(9, 2) NOT NULL,
     branch_id  BIGINT,
     FOREIGN KEY (branch_id) REFERENCES branch (branch_id)
 );
@@ -59,22 +59,20 @@ CREATE TABLE client
     surname   VARCHAR(255) NOT NULL,
     address   VARCHAR(255) NOT NULL,
     email     VARCHAR(255) NOT NULL,
-    branch_id   BIGINT,
+    branch_id BIGINT,
     FOREIGN KEY (branch_id) REFERENCES branch (branch_id)
 );
 
 CREATE TABLE reservation
 (
     reservation_id  BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
-    customer        VARCHAR(255)  NOT NULL,
-    car             VARCHAR(255)  NOT NULL,
-    start_date      DATE          NOT NULL,
-    end_date        DATE          NOT NULL,
-    price           DECIMAL(7, 2) NOT NULL,
+    start_date      DATE,
+    end_date        DATE,
+    price           DECIMAL(7, 2),
     start_branch_id BIGINT,
     end_branch_id   BIGINT,
-    car_id             BIGINT,
-    client_id BIGINT,
+    car_id          BIGINT,
+    client_id       BIGINT,
     FOREIGN KEY (start_branch_id) REFERENCES branch (branch_id),
     FOREIGN KEY (end_branch_id) REFERENCES branch (branch_id),
     FOREIGN KEY (car_id) REFERENCES car (car_id),
@@ -84,18 +82,19 @@ CREATE TABLE reservation
 CREATE TABLE rent
 (
     rent_id        BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
-    employee       VARCHAR(255) NOT NULL,
     comments       VARCHAR(255) NOT NULL,
     rent_date      DATE         NOT NULL,
     reservation_id BIGINT       NOT NULL,
-    FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id)
+    employee_id BIGINT NOT NULL,
+    FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
 
 CREATE TABLE revenue
 (
-  revenue_id        BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  amount    DECIMAL
+    revenue_id BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
+    amount     DECIMAL
 );
 
 CREATE TABLE return_process

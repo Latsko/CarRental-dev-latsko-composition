@@ -2,11 +2,13 @@ package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.RentAlreadyExistsForReservation;
-import pl.sda.carrental.model.RentDTO;
-import pl.sda.carrental.model.RentModel;
-import pl.sda.carrental.model.ReservationModel;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
+import pl.sda.carrental.exceptionHandling.RentAlreadyExistsForReservation;
+import pl.sda.carrental.model.Employee;
+import pl.sda.carrental.model.DTO.RentDTO;
+import pl.sda.carrental.model.Rent;
+import pl.sda.carrental.model.Reservation;
+import pl.sda.carrental.repository.EmployeeRepository;
 import pl.sda.carrental.repository.RentRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 
@@ -17,24 +19,53 @@ import java.util.List;
 public class RentService {
     private final RentRepository rentRepository;
     private final ReservationRepository reservationRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public RentModel save(RentDTO rentDTO) {
-        List<Object[]> reservationsIds = rentRepository.findRentalsWithReservationId(rentDTO.reservationId());
+    public List<Rent> allRents() {
+        return rentRepository.findAll();
+    }
+    public Rent save(RentDTO rentDTO) {
+        Rent rent = new Rent();
+        updateRentDetails(rentDTO, rent);
+
+        return rentRepository.save(rent);
+    }
+
+    public Rent editRent(Long id, RentDTO rentDTO) {
+        Rent rent = rentRepository.findById(id)
+                        .orElseThrow(() ->
+                                new ObjectNotFoundInRepositoryException("No rent under ID #" + id));
+        updateRentDetails(rentDTO, rent);
+
+        rentRepository.deleteById(id);
+        return rentRepository.save(rent);
+    }
+
+    public void deleteRentById(Long id) {
+        rentRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No rent under ID #" + id));
+        rentRepository.deleteById(id);
+    }
+
+    private void updateRentDetails(RentDTO rentDTO, Rent rent) {
+        List<Long> reservationsIds = rentRepository.findRentalsWithReservationId(rentDTO.reservationId());
         if(!reservationsIds.isEmpty()) {
-            throw new RentAlreadyExistsForReservation("Rent already exists for reservation with id " + rentDTO.reservationId());
+            throw new RentAlreadyExistsForReservation("Rent already exists for reservation with id "
+                    + rentDTO.reservationId());
         }
 
-        RentModel rentToSave = new RentModel();
-        rentToSave.setEmployee(rentDTO.employee());
-        rentToSave.setComments(rentDTO.comments());
-        rentToSave.setRentDate(rentDTO.rentDate());
+        Employee foundEmployee = employeeRepository.findById(rentDTO.employeeId())
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #"
+                        + rentDTO.employeeId()));
 
-        ReservationModel reservationFromRepository = reservationRepository.findById(rentDTO.reservationId())
+        rent.setEmployee(foundEmployee);
+        rent.setComments(rentDTO.comments());
+        rent.setRentDate(rentDTO.rentDate());
+
+        Reservation reservationFromRepository = reservationRepository.findById(rentDTO.reservationId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
                         + rentDTO.reservationId() + " not found"));
 
-        rentToSave.setReservation(reservationFromRepository);
-
-        return rentRepository.save(rentToSave);
+        rent.setReservation(reservationFromRepository);
     }
 }

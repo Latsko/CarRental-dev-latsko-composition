@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "reservation")
-public class ReservationModel {
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reservationId;
@@ -27,12 +27,12 @@ public class ReservationModel {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private ClientModel customer;
+    private Client customer;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "car_id")
-    private CarModel car;
+    private Car car;
 
     @NotNull
     private LocalDate startDate;
@@ -47,9 +47,9 @@ public class ReservationModel {
 
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
-    private BranchModel startBranch;
+    private Branch startBranch;
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
-    private BranchModel endBranch;
+    private Branch endBranch;
 }

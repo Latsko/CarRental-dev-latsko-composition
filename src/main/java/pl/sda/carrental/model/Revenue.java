@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Table(name = "revenue")
-public class RevenueModel {
+public class Revenue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long revenue_id;

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "client")
-public class ClientModel {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long client_id;
@@ -30,5 +30,5 @@ public class ClientModel {
     @ManyToOne
     @JoinColumn(name = "branch_id")
     @JsonBackReference
-    private BranchModel branch;
+    private Branch branch;
 }

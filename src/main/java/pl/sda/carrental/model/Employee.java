@@ -14,7 +14,7 @@ import pl.sda.carrental.model.enums.Position;
 @Getter
 @Setter
 @Table(name = "employee")
-public class EmployeeModel {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employee_id;
@@ -25,5 +25,5 @@ public class EmployeeModel {
     @ManyToOne
     @JoinColumn(name = "branch_id")
     @JsonBackReference
-    private BranchModel branch;
+    private Branch branch;
 }

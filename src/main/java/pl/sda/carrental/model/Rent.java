@@ -1,7 +1,6 @@
 package pl.sda.carrental.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,16 +14,18 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Table(name = "rent")
-public class RentModel {
+public class Rent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rent_id;
-    private String employee;
     private String comments;
     private LocalDate rentDate;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @OneToOne
     @JoinColumn(name = "reservation_id")
-    private ReservationModel reservation;
+    private Reservation reservation;
 }
