@@ -1,5 +1,6 @@
 package pl.sda.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -27,11 +28,13 @@ public class Reservation {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client customer;
+    @JsonBackReference
+    private Client client;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "car_id")
+    @JsonBackReference
     private Car car;
 
     @NotNull
@@ -47,9 +50,11 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
+    @JsonBackReference
     private Branch startBranch;
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
+    @JsonBackReference
     private Branch endBranch;
 }

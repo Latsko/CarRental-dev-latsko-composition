@@ -1,6 +1,7 @@
 package pl.sda.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -12,6 +13,8 @@ import lombok.Setter;
 import pl.sda.carrental.model.enums.Status;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,4 +43,7 @@ public class Car {
     @JsonBackReference
     private Branch branch;
 
+    @OneToMany(mappedBy = "car")
+    @JsonManagedReference
+    private Set<Reservation> reservations = new HashSet<>();
 }

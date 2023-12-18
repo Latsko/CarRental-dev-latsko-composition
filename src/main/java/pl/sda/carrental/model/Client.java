@@ -1,12 +1,16 @@
 package pl.sda.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -20,11 +24,11 @@ public class Client {
     private Long client_id;
     @NotNull(message = "name cannot be null")
     private String name;
-    @NotNull(message = "name cannot be null")
+    @NotNull(message = "surname cannot be null")
     private String surname;
-    @NotNull(message = "name cannot be null")
+    @NotNull(message = "email cannot be null")
     private String email;
-    @NotNull(message = "name cannot be null")
+    @NotNull(message = "address cannot be null")
     private String address;
 
     @ManyToOne

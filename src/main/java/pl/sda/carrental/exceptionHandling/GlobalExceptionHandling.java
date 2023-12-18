@@ -17,8 +17,13 @@ public class GlobalExceptionHandling {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
+    @ExceptionHandler(ReservationTimeCollisionException.class)
+    public ProblemDetail handleReservationTimeCollisionException(ReservationTimeCollisionException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
+    }
+
     @ExceptionHandler(ObjectAlreadyAssignedToBranchException.class)
-    public ProblemDetail ClientAlreadyAssignedToBranch(ObjectAlreadyAssignedToBranchException exception) {
+    public ProblemDetail handleClientAlreadyAssignedToBranch(ObjectAlreadyAssignedToBranchException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
