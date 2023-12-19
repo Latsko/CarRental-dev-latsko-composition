@@ -1,6 +1,7 @@
 package pl.sda.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +35,6 @@ public class Branch {
 
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
-    @JsonBackReference
+    @JsonBackReference(value = "carRental-reference")
     private CarRental carRental;
 }

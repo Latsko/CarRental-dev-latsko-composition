@@ -28,13 +28,13 @@ public class Reservation {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference
+    @JsonBackReference(value = "clientReservation-reference")
     private Client client;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "car_id")
-    @JsonBackReference
+    @JsonBackReference(value = "carReservation-reference")
     private Car car;
 
     @NotNull
@@ -50,11 +50,11 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
-    @JsonBackReference
+    @JsonBackReference(value = "startBranch-reference")
     private Branch startBranch;
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
-    @JsonBackReference
+    @JsonBackReference(value = "endBranch-reference")
     private Branch endBranch;
 }

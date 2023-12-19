@@ -100,10 +100,11 @@ CREATE TABLE revenue
 CREATE TABLE return_process
 (
     return_id      BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
-    employee       VARCHAR(255)  NOT NULL,
     comments       VARCHAR(255)  NOT NULL,
     return_date    DATE          NOT NULL,
     upcharge       DECIMAL(7, 2) NOT NULL,
     reservation_id BIGINT        NOT NULL,
-    FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id)
+    employee_id BIGINT NOT NULL,
+    FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );

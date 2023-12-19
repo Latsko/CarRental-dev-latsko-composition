@@ -24,14 +24,17 @@ public class Returnal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long return_id;
-    private String employee;
     private String comments;
     private LocalDate returnDate;
 
     @DecimalMin(value = "0.00", message = "Upcharge cannot be lower than 0.00")
     @DecimalMax(value = "10000.00", message = "Upcharge must be lesser than 10000.00")
-    @Digits(integer = 7, fraction = 2, message = "Upcharge must have up to 7 digits in total and 2 decimal places")
+    @Digits(integer = 9, fraction = 2, message = "Upcharge must have up to 7 digits in total and 2 decimal places")
     private BigDecimal upcharge;
+
+    @OneToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     @NotNull
     @OneToOne

@@ -87,22 +87,12 @@ VALUES ('Good condition', '2024-01-10', 1, 1),
        ('Excellent mileage', '2024-01-22', 7, 7),
        ('Fantastic handling', '2024-01-24', 8, 8);
 
-INSERT INTO return_process (employee, comments, return_date, upcharge, reservation_id)
-VALUES ('John Doe', 'Clean and tidy', '2024-01-15', 50.00, 1),
-       ('Alice Johnson', 'Minor scratches', '2024-01-17', 30.00, 2),
-       ('Emily Parker', 'Fuel tank full', '2024-01-19', 20.00, 3),
-       ('David Smith', 'Smooth return', '2024-01-21', 10.00, 4),
-       ('Sophia Brown', 'Needs cleaning', '2024-01-23', 40.00, 5),
-       ('Michael Davis', 'Issues with brakes', '2024-01-25', 60.00, 6),
-       ('Olivia Wilson', 'Excellent condition', '2024-01-27', 15.00, 7),
-       ('Ethan Clark', 'Great experience', '2024-01-29', 25.00, 8);
-
-INSERT INTO return_process (employee, comments, return_date, upcharge, reservation_id)
-VALUES ('John Doe', 'Clean and tidy', '2024-01-15', 50.00, 1),
-       ('Alice Johnson', 'Minor scratches', '2024-01-17', 30.00, 2),
-       ('Emily Parker', 'Fuel tank full', '2024-01-19', 20.00, 3),
-       ('David Smith', 'Smooth return', '2024-01-21', 10.00, 4),
-       ('Sophia Brown', 'Needs cleaning', '2024-01-23', 40.00, 5),
-       ('Michael Davis', 'Issues with brakes', '2024-01-25', 60.00, 6),
-       ('Olivia Wilson', 'Excellent condition', '2024-01-27', 15.00, 7),
-       ('Ethan Clark', 'Great experience', '2024-01-29', 25.00, 8);
+INSERT INTO return_process (comments, return_date, upcharge, reservation_id, employee_id)
+VALUES ('Clean and tidy', '2024-01-15', 50.00, 1, 1),
+       ('Minor scratches', '2024-01-17', 30.00, 2, 2),
+       ('Fuel tank full', '2024-01-19', 20.00, 3, 3),
+       ('Smooth return', '2024-01-21', 10.00, 4, 4),
+       ('Needs cleaning', '2024-01-23', 40.00, 5, 5),
+       ('Issues with brakes', '2024-01-25', 60.00, 6, 6),
+       ('Excellent condition', '2024-01-27', 15.00, 7, 7),
+       ('Great experience', '2024-01-29', 25.00, 8, 8);
