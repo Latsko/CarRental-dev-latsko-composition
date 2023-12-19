@@ -1,7 +1,6 @@
 package pl.sda.carrental.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
@@ -57,12 +56,12 @@ public class ReservationService {
         Car carFromRepo = carRepository.findById(reservationDto.car_id())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under that ID"));
 
-        if(!carFromRepo.getReservations().isEmpty()) {
+        if (!carFromRepo.getReservations().isEmpty()) {
             List<DateTimePeriod> timeCollision = carFromRepo.getReservations().stream()
                     .map(resObject -> new DateTimePeriod(resObject.getStartDate(), resObject.getEndDate()))
                     .filter(dtp -> isDateSuitable(reservationDto, dtp))
                     .toList();
-            if(!timeCollision.isEmpty()) {
+            if (!timeCollision.isEmpty()) {
                 throw new ReservationTimeCollisionException("Car cannot be reserved for given time period!");
             }
         }
@@ -111,4 +110,5 @@ public class ReservationService {
     }
 }
 
-record DateTimePeriod(LocalDate start, LocalDate end) {}
+record DateTimePeriod(LocalDate start, LocalDate end) {
+}
