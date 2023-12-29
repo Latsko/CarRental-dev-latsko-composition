@@ -16,7 +16,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping
-    public List<Reservation> getReservations() {
+    public List<ReservationDTO> getReservations() {
         return reservationService.getAllReservations();
     }
 

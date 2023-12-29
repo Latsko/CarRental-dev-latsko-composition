@@ -29,8 +29,21 @@ public class ReservationService {
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+    public List<ReservationDTO> getAllReservations() {
+        return reservationRepository.findAll().stream()
+                .map(this::mapReservationToDTO)
+                .toList();
+    }
+
+    private ReservationDTO mapReservationToDTO(Reservation reservation) {
+        return new ReservationDTO(
+                reservation.getClient().getClient_id(),
+                reservation.getCar().getCar_id(),
+                reservation.getStartDate(),
+                reservation.getEndDate(),
+                reservation.getStartBranch().getBranch_id(),
+                reservation.getEndBranch().getBranch_id()
+        );
     }
 
     @Transactional

@@ -43,7 +43,7 @@ public class Car {
     @JsonBackReference(value = "car-reference")
     private Branch branch;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "carReservation-reference")
     private Set<Reservation> reservations = new HashSet<>();
 }

@@ -15,6 +15,12 @@ public class CarRentalService {
     private final CarRentalRepository carRentalRepository;
     private final BranchRepository branchRepository;
 
+    /**
+     * Retrieves the car rental company details.
+     *
+     * @return The CarRental object representing the car rental company.
+     * @throws ObjectNotFoundInRepositoryException if no car rental company is found.
+     */
     public CarRental getCarRental() {
         return carRentalRepository.findAll()
                 .stream()
@@ -22,11 +28,22 @@ public class CarRentalService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company"));
     }
 
+    /**
+     * Saves or updates the details of the car rental company.
+     *
+     * @param carRental The CarRental object representing the car rental company to be saved or updated.
+     */
     public void saveCarRental(CarRental carRental) {
         carRentalRepository.save(carRental);
     }
 
 
+    /**
+     * Edits the details of the existing car rental company.
+     *
+     * @param carRental The CarRental object containing updated information to edit the car rental company.
+     * @throws ObjectNotFoundInRepositoryException if there is no existing car rental company to edit.
+     */
     public void editCarRental(CarRental carRental) {
         CarRental edited = carRentalRepository.findAll().stream().findFirst()
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company to edit"));
@@ -41,6 +58,11 @@ public class CarRentalService {
         carRentalRepository.save(edited);
     }
 
+    /**
+     * Deletes the car rental company from the repository.
+     *
+     * @throws ObjectNotFoundInRepositoryException if there is no existing car rental company to delete.
+     */
     public void deleteCarRental() {
         carRentalRepository.findAll().stream().findFirst()
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company"));
@@ -48,6 +70,17 @@ public class CarRentalService {
         carRentalRepository.deleteAll();
     }
 
+    /**
+     * Opens a new branch for the car rental company.
+     * Checks if a car rental company exists. If not, throws an exception.
+     * Verifies if a branch with the same address already exists in the car rental company.
+     * If a branch already exists in the same city, throws a BranchAlreadyOpenInCityException.
+     * Otherwise, saves the new branch to the repository and associates it with the existing car rental company.
+     *
+     * @param branch The Branch object representing the new branch to be opened.
+     * @throws ObjectNotFoundInRepositoryException     if the car rental company has not been created yet.
+     * @throws BranchAlreadyOpenInCityException        if a branch with the same address is already open in the city.
+     */
     public void openNewBranch(Branch branch) {
         long branchAlreadyOpenInCity = carRentalRepository.findAll().stream()
                 .findFirst()
@@ -65,6 +98,12 @@ public class CarRentalService {
             carRentalRepository.findAll().get(0).getBranches().add(branch);
     }
 
+    /**
+     * Deletes a branch identified by the provided ID.
+     *
+     * @param id The ID of the branch to be deleted.
+     * @throws ObjectNotFoundInRepositoryException if no branch is found under the provided ID.
+     */
     public void deleteBranchUnderId(Long id) {
         branchRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no branch under ID #" + id));
