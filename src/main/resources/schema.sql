@@ -85,7 +85,7 @@ CREATE TABLE rent
     comments       VARCHAR(255) NOT NULL,
     rent_date      DATE         NOT NULL,
     reservation_id BIGINT       NOT NULL,
-    employee_id BIGINT NOT NULL,
+    employee_id BIGINT,
     FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
@@ -104,7 +104,7 @@ CREATE TABLE return_process
     return_date    DATE          NOT NULL,
     upcharge       DECIMAL(7, 2) NOT NULL,
     reservation_id BIGINT        NOT NULL,
-    employee_id BIGINT NOT NULL,
+    employee_id BIGINT,
     FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );

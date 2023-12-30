@@ -29,8 +29,8 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public Client modifyClient(@PathVariable Long id, @RequestBody Client client) {
-        return clientService.editClient(id, client);
+    public void modifyClient(@PathVariable Long id, @RequestBody Client client) {
+        clientService.editClient(id, client);
     }
 
     @DeleteMapping("/{id}")
