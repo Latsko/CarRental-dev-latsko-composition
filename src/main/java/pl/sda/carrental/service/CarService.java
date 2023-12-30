@@ -3,8 +3,14 @@ package pl.sda.carrental.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.*;
-import pl.sda.carrental.repository.*;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.Rent;
+import pl.sda.carrental.model.Returnal;
+import pl.sda.carrental.repository.BranchRepository;
+import pl.sda.carrental.repository.CarRepository;
+import pl.sda.carrental.repository.RentRepository;
+import pl.sda.carrental.repository.ReturnRepository;
 
 import java.util.List;
 
