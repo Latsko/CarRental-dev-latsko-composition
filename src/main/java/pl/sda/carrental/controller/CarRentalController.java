@@ -39,6 +39,6 @@ public class CarRentalController {
 
     @DeleteMapping("/deleteBranch/{id}")
     public void closeBranch(@PathVariable Long id) {
-        carRentalService.deleteBranchUnderId(id);
+        carRentalService.closeBranchUnderId(id);
     }
 }

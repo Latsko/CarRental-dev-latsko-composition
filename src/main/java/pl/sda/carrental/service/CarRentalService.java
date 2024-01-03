@@ -88,20 +88,25 @@ public class CarRentalService {
      * @throws BranchAlreadyOpenInCityException        if a branch with the same address is already open in the city.
      */
     public void openNewBranch(Branch branch) {
-        long branchAlreadyOpenInCity = carRentalRepository.findAll().stream()
+        CarRental carRental = carRentalRepository.findAll().stream()
                 .findFirst()
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Car Rental has not been created yet"))
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Car Rental has not been created yet"));
+        long branchAlreadyOpenInCity = carRental
                 .getBranches()
                 .stream()
-                .map(Branch::getName)
+                .map(Branch::getAddress)
                 .filter(address -> address.equals(branch.getAddress()))
                 .count();
         if(branchAlreadyOpenInCity > 0) {
-            throw new BranchAlreadyOpenInCityException("Branch " + branch.getName() + " is already open in city"
+            throw new BranchAlreadyOpenInCityException("Branch " + branch.getName() + " is already open in city "
             + branch.getAddress());
         }
-            branchRepository.save(branch);
-            carRentalRepository.findAll().get(0).getBranches().add(branch);
+
+        carRental.getBranches().add(branch);
+        branch.setCarRental(carRental);
+
+        branchRepository.save(branch);
+        carRentalRepository.save(carRental);
     }
 
     /**
@@ -110,9 +115,13 @@ public class CarRentalService {
      * @param id The ID of the branch to be deleted.
      * @throws ObjectNotFoundInRepositoryException if no branch is found under the provided ID.
      */
-    public void deleteBranchUnderId(Long id) {
-        branchRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no branch under ID #" + id));
+    public void closeBranchUnderId(Long id) {
+        Branch branch = branchRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under  ID #" + id));
+
+        branch.getClients().clear();
+        branch.getCars().clear();
+        branch.getEmployees().clear();
 
         branchRepository.deleteById(id);
     }
