@@ -23,13 +23,13 @@ public class Branch {
     private String name;
     private String address;
     
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Car> cars = new HashSet<>();
 
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Client> clients = new HashSet<>();
 
     @ManyToOne

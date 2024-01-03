@@ -8,11 +8,13 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.Client;
 import pl.sda.carrental.model.DTO.ReservationDTO;
 import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.model.enums.Status;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
+import pl.sda.carrental.repository.ClientRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 
 import java.math.BigDecimal;
@@ -21,12 +23,15 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class ReservationServiceTest {
 
     @Mock
     private CarRepository carRepositoryMock;
+    @Mock
+    private ClientRepository clientRepositoryMock;
     @Mock
     private BranchRepository branchRepositoryMock;
     @Mock
@@ -55,6 +60,7 @@ class ReservationServiceTest {
                 new HashSet<>(),
                 new HashSet<>(),
                 null);
+
         Mockito.when(branchRepositoryMock.findById(1L)).thenReturn(Optional.of(branch));
         Car car = new Car(
                 1L,
@@ -66,15 +72,26 @@ class ReservationServiceTest {
                 20000,
                 Status.AVAILABLE,
                 BigDecimal.valueOf(100),
-                null
+                null,
+                new HashSet<>()
         );
         Mockito.when(carRepositoryMock.findById(1L)).thenReturn(Optional.of(car));
 
+        Client client = new Client(1L,
+                "name",
+                "surname",
+                "email",
+                "address",
+                null);
+
+        Mockito.when(clientRepositoryMock.findById(1L)).thenReturn(Optional.of(client));
         //when
         reservationService.saveReservation(reservationDto);
 
         //then
         Mockito.verify(carRepositoryMock).findById(1L);
+        Mockito.verify(branchRepositoryMock, times(2)).findById(1L);
+        Mockito.verify(clientRepositoryMock).findById(1L);
 
         ArgumentCaptor<Reservation> captor = ArgumentCaptor.forClass(Reservation.class);
         Mockito.verify(reservationRepositoryMock).save(captor.capture());

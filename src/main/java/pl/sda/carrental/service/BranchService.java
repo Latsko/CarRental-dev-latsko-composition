@@ -27,6 +27,9 @@ public class BranchService {
      * @param branch The Branch object to be added.
      */
     public void addBranch(Branch branch) {
+        if(!branchRepository.findAll().isEmpty()) {
+            throw new ObjectAlreadyAssignedToBranchException("Rent already exists!");
+        }
         branchRepository.save(branch);
     }
 
@@ -47,8 +50,13 @@ public class BranchService {
      * @throws ObjectNotFoundInRepositoryException if no branch is found under the provided ID.
      */
     public void removeBranch(Long id) {
-        branchRepository.findById(id)
+        Branch branch = branchRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under  ID #" + id));
+
+        branch.getClients().clear();
+        branch.getCars().clear();
+        branch.getEmployees().clear();
+
         branchRepository.deleteById(id);
     }
 

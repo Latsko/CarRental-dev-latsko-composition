@@ -3,6 +3,7 @@ package pl.sda.carrental.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.BranchAlreadyOpenInCityException;
+import pl.sda.carrental.exceptionHandling.CarRentalAlreadyExistsException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.CarRental;
@@ -32,8 +33,12 @@ public class CarRentalService {
      * Saves or updates the details of the car rental company.
      *
      * @param carRental The CarRental object representing the car rental company to be saved or updated.
+     * @throws CarRentalAlreadyExistsException if there already is car rental in repository
      */
     public void saveCarRental(CarRental carRental) {
+        if(!carRentalRepository.findAll().isEmpty()) {
+            throw new CarRentalAlreadyExistsException("Car Rental already exists!");
+        }
         carRentalRepository.save(carRental);
     }
 
@@ -53,8 +58,6 @@ public class CarRentalService {
         edited.setOwner(carRental.getOwner());
         edited.setLogo(carRental.getLogo());
 
-        carRentalRepository.deleteAll();
-
         carRentalRepository.save(edited);
     }
 
@@ -64,10 +67,13 @@ public class CarRentalService {
      * @throws ObjectNotFoundInRepositoryException if there is no existing car rental company to delete.
      */
     public void deleteCarRental() {
-        carRentalRepository.findAll().stream().findFirst()
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company"));
+        CarRental carRental = carRentalRepository.findAll().stream()
+                .findFirst().orElseThrow(() ->
+                        new ObjectNotFoundInRepositoryException("There is no car rental company"));
 
-        carRentalRepository.deleteAll();
+        carRental.getBranches().clear();
+
+        carRentalRepository.delete(carRental);
     }
 
     /**

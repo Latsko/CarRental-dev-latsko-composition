@@ -24,22 +24,27 @@ public class GlobalExceptionHandling {
 
     @ExceptionHandler(ObjectAlreadyAssignedToBranchException.class)
     public ProblemDetail handleClientAlreadyAssignedToBranch(ObjectAlreadyAssignedToBranchException exception) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
     }
 
     @ExceptionHandler(BranchAlreadyOpenInCityException.class)
     public ProblemDetail handleBranchAlreadyOpenInCity(BranchAlreadyOpenInCityException exception) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
     }
 
     @ExceptionHandler(RentAlreadyExistsForReservationException.class)
     public ProblemDetail handleRentAlreadyExistsForReservation(RentAlreadyExistsForReservationException exception) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
     }
 
     @ExceptionHandler(ReturnAlreadyExistsForReservationException.class)
     public ProblemDetail handleReturnAlreadyExistsForReservation(ReturnAlreadyExistsForReservationException exception) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
+    }
+
+    @ExceptionHandler(CarRentalAlreadyExistsException.class)
+    public ProblemDetail handleCarRentalAlreadyExistsException(CarRentalAlreadyExistsException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
