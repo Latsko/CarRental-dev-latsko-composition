@@ -100,10 +100,12 @@ public class RentService {
         rent.setComments(rentDTO.comments());
         rent.setRentDate(rentDTO.rentDate());
 
+        // ======== tutaj nie muszę ustawiać rezerwację? ==========
         Reservation reservationFromRepository = reservationRepository.findById(rentDTO.reservationId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
                         + rentDTO.reservationId() + " not found"));
 
         rent.setReservation(reservationFromRepository);
+        // ======================================================
     }
 }

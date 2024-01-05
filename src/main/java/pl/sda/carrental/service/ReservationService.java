@@ -10,10 +10,7 @@ import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.Client;
 import pl.sda.carrental.model.DTO.ReservationDTO;
 import pl.sda.carrental.model.Reservation;
-import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.repository.ClientRepository;
-import pl.sda.carrental.repository.ReservationRepository;
+import pl.sda.carrental.repository.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,6 +25,8 @@ public class ReservationService {
     private final BranchRepository branchRepository;
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
+    private final RentRepository rentRepository;
+    private final ReturnRepository returnRepository;
 
     /**
      * Gets all Reservation Objects
@@ -46,7 +45,9 @@ public class ReservationService {
                 reservation.getStartDate(),
                 reservation.getEndDate(),
                 reservation.getStartBranch().getBranch_id(),
-                reservation.getEndBranch().getBranch_id()
+                reservation.getEndBranch().getBranch_id(),
+                reservation.getRent(),
+                reservation.getReturnal()
         );
     }
 

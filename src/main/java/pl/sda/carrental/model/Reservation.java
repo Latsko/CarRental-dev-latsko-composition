@@ -57,4 +57,14 @@ public class Reservation {
     @JoinColumn(name = "end_branch_id")
     @JsonBackReference(value = "endBranch-reference")
     private Branch endBranch;
+
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "rent_id")
+    @JsonBackReference(value = "reservationRent-reference")
+    private Rent rent;
+
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "return_id")
+    @JsonBackReference(value = "reservationReturnal-reference")
+    private Returnal returnal;
 }
