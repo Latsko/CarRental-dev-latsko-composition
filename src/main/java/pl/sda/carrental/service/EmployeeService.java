@@ -1,5 +1,6 @@
 package pl.sda.carrental.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
@@ -38,6 +39,7 @@ public class EmployeeService {
      * @param employee Object to be added to the repository
      * @return The newly created and saved employee object
      */
+    @Transactional
     public Employee addEmployee(Employee employee) {
         return employeeRepository.save(employee);
     }
@@ -52,6 +54,7 @@ public class EmployeeService {
      * @return The modified employee object
      * @throws ObjectNotFoundInRepositoryException if no employee is found with the provided ID
      */
+    @Transactional
     public void editEmployee(Long id, Employee employee) {
         Employee foundEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + id));
@@ -83,6 +86,7 @@ public class EmployeeService {
      * @throws ObjectNotFoundInRepositoryException if no employee is found under the provided ID.
      *                                          If no employee is found, the deletion process fails.
      */
+    @Transactional
     public void deleteEmployee(Long id) {
         employeeRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under that ID!"));

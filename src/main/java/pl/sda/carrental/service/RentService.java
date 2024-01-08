@@ -1,5 +1,6 @@
 package pl.sda.carrental.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
@@ -36,6 +37,7 @@ public class RentService {
      * @param rentDTO An object containing rent data
      * @return The newly created and saved rent object
      */
+    @Transactional
     public Rent save(RentDTO rentDTO) {
         Rent rent = new Rent();
         updateRentDetails(rentDTO, rent);
@@ -53,6 +55,7 @@ public class RentService {
      * @return The modified rent object
      * @throws ObjectNotFoundInRepositoryException if no rent is found with the provided ID
      */
+    @Transactional
     public Rent editRent(Long id, RentDTO rentDTO) {
         Rent rent = rentRepository.findById(id)
                         .orElseThrow(() ->
@@ -69,6 +72,7 @@ public class RentService {
      * @param id The identifier of the rent to be deleted
      * @throws ObjectNotFoundInRepositoryException if no rent is found with the provided ID
      */
+    @Transactional
     public void deleteRentById(Long id) {
         rentRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No rent under ID #" + id));

@@ -1,10 +1,10 @@
 package pl.sda.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,8 +36,8 @@ public class Returnal {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @NotNull
     @OneToOne
     @JoinColumn(name = "reservation_id")
+    @JsonBackReference(value = "reservationReturnal-reference")
     private Reservation reservation;
 }
