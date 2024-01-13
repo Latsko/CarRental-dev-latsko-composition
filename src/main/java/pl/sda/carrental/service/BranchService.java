@@ -59,8 +59,8 @@ public class BranchService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under  ID #" + id));
 
         List<Reservation> reservationsWithThisBranch = reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getStartBranch().getBranch_id().equals(id) ||
-                        reservation.getEndBranch().getBranch_id().equals(id))
+                .filter(reservation -> reservation.getStartBranch().getBranchId().equals(id) ||
+                        reservation.getEndBranch().getBranchId().equals(id))
                 .toList();
 
         reservationRepository.deleteAll(reservationsWithThisBranch);
@@ -143,7 +143,7 @@ public class BranchService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
 
         Car foundCar = foundBranch.getCars().stream()
-                .filter(car -> Objects.equals(car.getCar_id(), carId))
+                .filter(car -> Objects.equals(car.getCarId(), carId))
                 .findFirst()
                 .orElseThrow(() ->
                         new ObjectNotFoundInRepositoryException("No car under ID #"
@@ -225,7 +225,7 @@ public class BranchService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
 
         Employee foundEmployee = foundBranch.getEmployees().stream()
-                .filter(employee -> Objects.equals(employee.getEmployee_id(), employeeId))
+                .filter(employee -> Objects.equals(employee.getEmployeeId(), employeeId))
                 .findFirst()
                 .orElseThrow(() ->
                         new ObjectNotFoundInRepositoryException("No employee under ID #"

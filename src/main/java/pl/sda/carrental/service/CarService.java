@@ -75,7 +75,7 @@ public class CarService {
                     .findFirst().orElseThrow(() ->
                             new ObjectNotFoundInRepositoryException("No car under ID #" +
                                     id + " in that branch"));
-            editedCar.setCar_id(id);
+            editedCar.setCarId(id);
             editedCar.setMake(car.getMake());
             editedCar.setModel(car.getModel());
             editedCar.setBodyStyle(car.getBodyStyle());

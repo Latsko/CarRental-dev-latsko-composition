@@ -44,12 +44,12 @@ public class ReservationService {
     private ReservationDTO mapReservationToDTO(Reservation reservation) {
         return new ReservationDTO(
                 reservation.getReservationId(),
-                reservation.getClient().getClient_id(),
-                reservation.getCar().getCar_id(),
+                reservation.getClient().getClientId(),
+                reservation.getCar().getCarId(),
                 reservation.getStartDate(),
                 reservation.getEndDate(),
-                reservation.getStartBranch().getBranch_id(),
-                reservation.getEndBranch().getBranch_id(),
+                reservation.getStartBranch().getBranchId(),
+                reservation.getEndBranch().getBranchId(),
                 reservation.getRent(),
                 reservation.getReturnal()
         );

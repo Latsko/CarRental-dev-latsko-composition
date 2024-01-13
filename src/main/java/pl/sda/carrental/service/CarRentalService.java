@@ -131,8 +131,8 @@ public class CarRentalService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under  ID #" + id));
 
         List<Reservation> reservationsWithThisBranch = reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getStartBranch().getBranch_id().equals(id) ||
-                        reservation.getEndBranch().getBranch_id().equals(id))
+                .filter(reservation -> reservation.getStartBranch().getBranchId().equals(id) ||
+                        reservation.getEndBranch().getBranchId().equals(id))
                 .toList();
 
         reservationRepository.deleteAll(reservationsWithThisBranch);

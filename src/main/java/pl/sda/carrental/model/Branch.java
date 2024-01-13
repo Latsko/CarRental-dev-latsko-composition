@@ -36,11 +36,11 @@ public class Branch {
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
 //    @JsonBackReference(value = "carRental-reference") // nie jestem pewny czy to jest potrzebne
-    @Column(name = "car_rental")
+//    @Column(name = "car_rental")
     private CarRental carRental;
 
-//    @OneToOne
-//    @JsonBackReference
-//    @JoinColumn(name = "revenue_id")
-//    private Revenue revenue;
+    @OneToOne
+    @JsonBackReference
+    @JoinColumn(name = "revenue_id")
+    private Revenue revenue;
 }

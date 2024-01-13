@@ -101,13 +101,13 @@ public class ClientService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No client under that ID!"));
 
         List<Rent> rentsAssociatedWithClient = rentRepository.findAll().stream()
-                .filter(rent -> rent.getReservation().getClient().getClient_id().equals(id))
+                .filter(rent -> rent.getReservation().getClient().getClientId().equals(id))
                 .toList();
         List<Returnal> returnsAssociatedWithClient = returnRepository.findAll().stream()
-                .filter(returnal -> returnal.getReservation().getClient().getClient_id().equals(id))
+                .filter(returnal -> returnal.getReservation().getClient().getClientId().equals(id))
                 .toList();
         List<Reservation> reservationsAssociatedWithClient = reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getClient().getClient_id().equals(id))
+                .filter(reservation -> reservation.getClient().getClientId().equals(id))
                 .toList();
 
         rentRepository.deleteAll(rentsAssociatedWithClient);
@@ -159,7 +159,7 @@ public class ClientService {
         Branch foundBranch = branchRepository.findById(branchId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
         Client foundClient = foundBranch.getClients().stream()
-                .filter(client -> Objects.equals(client.getClient_id(), clientId))
+                .filter(client -> Objects.equals(client.getClientId(), clientId))
                 .findFirst()
                 .orElseThrow(() ->
                         new ObjectNotFoundInRepositoryException("No client under ID #"

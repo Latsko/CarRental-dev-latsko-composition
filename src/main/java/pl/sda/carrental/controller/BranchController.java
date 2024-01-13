@@ -34,13 +34,13 @@ public class BranchController {
 
         if(branch.getCarRental() == null) {
             return new BranchDTO(
-                    branch.getBranch_id(),
+                    branch.getBranchId(),
                     branch.getName(),
                     null);
         }
 
         return new BranchDTO(
-                branch.getBranch_id(),
+                branch.getBranchId(),
                 branch.getName(),
                 new HQDetails(
                         carRental.getName(),

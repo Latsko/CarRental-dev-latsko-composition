@@ -53,13 +53,13 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
 //    @JsonBackReference(value = "startBranch-reference")// wydaje się nadmiarowe
-    @Column(name = "start_branch")
+    //@Column(name = "start_branch")
     private Branch startBranch;
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
 //    @JsonBackReference(value = "endBranch-reference")// wydaje się nadmiarowe
-    @Column(name = "end_branch")
+    //@Column(name = "end_branch")
     private Branch endBranch;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)

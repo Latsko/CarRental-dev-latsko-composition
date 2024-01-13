@@ -10,6 +10,6 @@ public interface RentRepository extends JpaRepository<Rent, Long> {
     @Query("SELECT res.reservationId FROM Rent r JOIN r.reservation res WHERE res.reservationId = :reservationId")
     List<Long> findRentalsWithReservationId(Long reservationId);
 
-    @Query("SELECT r FROM Rent r JOIN r.employee e WHERE e.employee_id = :employeeId")
+    @Query("SELECT r FROM Rent r JOIN r.employee e WHERE e.employeeId = :employeeId")
     List<Rent> findRentsByEmployeeId(Long employeeId);
 }
