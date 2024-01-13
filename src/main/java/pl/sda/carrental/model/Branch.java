@@ -23,22 +23,22 @@ public class Branch {
     private String name;
     private String address;
     
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Car> cars = new HashSet<>();
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
-    @JsonBackReference(value = "carRental-reference")
+//    @JsonBackReference(value = "carRental-reference") // nie jestem pewny czy to jest potrzebne
     private CarRental carRental;// fixMe:  nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
-    @OneToOne
-    @JsonBackReference
-    @JoinColumn(name = "revenue_id")
-    private Revenue revenue;
+//    @OneToOne
+//    @JsonBackReference
+//    @JoinColumn(name = "revenue_id")
+//    private Revenue revenue;
 }

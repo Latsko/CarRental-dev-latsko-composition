@@ -24,6 +24,6 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
-    @JsonBackReference(value = "employee-reference")
+//    @JsonBackReference(value = "employee-reference") // wydaje się nadmiarowe
     private Branch branch;
 }

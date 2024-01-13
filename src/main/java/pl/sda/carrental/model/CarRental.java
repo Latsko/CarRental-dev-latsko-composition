@@ -27,7 +27,8 @@ public class CarRental {
     private String owner;
     private String logo;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
-    @JoinColumn(name = "car_rental_id")
+    //    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
+    //    @JoinColumn(name = "car_rental_id")
+    @OneToMany(mappedBy = "carRental", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Branch> branches = new HashSet<>();
 }

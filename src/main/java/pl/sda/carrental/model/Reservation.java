@@ -28,13 +28,13 @@ public class Reservation {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference(value = "clientReservation-reference")
+//    @JsonBackReference(value = "clientReservation-reference") // wydaje się nadmiarowe
     private Client client;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "car_id")
-    @JsonBackReference(value = "carReservation-reference")
+//    @JsonBackReference(value = "carReservation-reference")// wydaje się nadmiarowe
     private Car car;
 
     @NotNull
@@ -50,21 +50,21 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
-    @JsonBackReference(value = "startBranch-reference")
+//    @JsonBackReference(value = "startBranch-reference")// wydaje się nadmiarowe
     private Branch startBranch;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
-    @JsonBackReference(value = "endBranch-reference")
+//    @JsonBackReference(value = "endBranch-reference")// wydaje się nadmiarowe
     private Branch endBranch;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "rent_id")
-    @JsonBackReference(value = "reservationRent-reference")
+//    @JoinColumn(name = "rent_id") // może można uprościć model ?
+//    @JsonBackReference(value = "reservationRent-reference") // powinno byc po stronie DTO
     private Rent rent;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "return_id")
-    @JsonBackReference(value = "reservationReturnal-reference")
+//    @JoinColumn(name = "return_id")// może można uprościć model ?
+//    @JsonBackReference(value = "reservationReturnal-reference") // powinno byc po stronie DTO
     private Returnal returnal;
 }
