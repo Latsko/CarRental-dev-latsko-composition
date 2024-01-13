@@ -19,7 +19,7 @@ import java.util.Set;
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long branch_id;
+    private Long branch_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
     private String name;
     private String address;
     
@@ -35,7 +35,7 @@ public class Branch {
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
     @JsonBackReference(value = "carRental-reference")
-    private CarRental carRental;
+    private CarRental carRental;// fixMe:  nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @OneToOne
     @JsonBackReference

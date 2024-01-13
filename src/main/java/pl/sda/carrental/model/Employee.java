@@ -17,7 +17,7 @@ import pl.sda.carrental.model.enums.Position;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long employee_id;
+    private Long employee_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
     private String name;
     private String surname;
     private Position position;

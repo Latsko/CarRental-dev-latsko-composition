@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long client_id;
+    private Long client_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
     @NotNull(message = "name cannot be null")
     private String name;
     @NotNull(message = "surname cannot be null")

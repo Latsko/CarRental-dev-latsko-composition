@@ -18,7 +18,7 @@ import java.util.Set;
 public class CarRental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long car_rental_id;
+    private Long car_rental_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
     @NotNull(message = "name field cannot be null")
     private String name;
     @NotNull(message = "Internet Domain field cannot be null")

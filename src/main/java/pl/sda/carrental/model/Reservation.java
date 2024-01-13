@@ -23,7 +23,7 @@ import java.time.LocalDate;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reservationId;
+    private Long reservationId;// fixMe: nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @NotNull
     @ManyToOne
@@ -38,10 +38,10 @@ public class Reservation {
     private Car car;
 
     @NotNull
-    private LocalDate startDate;
+    private LocalDate startDate;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @NotNull
-    private LocalDate endDate;
+    private LocalDate endDate;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @DecimalMin(value = "1.00", message = "Price must be greater than 1.00")
     @DecimalMax(value = "100000.00", message = "Price must be lesser than 100000.00")
@@ -51,12 +51,12 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
     @JsonBackReference(value = "startBranch-reference")
-    private Branch startBranch;
+    private Branch startBranch;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
     @JsonBackReference(value = "endBranch-reference")
-    private Branch endBranch;
+    private Branch endBranch;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
     @JoinColumn(name = "rent_id")
