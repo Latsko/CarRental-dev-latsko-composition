@@ -130,7 +130,7 @@ public class ReservationService {
         reservation.setCar(carFromRepo);
         reservation.setClient(clientFromRepo);
         reservation.setPrice(price);
-        revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), price);
+//        revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), price);
     }
 
     /**
@@ -200,16 +200,16 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No reservation under ID #" + id));
 
-        if(reservation.getRent() != null) {
-            long daysBetween = Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getRent().getRentDate()));
-            if(daysBetween >= 2) {
-                revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate());
-            } else {
-                revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate().multiply(BigDecimal.valueOf(0.8)));
-            }
-        } else {
-            revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate());
-        }
+//        if(reservation.getRent() != null) {
+//            long daysBetween = Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getRent().getRentDate()));
+//            if(daysBetween >= 2) {
+//                revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate());
+//            } else {
+//                revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate().multiply(BigDecimal.valueOf(0.8)));
+//            }
+//        } else {
+//            revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate());
+//        }
     }
 }
 

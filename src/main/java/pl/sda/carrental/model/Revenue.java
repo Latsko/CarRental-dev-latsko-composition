@@ -17,7 +17,8 @@ import java.math.BigDecimal;
 public class Revenue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long revenue_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "revenue_id")
+    private Long revenueId;
 
     private BigDecimal totalAmount;
     // todo: Brak relacji z innymi encjami. Jeśli dochód jest przypisany do konkretnego oddziału (Branch), rozważ dodanie relacji do tej encji.

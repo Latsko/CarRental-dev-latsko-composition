@@ -38,10 +38,12 @@ public class Reservation {
     private Car car;
 
     @NotNull
-    private LocalDate startDate;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
     @NotNull
-    private LocalDate endDate;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @DecimalMin(value = "1.00", message = "Price must be greater than 1.00")
     @DecimalMax(value = "100000.00", message = "Price must be lesser than 100000.00")
@@ -51,12 +53,14 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
 //    @JsonBackReference(value = "startBranch-reference")// wydaje się nadmiarowe
-    private Branch startBranch;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "start_branch")
+    private Branch startBranch;
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
 //    @JsonBackReference(value = "endBranch-reference")// wydaje się nadmiarowe
-    private Branch endBranch;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "end_branch")
+    private Branch endBranch;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
 //    @JoinColumn(name = "rent_id") // może można uprościć model ?

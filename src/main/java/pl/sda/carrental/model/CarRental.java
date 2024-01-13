@@ -18,7 +18,8 @@ import java.util.Set;
 public class CarRental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long car_rental_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "car_rental_id")
+    private Long carRentalId;
     @NotNull(message = "name field cannot be null")
     private String name;
     @NotNull(message = "Internet Domain field cannot be null")
@@ -27,8 +28,6 @@ public class CarRental {
     private String owner;
     private String logo;
 
-    //    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
-    //    @JoinColumn(name = "car_rental_id")
     @OneToMany(mappedBy = "carRental", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Branch> branches = new HashSet<>();
 }

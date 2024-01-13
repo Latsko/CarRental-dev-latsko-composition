@@ -23,7 +23,8 @@ public class Returnal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long return_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "return_id")
+    private Long returnId;
     private String comments;
     private LocalDate returnDate;
 

@@ -28,10 +28,10 @@ public class RevenueController {
         return revenueService.editRevenue(id, revenue);
     }
 
-    @PatchMapping("/assignRevenue/{revenue_id}/toBranch/{branch_id}")
-    public void assignRevenueToBranch(@PathVariable Long revenue_id, @PathVariable Long branch_id) {
-        revenueService.assignRevenueToBranchByAccordingIds(revenue_id, branch_id);
-    }
+//    @PatchMapping("/assignRevenue/{revenue_id}/toBranch/{branch_id}")
+//    public void assignRevenueToBranch(@PathVariable Long revenue_id, @PathVariable Long branch_id) {
+//        revenueService.assignRevenueToBranchByAccordingIds(revenue_id, branch_id);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteRevenue(@PathVariable Long id) {

@@ -18,7 +18,8 @@ import java.time.LocalDate;
 public class Rent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rent_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "rent_id")
+    private Long rentId;
     private String comments;
     private LocalDate rentDate;
 

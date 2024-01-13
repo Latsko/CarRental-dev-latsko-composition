@@ -25,10 +25,12 @@ import java.util.Set;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long car_id;// fixMe: tu powinien być 'camelCase' a nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "car_id")
+    private Long carId;
     private String make;
     private String model;
-    private String bodyStyle;// fixMe: nad nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    @Column(name = "body_style")
+    private String bodyStyle;
     private int year;
     private String colour;
     private double mileage;

@@ -22,6 +22,11 @@ public class RevenueService {
         return revenueRepository.findAll();
     }
 
+    public Revenue getById(Long id) {
+        return revenueRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No revenue under ID #" + id + "!"));
+    }
+
     public Revenue addRevenue(Revenue revenue) {
         return revenueRepository.save(revenue);
     }
@@ -48,29 +53,29 @@ public class RevenueService {
     public void deleteRevenue(Long id) {
         revenueRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No revenue under ID #" + id + "!"));
-        Branch branch = branchRepository.findAll().stream()
-                .filter(filteredBranch -> filteredBranch.getRevenue().getRevenue_id().equals(id))
-                .findFirst()
-                .orElse(null);
-
-        if(branch != null) {
-            branch.setRevenue(null);
-            branchRepository.save(branch);
-        }
-        revenueRepository.findById(id);
+//        Branch branch = branchRepository.findAll().stream()
+//                .filter(filteredBranch -> filteredBranch.getRevenue().getRevenue_id().equals(id))
+//                .findFirst()
+//                .orElse(null);
+//
+//        if(branch != null) {
+//            branch.setRevenue(null);
+//            branchRepository.save(branch);
+//        }
+        revenueRepository.deleteById(id);
     }
 
-    public void assignRevenueToBranchByAccordingIds(Long revenueId, Long branchId) {
-        Revenue foundRevenue = revenueRepository.findById(revenueId)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No revenue under ID #" + revenueId + "!"));
-        Branch foundBranch = branchRepository.findById(branchId)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId + "!"));
-
-        if(foundBranch.getRevenue() != null) {
-            throw new ObjectAlreadyAssignedToBranchException("Revenue already exists for branch under ID #" + branchId + "!");
-        } else {
-            foundBranch.setRevenue(foundRevenue);
-            branchRepository.save(foundBranch);
-        }
-    }
+//    public void assignRevenueToBranchByAccordingIds(Long revenueId, Long branchId) {
+//        Revenue foundRevenue = revenueRepository.findById(revenueId)
+//                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No revenue under ID #" + revenueId + "!"));
+//        Branch foundBranch = branchRepository.findById(branchId)
+//                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId + "!"));
+//
+//        if(foundBranch.getRevenue() != null) {
+//            throw new ObjectAlreadyAssignedToBranchException("Revenue already exists for branch under ID #" + branchId + "!");
+//        } else {
+//            foundBranch.setRevenue(foundRevenue);
+//            branchRepository.save(foundBranch);
+//        }
+//    }
 }

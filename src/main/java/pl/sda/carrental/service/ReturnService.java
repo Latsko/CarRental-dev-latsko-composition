@@ -96,7 +96,8 @@ public class ReturnService {
         returnalToSave.setComments(returnDTO.comments());
         returnalToSave.setReservation(reservationFromRepository);
         returnalToSave.setUpcharge(returnDTO.upcharge());
-        revenueService.updateRevenue(returnalToSave.getReservation().getCar().getBranch().getRevenue().getRevenue_id(), returnDTO.upcharge());
+
+//        revenueService.updateRevenue(returnalToSave.getReservation().getCar().getBranch().getRevenue().getRevenue_id(), returnDTO.upcharge());
     }
 
     /**
