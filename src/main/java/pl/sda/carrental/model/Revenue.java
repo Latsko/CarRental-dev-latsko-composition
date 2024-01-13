@@ -19,5 +19,5 @@ public class Revenue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long revenue_id;
 
-    private BigDecimal amount;
+    private BigDecimal totalAmount;
 }

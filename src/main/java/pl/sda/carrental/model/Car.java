@@ -31,7 +31,7 @@ public class Car {
     private String bodyStyle;
     private int year;
     private String colour;
-    private int mileage;
+    private double mileage;
     private Status status;
     @DecimalMin(value = "1.00", message = "Price must be grater than 1.00")
     @DecimalMax(value = "10000.00", message = "Price must be lesser than 10000.00")

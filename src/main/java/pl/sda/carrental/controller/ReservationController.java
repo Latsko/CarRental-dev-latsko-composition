@@ -34,4 +34,9 @@ public class ReservationController {
     public void deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservationById(id);
     }
+
+    @PatchMapping("/{id}")
+    public void cancelReservation(@PathVariable Long id) {
+        reservationService.cancelReservationById(id);
+    }
 }

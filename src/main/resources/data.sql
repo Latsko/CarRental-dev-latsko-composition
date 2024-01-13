@@ -2,11 +2,15 @@ INSERT INTO car_rental (name, domain, address, owner, logo)
 VALUES ("Car Rental Name", "www.carRental.pl", "44 Serenity Road, Meadowbrook Grove, Tranquil Springs, TX 13579",
         "John Doe", "Logo");
 
+INSERT INTO revenue (total_amount)
+VALUES (0),
+       (0),
+       (0);
 
-INSERT INTO branch (name, address, car_rental_id)
-VALUES ('Krakow Branch', '567 Parkowa Street', 1),
-       ('Gdansk Branch', '890 Portowa Avenue', 1),
-       ('Warsaw Branch', '234 Sienkiewicza Street', 1);
+INSERT INTO branch (name, address, car_rental_id, revenue_id)
+VALUES ('Krakow Branch', '567 Parkowa Street', 1, 1),
+       ('Gdansk Branch', '890 Portowa Avenue', 1, 2),
+       ('Warsaw Branch', '234 Sienkiewicza Street', 1, 3);
 
 INSERT INTO car (make, model, body_style, year, colour, mileage, status, price, branch_id)
 VALUES ('Toyota', 'Corolla', 'Sedan', 2023, 'Silver', 15000, 0, 250.00, 1),

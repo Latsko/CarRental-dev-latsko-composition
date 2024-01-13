@@ -3,14 +3,17 @@ package pl.sda.carrental.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.sda.carrental.exceptionHandling.IllegalArgumentForStatusException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.Reservation;
+import pl.sda.carrental.model.enums.Status;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.repository.RentRepository;
-import pl.sda.carrental.repository.ReturnRepository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,8 +21,6 @@ import java.util.List;
 public class CarService {
     private final CarRepository carRepository;
     private final BranchRepository branchRepository;
-    private final RentRepository rentRepository;
-    private final ReturnRepository returnRepository;
 
     /**
      * Retrieves a car based on the provided ID.
@@ -65,11 +66,10 @@ public class CarService {
      */
     @Transactional
     public void editCar(Long id, Car car) {
-        Car childCar = carRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under ID #" + id));
+        Car childCar = getCarById(id);
         Branch parentBranch = childCar.getBranch();
 
-        if(parentBranch != null) {
+        if (parentBranch != null) {
             Car editedCar = parentBranch.getCars().stream()
                     .filter(filteredCar -> filteredCar.equals(childCar))
                     .findFirst().orElseThrow(() ->
@@ -100,9 +100,92 @@ public class CarService {
      */
     @Transactional
     public void deleteCarById(Long id) {
-        carRepository.findById(id).orElseThrow(() ->
-                new ObjectNotFoundInRepositoryException("No car under ID #" + id));
-
+        getCarById(id);
         carRepository.deleteById(id);
+    }
+
+    /**
+     * Updates the mileage and price of a car identified by the provided ID.
+     *
+     * @param mileage The new mileage value to set for the car.
+     * @param price   The new price to set for the car.
+     * @param id      The ID of the car to be updated.
+     */
+    @Transactional
+    public void updateMileageAndPrice(double mileage, BigDecimal price, Long id) {
+        Car foundCar = getCarById(id);
+        foundCar.setMileage(mileage);
+        foundCar.setPrice(price);
+
+        carRepository.save(foundCar);
+    }
+
+    /**
+     * Updates the status of a car identified by the provided ID.
+     *
+     * @param status The new status value to set for the car.
+     * @param id     The ID of the car to be updated.
+     * @throws IllegalArgumentForStatusException if the provided status does not match any predefined car status.
+     */
+    @Transactional
+    public void updateStatus(String status, Long id) {
+        Car foundCar = getCarById(id);
+
+        if (!checkIfStatusExists(status)) {
+            throw new IllegalArgumentForStatusException("Wrong argument for car Status!");
+        }
+        foundCar.setStatus(Status.valueOf(status));
+
+        carRepository.save(foundCar);
+    }
+
+    /**
+     * Checks if the provided string matches any of the predefined enum constants in Status.
+     *
+     * @param status The string representation of the status to be checked.
+     * @return {@code true} if the provided status matches any enum constant, {@code false} otherwise.
+     */
+    private boolean checkIfStatusExists(String status) {
+        for (Status checkedStatus : Status.values()) {
+            if (String.valueOf(checkedStatus).equals(status)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Retrieves the status of a car identified by the provided ID on a given date.
+     * If the car is rented on the specified date, it returns the "RENTED" status,
+     * otherwise returns the current status of the car.
+     *
+     * @param id   The ID of the car to retrieve the status for.
+     * @param date The date for which the status is to be checked.
+     * @return The status of the car on the specified date.
+     */
+    public Status getStatusOnDateForCarUnderId(Long id, LocalDate date) {
+        Car foundCar = getCarById(id);
+        long count = foundCar.getReservations().stream()
+                .filter(reservation -> checkIfRentedOnDate(reservation, date))
+                .count();
+
+        if (count > 0) {
+            return Status.RENTED;
+        } else {
+            return foundCar.getStatus();
+        }
+    }
+
+    /**
+     * Checks if a reservation covers the specified date.
+     *
+     * @param reservation The reservation to check.
+     * @param date        The date to check if it falls within the reservation period.
+     * @return {@code true} if the date is within the reservation period, {@code false} otherwise.
+     */
+    private boolean checkIfRentedOnDate(Reservation reservation, LocalDate date) {
+        return reservation.getStartDate().equals(date) ||
+                reservation.getEndDate().equals(date) ||
+                (reservation.getStartDate().isBefore(date) && reservation.getEndDate().isAfter(date));
     }
 }

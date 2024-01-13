@@ -42,9 +42,14 @@ public class GlobalExceptionHandling {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
     }
 
-    @ExceptionHandler(CarRentalAlreadyExistsException.class)
-    public ProblemDetail handleCarRentalAlreadyExistsException(CarRentalAlreadyExistsException exception) {
+    @ExceptionHandler(ObjectAlreadyExistsException.class)
+    public ProblemDetail handleCarRentalAlreadyExistsException(ObjectAlreadyExistsException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentForStatusException.class)
+    public ProblemDetail handleIllegalArgumentForStatusException(IllegalArgumentForStatusException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

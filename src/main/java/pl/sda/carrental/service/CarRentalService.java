@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.BranchAlreadyOpenInCityException;
-import pl.sda.carrental.exceptionHandling.CarRentalAlreadyExistsException;
+import pl.sda.carrental.exceptionHandling.ObjectAlreadyExistsException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.CarRental;
@@ -39,12 +39,12 @@ public class CarRentalService {
      * Saves or updates the details of the car rental company.
      *
      * @param carRental The CarRental object representing the car rental company to be saved or updated.
-     * @throws CarRentalAlreadyExistsException if there already is car rental in repository
+     * @throws ObjectAlreadyExistsException if there already is car rental in repository
      */
     @Transactional
     public void saveCarRental(CarRental carRental) {
         if(!carRentalRepository.findAll().isEmpty()) {
-            throw new CarRentalAlreadyExistsException("Car Rental already exists!");
+            throw new ObjectAlreadyExistsException("Car Rental already exists!");
         }
         carRentalRepository.save(carRental);
     }

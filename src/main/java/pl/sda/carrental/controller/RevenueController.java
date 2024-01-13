@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/revenue")
+@RequestMapping("/revenues")
 public class RevenueController {
     private final RevenueService revenueService;
 
@@ -24,12 +24,17 @@ public class RevenueController {
     }
 
     @PutMapping("/{id}")
-    public Revenue editRevenue(@PathVariable Long id, @RequestBody Revenue revenue) {
+    public Revenue editRevenue(@PathVariable Long id ,@RequestBody Revenue revenue) {
         return revenueService.editRevenue(id, revenue);
     }
 
-    @DeleteMapping ("/{id}")
-    void deleteRevenue(@PathVariable Long id) {
+    @PatchMapping("/assignRevenue/{revenue_id}/toBranch/{branch_id}")
+    public void assignRevenueToBranch(@PathVariable Long revenue_id, @PathVariable Long branch_id) {
+        revenueService.assignRevenueToBranchByAccordingIds(revenue_id, branch_id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRevenue(@PathVariable Long id) {
         revenueService.deleteRevenue(id);
     }
 }

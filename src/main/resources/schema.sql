@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS revenue;
 DROP TABLE IF EXISTS rent;
 DROP TABLE IF EXISTS return_process;
 DROP TABLE IF EXISTS reservation;
@@ -6,6 +5,7 @@ DROP TABLE IF EXISTS client;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS car;
 DROP TABLE IF EXISTS branch;
+DROP TABLE IF EXISTS revenue;
 DROP TABLE IF EXISTS car_rental;
 
 CREATE TABLE car_rental
@@ -18,13 +18,21 @@ CREATE TABLE car_rental
     logo          VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE revenue
+(
+    revenue_id BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
+    total_amount     DECIMAL
+);
+
 CREATE TABLE branch
 (
     branch_id     BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
     address       VARCHAR(255) NOT NULL,
     car_rental_id BIGINT,
-    FOREIGN KEY (car_rental_id) REFERENCES car_rental (car_rental_id)
+    revenue_id BIGINT,
+    FOREIGN KEY (car_rental_id) REFERENCES car_rental (car_rental_id),
+    FOREIGN KEY (revenue_id) REFERENCES revenue(revenue_id)
 );
 
 CREATE TABLE car
@@ -35,7 +43,7 @@ CREATE TABLE car
     body_style VARCHAR(255)  NOT NULL,
     year       INT,
     colour     VARCHAR(255)  NOT NULL,
-    mileage    INT,
+    mileage    DOUBLE,
     status     TINYINT       NOT NULL,
     price      DECIMAL(9, 2) NOT NULL,
     branch_id  BIGINT,
@@ -88,13 +96,6 @@ CREATE TABLE rent
     employee_id BIGINT,
     FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
-);
-
-
-CREATE TABLE revenue
-(
-    revenue_id BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
-    amount     DECIMAL
 );
 
 CREATE TABLE return_process

@@ -22,6 +22,7 @@ public class ReturnService {
     private final ReservationRepository reservationRepository;
     private final ReturnRepository returnRepository;
     private final EmployeeRepository employeeRepository;
+    private final RevenueService revenueService;
 
     /**
      * Gets all Return Objects
@@ -83,21 +84,19 @@ public class ReturnService {
      * @throws ObjectNotFoundInRepositoryException if no employee or reservation is found with the provided ID
      */
     private void updateReturnalDetails(ReturnDTO returnDTO, Returnal returnalToSave) {
-
-        returnalToSave.setReturnDate(returnDTO.returnDate());
-        returnalToSave.setComments(returnDTO.comments());
-        returnalToSave.setUpcharge(returnDTO.upcharge());
-
         Employee employeeFromRepository = employeeRepository.findById(returnDTO.employee())
                         .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + returnDTO.employee()));
-
-        returnalToSave.setEmployee(employeeFromRepository);
 
         Reservation reservationFromRepository = reservationRepository.findById(returnDTO.reservationId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
                         + returnDTO.reservationId() + " not found"));
 
+        returnalToSave.setEmployee(employeeFromRepository);
+        returnalToSave.setReturnDate(returnDTO.returnDate());
+        returnalToSave.setComments(returnDTO.comments());
         returnalToSave.setReservation(reservationFromRepository);
+        returnalToSave.setUpcharge(returnDTO.upcharge());
+        revenueService.updateRevenue(returnalToSave.getReservation().getCar().getBranch().getRevenue().getRevenue_id(), returnDTO.upcharge());
     }
 
     /**

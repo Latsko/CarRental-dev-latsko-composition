@@ -36,4 +36,9 @@ public class Branch {
     @JoinColumn(name = "car_rental_id", nullable = false)
     @JsonBackReference(value = "carRental-reference")
     private CarRental carRental;
+
+    @OneToOne
+    @JsonBackReference
+    @JoinColumn(name = "revenue_id")
+    private Revenue revenue;
 }

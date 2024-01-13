@@ -10,7 +10,10 @@ import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.Client;
 import pl.sda.carrental.model.DTO.ReservationDTO;
 import pl.sda.carrental.model.Reservation;
-import pl.sda.carrental.repository.*;
+import pl.sda.carrental.repository.BranchRepository;
+import pl.sda.carrental.repository.CarRepository;
+import pl.sda.carrental.repository.ClientRepository;
+import pl.sda.carrental.repository.ReservationRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,8 +28,8 @@ public class ReservationService {
     private final BranchRepository branchRepository;
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
-    private final RentRepository rentRepository;
-    private final ReturnRepository returnRepository;
+    private final RevenueService revenueService;
+    private final BigDecimal CROSS_LOCATION_CHARGE = new BigDecimal("100.00");
 
     /**
      * Gets all Reservation Objects
@@ -40,6 +43,7 @@ public class ReservationService {
     }
     private ReservationDTO mapReservationToDTO(Reservation reservation) {
         return new ReservationDTO(
+                reservation.getReservationId(),
                 reservation.getClient().getClient_id(),
                 reservation.getCar().getCar_id(),
                 reservation.getStartDate(),
@@ -88,8 +92,8 @@ public class ReservationService {
     /**
      * The updateReservationDetails method is responsible for updating the details of a given reservation based on the information
      * provided in the ReservationDTO. It sets the start and end branches, start and end dates, checks for car availability,
-     * associates the car and client with the reservation, calculates the price based on the reservation duration, and handles
-     * potential conflicts with existing reservations
+     * associates the car and client with the reservation, calculates the price based on the reservation duration, updates
+     * revenue total and handles potential conflicts with existing reservations
      *
      * @param reservationDto Object containing updated reservation dat
      * @param reservation The reservation object to be updated
@@ -97,12 +101,11 @@ public class ReservationService {
      * @throws ReservationTimeCollisionException if there are time collisions with existing reservations for the selected car
      */
     private void updateReservationDetails(ReservationDTO reservationDto, Reservation reservation) {
-        setStartEndBranch(reservationDto, reservation);
-        reservation.setStartDate(reservationDto.startDate());
-        reservation.setEndDate(reservationDto.endDate());
-
         Car carFromRepo = carRepository.findById(reservationDto.car_id())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under that ID"));
+
+        Client clientFromRepo = clientRepository.findById(reservationDto.customer_id())
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No customer under that ID"));
 
         if (!carFromRepo.getReservations().isEmpty()) {
             List<DateTimePeriod> timeCollision = carFromRepo.getReservations().stream()
@@ -113,15 +116,21 @@ public class ReservationService {
                 throw new ReservationTimeCollisionException("Car cannot be reserved for given time period!");
             }
         }
-        reservation.setCar(carFromRepo);
 
-        Client clientFromRepo = clientRepository.findById(reservationDto.customer_id())
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No customer under that ID"));
-        reservation.setClient(clientFromRepo);
+        reservation.setStartDate(reservationDto.startDate());
+        reservation.setEndDate(reservationDto.endDate());
 
         long daysDifference = ChronoUnit.DAYS.between(reservation.getStartDate(), reservation.getEndDate());
         BigDecimal price = carFromRepo.getPrice().multiply(BigDecimal.valueOf(daysDifference));
+        if(!reservationDto.startBranchId().equals(reservationDto.endBranchId())) {
+            price = price.add(CROSS_LOCATION_CHARGE);
+        }
+
+        setStartEndBranch(reservationDto, reservation);
+        reservation.setCar(carFromRepo);
+        reservation.setClient(clientFromRepo);
         reservation.setPrice(price);
+        revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), price);
     }
 
     /**
@@ -172,9 +181,35 @@ public class ReservationService {
      */
     @Transactional
     public void deleteReservationById(Long id) {
+        Reservation foundReservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No reservation under ID #" + id));
+        reservationRepository.delete(foundReservation);
+    }
+
+    /**
+     * Cancels a reservation identified by the provided ID and updates the revenue based on cancellation rules.
+     * If the reservation is canceled more than or equal to 2 days before the rental date,
+     * updates the revenue by negating the reservation price.
+     * Otherwise, updates the revenue by negating 80% of the reservation price.
+     *
+     * @param id The ID of the reservation to be canceled.
+     * @throws ObjectNotFoundInRepositoryException if no reservation is found for the provided ID.
+     */
+    @Transactional
+    public void cancelReservationById(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No reservation under ID #" + id));
-        reservationRepository.delete(reservation);
+
+        if(reservation.getRent() != null) {
+            long daysBetween = Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getRent().getRentDate()));
+            if(daysBetween >= 2) {
+                revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate());
+            } else {
+                revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate().multiply(BigDecimal.valueOf(0.8)));
+            }
+        } else {
+            revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenue_id(), reservation.getPrice().negate());
+        }
     }
 }
 
