@@ -23,6 +23,6 @@ public class Revenue {
     private BigDecimal totalAmount;
     // todo: Brak relacji z innymi encjami. Jeśli dochód jest przypisany do konkretnego oddziału (Branch), rozważ dodanie relacji do tej encji.
 
-    @OneToOne(mappedBy = "revenue")
-    private Branch branch;
+//    @OneToOne(mappedBy = "revenue")
+//    private Branch branch;
 }

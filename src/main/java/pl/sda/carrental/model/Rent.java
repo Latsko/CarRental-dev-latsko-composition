@@ -29,6 +29,6 @@ public class Rent {
 
     @OneToOne
     @JoinColumn(name = "reservation_id")
-//    @JsonBackReference(value = "reservationRent-reference") // wydaje się nadmiarowe
+    @JsonBackReference(value = "reservationRent-reference") // wydaje się nadmiarowe
     private Reservation reservation;
 }

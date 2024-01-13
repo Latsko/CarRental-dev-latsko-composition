@@ -39,6 +39,6 @@ public class Returnal {
 
     @OneToOne
     @JoinColumn(name = "reservation_id")
-//    @JsonBackReference(value = "reservationReturnal-reference")
+    @JsonBackReference(value = "reservationReturnal-reference")
     private Reservation reservation;
 }
