@@ -23,6 +23,7 @@ import java.time.LocalDate;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reservation_id")
     private Long reservationId;// fixMe: nazwą pola powinna być nadana nazwa jako 'snakeCase'
 
     @NotNull
@@ -61,12 +62,10 @@ public class Reservation {
     private Branch endBranch;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
-//    @JoinColumn(name = "rent_id") // może można uprościć model ?
     @JsonBackReference(value = "reservationRent-reference") // powinno byc po stronie DTO
     private Rent rent;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
-//    @JoinColumn(name = "return_id")// może można uprościć model ?
     @JsonBackReference(value = "reservationReturnal-reference") // powinno byc po stronie DTO
     private Returnal returnal;
 }
