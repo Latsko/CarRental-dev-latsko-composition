@@ -29,6 +29,7 @@ CREATE TABLE branch
     branch_id     BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
     address       VARCHAR(255) NOT NULL,
+    manager_id BIGINT,
     car_rental_id BIGINT,
     revenue_id BIGINT,
     FOREIGN KEY (car_rental_id) REFERENCES car_rental (car_rental_id),

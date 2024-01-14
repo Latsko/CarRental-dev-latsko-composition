@@ -30,6 +30,6 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
-    @JsonBackReference(value = "client-reference") // wydaje się nadmiarowe powinno być po stronie DTO
+    @JsonBackReference(value = "client-reference")
     private Branch branch;
 }

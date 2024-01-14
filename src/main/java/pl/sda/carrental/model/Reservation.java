@@ -24,18 +24,18 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
-    private Long reservationId;// fixMe: nazwą pola powinna być nadana nazwa jako 'snakeCase'
+    private Long reservationId;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference(value = "clientReservation-reference") // wydaje się nadmiarowe
+    @JsonBackReference(value = "clientReservation-reference")
     private Client client;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "car_id")
-    @JsonBackReference(value = "carReservation-reference")// wydaje się nadmiarowe
+    @JsonBackReference(value = "carReservation-reference")
     private Car car;
 
     @NotNull
@@ -53,19 +53,19 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "start_branch_id")
-    @JsonBackReference(value = "startBranch-reference")// wydaje się nadmiarowe
+    @JsonBackReference(value = "startBranch-reference")
     private Branch startBranch;
 
     @ManyToOne
     @JoinColumn(name = "end_branch_id")
-    @JsonBackReference(value = "endBranch-reference")// wydaje się nadmiarowe
+    @JsonBackReference(value = "endBranch-reference")
     private Branch endBranch;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
-    @JsonBackReference(value = "reservationRent-reference") // powinno byc po stronie DTO
+    @JsonBackReference(value = "reservationRent-reference")
     private Rent rent;
 
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.REMOVE)
-    @JsonBackReference(value = "reservationReturnal-reference") // powinno byc po stronie DTO
+    @JsonBackReference(value = "reservationReturnal-reference")
     private Returnal returnal;
 }

@@ -42,10 +42,10 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
-    @JsonBackReference(value = "car-reference") // wydaje mi się nadmiarowe
+    @JsonBackReference(value = "car-reference")
     private Branch branch;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "carReservation-reference") // wydaje mi się nadmiarowe
+    @JsonManagedReference(value = "carReservation-reference")
     private Set<Reservation> reservations = new HashSet<>();
 }

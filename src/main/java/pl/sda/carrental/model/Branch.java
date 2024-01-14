@@ -23,6 +23,8 @@ public class Branch {
     private Long branchId;
     private String name;
     private String address;
+    @Column(name = "manager_id")
+    private Long managerId;
     
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Employee> employees = new HashSet<>();
@@ -35,7 +37,7 @@ public class Branch {
 
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
-    @JsonBackReference(value = "carRental-reference") // nie jestem pewny czy to jest potrzebne
+    @JsonBackReference(value = "carRental-reference")
     private CarRental carRental;
 
     @OneToOne

@@ -9,6 +9,7 @@ import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.Employee;
 import pl.sda.carrental.model.Reservation;
+import pl.sda.carrental.model.enums.Position;
 import pl.sda.carrental.repository.*;
 
 import java.util.List;
@@ -30,9 +31,19 @@ public class BranchService {
      */
     @Transactional
     public void addBranch(Branch branch) {
-        if(!carRentalRepository.findAll().isEmpty()) {
+        if (!carRentalRepository.findAll().isEmpty()) {
             branch.setCarRental(carRentalRepository.findAll().stream().findFirst().orElseThrow(() ->
                     new ObjectNotFoundInRepositoryException("No Car Rental for branch to be assigned to")));
+        }
+
+        Employee potentialManager;
+        if (branch.getManagerId() != null) {
+            potentialManager = employeeRepository.findById(branch.getManagerId())
+                    .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Cannot find employee to assign as Manager!"));
+
+            potentialManager.setPosition(Position.MANAGER);
+            potentialManager.setBranch(branch);
+            employeeRepository.save(potentialManager);
         }
         branchRepository.save(branch);
     }
@@ -163,14 +174,14 @@ public class BranchService {
      *
      * @param carId    The ID of the car to be assigned to the branch.
      * @param branchId The ID of the branch to which the car will be assigned.
-     * @throws ObjectNotFoundInRepositoryException      if no car is found under the provided car ID or if no branch is found under the provided branch ID.
-     * @throws ObjectAlreadyAssignedToBranchException   if the car is already assigned to an existing branch.
+     * @throws ObjectNotFoundInRepositoryException    if no car is found under the provided car ID or if no branch is found under the provided branch ID.
+     * @throws ObjectAlreadyAssignedToBranchException if the car is already assigned to an existing branch.
      */
     @Transactional
     public void assignCarToBranch(Long carId, Long branchId) {
         Car foundCar = carRepository.findById(carId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under ID #" + carId));
-        if(foundCar.getBranch() != null) {
+        if (foundCar.getBranch() != null) {
             throw new ObjectAlreadyAssignedToBranchException("Car already assigned to existing branch!");
         }
         Branch foundBranch = branchRepository.findById(branchId)
@@ -197,7 +208,7 @@ public class BranchService {
     public void assignEmployeeToBranch(Long employeeId, Long branchId) {
         Employee foundEmployee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + employeeId));
-        if(foundEmployee.getBranch() != null) {
+        if (foundEmployee.getBranch() != null) {
             throw new ObjectAlreadyAssignedToBranchException("Employee already assigned to existing branch!");
         }
         Branch foundBranch = branchRepository.findById(branchId)
