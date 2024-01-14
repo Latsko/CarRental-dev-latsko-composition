@@ -91,6 +91,15 @@ public class BranchController {
         branchService.assignEmployeeToBranch(employee_id, branch_id);
     }
 
+    @PatchMapping("/assignManager/{manager_id}/forBranch/{branch_id}")
+    public void assignManagerForBranch(@PathVariable Long manager_id, @PathVariable Long branch_id) {
+        branchService.addManagerForBranch(manager_id, branch_id);
+    }
+
+    @PatchMapping("/removeManagerFromBranch/{branch_id}")
+    public void removeManagerFromBranch(@PathVariable Long branch_id) {
+        branchService.removeManagerFromBranch(branch_id);
+    }
 
 }
 

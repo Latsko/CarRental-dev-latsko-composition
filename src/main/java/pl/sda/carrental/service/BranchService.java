@@ -249,4 +249,44 @@ public class BranchService {
         employeeRepository.save(foundEmployee);
     }
 
+    /**
+     * Assigns a manager to a branch based on their respective unique identifiers.
+     *
+     * @param managerId The unique identifier of the employee to be assigned as the manager.
+     * @param branchId  The unique identifier of the branch to which the manager will be assigned.
+     * @throws ObjectAlreadyAssignedToBranchException If the branch already has an assigned manager.
+     * @throws ObjectNotFoundInRepositoryException    If no employee is found with the given manager ID.
+     */
+    @Transactional
+    public void addManagerForBranch(Long managerId, Long branchId) {
+        Branch branch = getById(branchId);
+        if(branch.getManagerId() != null) {
+            throw new ObjectAlreadyAssignedToBranchException("Branch already has Manager!");
+        }
+        Employee potentialManager = employeeRepository.findById(managerId)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Cannot find employee to assign as Manager!"));
+
+        potentialManager.setPosition(Position.MANAGER);
+        potentialManager.setBranch(branch);
+        employeeRepository.save(potentialManager);
+
+        branchRepository.save(branch);
+    }
+
+    /**
+     * Removes the manager assignment from a branch based on its unique identifier.
+     *
+     * @param branchId The unique identifier of the branch from which the manager will be removed.
+     * @throws ObjectNotFoundInRepositoryException If the branch does not have any assigned manager.
+     */
+    @Transactional
+    public void removeManagerFromBranch(Long branchId) {
+        Branch branch = getById(branchId);
+        if(branch.getManagerId() == null) {
+            throw new ObjectNotFoundInRepositoryException("Branch does not have any assigned Manager!");
+        }
+
+        branch.setManagerId(null);
+        branchRepository.save(branch);
+    }
 }
