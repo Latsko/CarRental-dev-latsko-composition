@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.CarRental;
+import pl.sda.carrental.model.DTO.CarDTO;
 import pl.sda.carrental.service.BranchService;
 
 import java.util.List;
@@ -27,6 +28,11 @@ public class BranchController {
     public BranchDTO getById(@PathVariable Long id) {
         Branch branch = branchService.getById(id);
         return mapToBranchDTO(branch);
+    }
+
+    @GetMapping("/{id}/availableCarsOnDate/{date}")
+    public List<CarDTO> getCarsAvailableOnDate(@PathVariable Long id, @PathVariable String date) {
+        return branchService.getCarsAvailableAtBranchOnDate(id, date);
     }
 
     private BranchDTO mapToBranchDTO(Branch branch) {
@@ -100,7 +106,6 @@ public class BranchController {
     public void removeManagerFromBranch(@PathVariable Long branch_id) {
         branchService.removeManagerFromBranch(branch_id);
     }
-
 }
 
 record BranchDTO(Long branchId, String branchName, HQDetails mainBranchDetails) {

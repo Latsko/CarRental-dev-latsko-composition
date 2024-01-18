@@ -21,6 +21,7 @@ public class CarRentalService {
     private final CarRentalRepository carRentalRepository;
     private final BranchRepository branchRepository;
     private final ReservationRepository reservationRepository;
+    private final BranchService branchService;
 
     /**
      * Retrieves the car rental company details.
@@ -127,20 +128,6 @@ public class CarRentalService {
      */
     @Transactional
     public void closeBranchUnderId(Long id) {
-        Branch branch = branchRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under  ID #" + id));
-
-        List<Reservation> reservationsWithThisBranch = reservationRepository.findAll().stream()
-                .filter(reservation -> reservation.getStartBranch().getBranchId().equals(id) ||
-                        reservation.getEndBranch().getBranchId().equals(id))
-                .toList();
-
-        reservationRepository.deleteAll(reservationsWithThisBranch);
-
-        branch.getClients().clear();
-        branch.getCars().clear();
-        branch.getEmployees().clear();
-
-        branchRepository.deleteById(id);
+        branchService.removeBranch(id);
     }
 }

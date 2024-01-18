@@ -7,6 +7,7 @@ import pl.sda.carrental.exceptionHandling.IllegalArgumentForStatusException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
+import pl.sda.carrental.model.DTO.CarDTO;
 import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.model.enums.Status;
 import pl.sda.carrental.repository.BranchRepository;
@@ -187,5 +188,21 @@ public class CarService {
         return reservation.getStartDate().equals(date) ||
                 reservation.getEndDate().equals(date) ||
                 (reservation.getStartDate().isBefore(date) && reservation.getEndDate().isAfter(date));
+    }
+
+    /**
+     * Maps a Car entity to a CarDTO (Data Transfer Object).
+     *
+     * @param car The Car entity to be mapped to a CarDTO.
+     * @return A CarDTO representing the mapped data.
+     */
+    public CarDTO mapCarToCarDTO(Car car) {
+        return new CarDTO(car.getMake(),
+                car.getModel(),
+                car.getBodyStyle(),
+                car.getYear(),
+                car.getColour(),
+                car.getMileage(),
+                car.getPrice());
     }
 }
