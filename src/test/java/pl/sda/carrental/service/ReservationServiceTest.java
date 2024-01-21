@@ -6,11 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.model.Car;
-import pl.sda.carrental.model.Client;
+import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.ReservationDTO;
-import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.model.enums.Status;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
@@ -46,19 +43,24 @@ class ReservationServiceTest {
         ReservationDTO reservationDto = new ReservationDTO(
                 1L,
                 1L,
+                1L,
                 LocalDate.of(2023, 11, 20),
                 LocalDate.of(2023, 11, 22),
                 1L,
-                1L
+                1L,
+                null,
+                null
         );
 
         Branch branch = new Branch(
                 1L,
                 "Warszawa",
                 "ul. Przykladowa",
+                null,
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashSet<>(),
+                null,
                 null);
 
         Mockito.when(branchRepositoryMock.findById(1L)).thenReturn(Optional.of(branch));

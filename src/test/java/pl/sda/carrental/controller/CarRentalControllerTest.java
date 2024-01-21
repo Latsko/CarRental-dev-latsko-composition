@@ -66,10 +66,13 @@ class CarRentalControllerTest {
                 1L,
                 "Radom",
                 " inne",
+                null,
                 new HashSet<>(),
                 new HashSet<>(),
                 new HashSet<>(),
-                null));
+                null,
+                null)
+        );
 
         CarRental carRental = new CarRental(
                 1L,
