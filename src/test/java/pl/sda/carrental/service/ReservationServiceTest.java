@@ -5,22 +5,22 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.ReservationDTO;
 import pl.sda.carrental.model.enums.Status;
-import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.repository.ClientRepository;
-import pl.sda.carrental.repository.ReservationRepository;
+import pl.sda.carrental.repository.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ReservationServiceTest {
@@ -38,6 +38,31 @@ class ReservationServiceTest {
     private ReservationService reservationService;
 
     @Test
+    void shouldGetAllReservations() {
+        // given
+        Reservation reservation1 = mock(Reservation.class);
+        Reservation reservation2 = mock(Reservation.class);
+
+        when(reservation1.getClient()).thenReturn(new Client());
+        when(reservation1.getCar()).thenReturn(new Car());
+        when(reservation1.getStartBranch()).thenReturn(new Branch());
+        when(reservation1.getEndBranch()).thenReturn(new Branch());
+
+        when(reservation2.getClient()).thenReturn(new Client());
+        when(reservation2.getCar()).thenReturn(new Car());
+        when(reservation2.getStartBranch()).thenReturn(new Branch());
+        when(reservation2.getEndBranch()).thenReturn(new Branch());
+
+        when(reservationRepositoryMock.findAll()).thenReturn(Arrays.asList(reservation1, reservation2));
+
+        // when
+        List<ReservationDTO> result = reservationService.getAllReservations();
+
+        // then
+        assertThat(2).isEqualTo(result.size());
+    }
+
+    @Test
     void shouldSaveReservation() {
         //given
         ReservationDTO reservationDto = new ReservationDTO(
@@ -52,6 +77,8 @@ class ReservationServiceTest {
                 null
         );
 
+        Revenue revenue = new Revenue(1L, new BigDecimal("10000"));
+
         Branch branch = new Branch(
                 1L,
                 "Warszawa",
@@ -61,9 +88,8 @@ class ReservationServiceTest {
                 new HashSet<>(),
                 new HashSet<>(),
                 null,
-                null);
+                revenue);
 
-        Mockito.when(branchRepositoryMock.findById(1L)).thenReturn(Optional.of(branch));
         Car car = new Car(
                 1L,
                 "Kia",
@@ -74,19 +100,21 @@ class ReservationServiceTest {
                 20000,
                 Status.AVAILABLE,
                 BigDecimal.valueOf(100),
-                null,
+                branch,
                 new HashSet<>()
         );
-        Mockito.when(carRepositoryMock.findById(1L)).thenReturn(Optional.of(car));
 
         Client client = new Client(1L,
                 "name",
                 "surname",
                 "email",
                 "address",
-                null);
+                branch);
 
+        Mockito.when(branchRepositoryMock.findById(1L)).thenReturn(Optional.of(branch));
+        Mockito.when(carRepositoryMock.findById(1L)).thenReturn(Optional.of(car));
         Mockito.when(clientRepositoryMock.findById(1L)).thenReturn(Optional.of(client));
+
         //when
         reservationService.saveReservation(reservationDto);
 
