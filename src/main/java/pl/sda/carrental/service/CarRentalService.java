@@ -8,12 +8,8 @@ import pl.sda.carrental.exceptionHandling.ObjectAlreadyExistsException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.CarRental;
-import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRentalRepository;
-import pl.sda.carrental.repository.ReservationRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

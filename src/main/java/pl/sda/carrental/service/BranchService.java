@@ -24,7 +24,6 @@ public class BranchService {
     private final EmployeeRepository employeeRepository;
     private final ReservationRepository reservationRepository;
     private final CarRentalRepository carRentalRepository;
-    private final CarService carService;
 
     /**
      * Adds a new branch to the repository.
@@ -304,7 +303,7 @@ public class BranchService {
         availableCarsAtGivenBranch.addAll(carsWithReturnAtBranch);
         Set<Car> uniqueCars = new HashSet<>(availableCarsAtGivenBranch);
 
-        return new ArrayList<>(uniqueCars.stream().map(carService::mapCarToCarDTO).toList());
+        return new ArrayList<>(uniqueCars.stream().map(CarService::mapCarToCarDTO).toList());
     }
 
     /**

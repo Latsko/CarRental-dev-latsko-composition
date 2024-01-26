@@ -196,7 +196,7 @@ public class CarService {
      * @param car The Car entity to be mapped to a CarDTO.
      * @return A CarDTO representing the mapped data.
      */
-    public CarDTO mapCarToCarDTO(Car car) {
+    public static CarDTO mapCarToCarDTO(Car car) {
         return new CarDTO(car.getMake(),
                 car.getModel(),
                 car.getBodyStyle(),
