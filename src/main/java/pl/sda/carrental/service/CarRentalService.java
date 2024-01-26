@@ -20,7 +20,6 @@ import java.util.List;
 public class CarRentalService {
     private final CarRentalRepository carRentalRepository;
     private final BranchRepository branchRepository;
-    private final ReservationRepository reservationRepository;
     private final BranchService branchService;
 
     /**
@@ -63,9 +62,11 @@ public class CarRentalService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company to edit"));
 
         edited.setName(carRental.getName());
+        edited.setDomain(carRental.getDomain());
         edited.setAddress(carRental.getAddress());
         edited.setOwner(carRental.getOwner());
         edited.setLogo(carRental.getLogo());
+        edited.setBranches(carRental.getBranches());
 
         carRentalRepository.save(edited);
     }
@@ -126,6 +127,8 @@ public class CarRentalService {
      * @param id The ID of the branch to be deleted.
      * @throws ObjectNotFoundInRepositoryException if no branch is found under the provided ID.
      */
+    //todo learn how to test this thing
+    // (do i need to mock all the repositories for BranchService?)
     @Transactional
     public void closeBranchUnderId(Long id) {
         branchService.removeBranch(id);

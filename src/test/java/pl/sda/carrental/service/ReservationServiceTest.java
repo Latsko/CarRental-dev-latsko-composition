@@ -508,6 +508,4 @@ class ReservationServiceTest {
                 .withRentDate(date)
                 .withReservation(reservation);
     }
-
-
 }
