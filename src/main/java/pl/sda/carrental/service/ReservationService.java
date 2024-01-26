@@ -136,6 +136,7 @@ public class ReservationService {
 
         long daysDifference = ChronoUnit.DAYS.between(reservation.getStartDate(), reservation.getEndDate());
         BigDecimal price = carFromRepo.getPrice().multiply(BigDecimal.valueOf(daysDifference));
+
         if(!reservationDto.startBranchId().equals(reservationDto.endBranchId())) {
             price = price.add(CROSS_LOCATION_CHARGE);
         }
@@ -155,7 +156,7 @@ public class ReservationService {
         Reservation firstBefore = getFirstReservationPreviousTo(reservation);
         if (firstBefore != null &&
                 !Objects.equals(reservation.getStartBranch().getBranchId(), firstBefore.getEndBranch().getBranchId()) &&
-                ChronoUnit.DAYS.between(reservation.getStartDate(), firstBefore.getEndDate()) <= 1) {
+                Math.abs(ChronoUnit.DAYS.between(reservation.getStartDate(), firstBefore.getEndDate())) <= 1) {
             throw new ReservationTimeCollisionException("Car can be rented only from Branch #" +
                     firstBefore.getEndBranch().getBranchId() + " for the selected date!");
         }
@@ -163,7 +164,7 @@ public class ReservationService {
         Reservation firstAfter = getFirstReservationAfter(reservation);
         if(firstAfter != null &&
         !reservation.getEndBranch().equals(firstAfter.getStartBranch()) &&
-        ChronoUnit.DAYS.between(reservation.getEndDate(), firstAfter.getStartDate()) <= 1) {
+        Math.abs(ChronoUnit.DAYS.between(reservation.getEndDate(), firstAfter.getStartDate())) <= 1) {
             throw new ReservationTimeCollisionException("Car can be returned only to Branch #" +
                     firstAfter.getStartBranch().getBranchId() + " for the selected date!");
         }
@@ -267,7 +268,7 @@ public class ReservationService {
 
         if(reservation.getRent() != null) {
             long daysBetween = Math.abs(ChronoUnit.DAYS.between(LocalDate.now(), reservation.getRent().getRentDate()));
-            if(daysBetween >= 2) {
+            if(daysBetween > 2) {
                 revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenueId(), reservation.getPrice().negate());
             } else {
                 revenueService.updateRevenue(reservation.getCar().getBranch().getRevenue().getRevenueId(), reservation.getPrice().negate().multiply(BigDecimal.valueOf(0.8)));
