@@ -31,10 +31,12 @@ public class BranchService {
      * @param branch The Branch object to be added.
      */
     @Transactional
-    public void addBranch(Branch branch) {
-        if (!carRentalRepository.findAll().isEmpty()) {
-            branch.setCarRental(carRentalRepository.findAll().stream().findFirst().orElseThrow(() ->
-                    new ObjectNotFoundInRepositoryException("No Car Rental for branch to be assigned to")));
+    public Branch addBranch(Branch branch) {
+
+        if (carRentalRepository.findAll().stream().findFirst().isPresent()) {
+            branch.setCarRental(carRentalRepository.findAll().stream().findFirst().get());
+        } else {
+            throw new ObjectNotFoundInRepositoryException("No Car Rental for branch to be assigned to");
         }
 
         Employee potentialManager;
@@ -46,7 +48,7 @@ public class BranchService {
             potentialManager.setBranch(branch);
             employeeRepository.save(potentialManager);
         }
-        branchRepository.save(branch);
+        return branchRepository.save(branch);
     }
 
     /**
@@ -247,7 +249,7 @@ public class BranchService {
     @Transactional
     public void addManagerForBranch(Long managerId, Long branchId) {
         Branch branch = getById(branchId);
-        if(branch.getManagerId() != null) {
+        if (branch.getManagerId() != null) {
             throw new ObjectAlreadyAssignedToBranchException("Branch already has Manager!");
         }
         Employee potentialManager = employeeRepository.findById(managerId)
@@ -269,7 +271,7 @@ public class BranchService {
     @Transactional
     public void removeManagerFromBranch(Long branchId) {
         Branch branch = getById(branchId);
-        if(branch.getManagerId() == null) {
+        if (branch.getManagerId() == null) {
             throw new ObjectNotFoundInRepositoryException("Branch does not have any assigned Manager!");
         }
 
@@ -292,7 +294,7 @@ public class BranchService {
                 .toList());
 
         List<Car> carsFromOtherBranches = new ArrayList<>();
-        for(Branch branch : branchRepository.findAll()) {
+        for (Branch branch : branchRepository.findAll()) {
             carsFromOtherBranches.addAll(branch.getCars());
         }
 
