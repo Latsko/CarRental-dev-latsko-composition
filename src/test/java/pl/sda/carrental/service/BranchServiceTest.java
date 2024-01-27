@@ -7,38 +7,35 @@ import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.repository.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static reactor.core.publisher.Mono.when;
 
 //@ExtendWith(MockitoExtension.class)
 class BranchServiceTest {
     //@Mock
-    private BranchRepository branchRepositoryMock = mock(BranchRepository.class);
+    private final BranchRepository branchRepositoryMock = mock(BranchRepository.class);
     //@Mock
-    private CarRepository carRepositoryMock = mock(CarRepository.class);
+    private final CarRepository carRepositoryMock = mock(CarRepository.class);
     //@Mock
-    private EmployeeRepository employeeRepositoryMock = mock(EmployeeRepository.class);
+    private final EmployeeRepository employeeRepositoryMock = mock(EmployeeRepository.class);
     //@Mock
-    private ReservationRepository reservationRepositoryMock = mock(ReservationRepository.class);
+    private final ReservationRepository reservationRepositoryMock = mock(ReservationRepository.class);
     //@Mock
-    private CarRentalRepository carRentalRepositoryMock = mock(CarRentalRepository.class);
+    private final CarRentalRepository carRentalRepositoryMock = mock(CarRentalRepository.class);
 
     //@InjectMocks
-    private BranchService branchService = new BranchService(branchRepositoryMock, carRepositoryMock, employeeRepositoryMock, reservationRepositoryMock, carRentalRepositoryMock);
+    private final BranchService branchService = new BranchService(branchRepositoryMock, carRepositoryMock, employeeRepositoryMock, reservationRepositoryMock, carRentalRepositoryMock);
 
     private CarRental carRental;
     private Branch branch;
     private Branch branchWithData;
     private Employee manager;
     private List<Reservation> reservations;
+    private Car car;
 
 
     @BeforeEach
@@ -58,9 +55,7 @@ class BranchServiceTest {
           reservation.setStartBranch(branchWithData);
           reservation.setEndBranch(branchWithData);
         }
-//        reservations.forEach(reservation -> reservation.setStartBranch(branchWithData));
-//        reservations.forEach(reservation -> reservation.setEndBranch(branchWithData));
-        reservations.add(new Reservation());
+        car = new Car();
     }
 
     @Test
@@ -205,11 +200,118 @@ class BranchServiceTest {
         given(reservationRepositoryMock.findAll()).willReturn(reservations);
 
         //when
-        branchService.removeBranch(1L);
+        branchService.removeBranch(111L);
 
         //then
         verify(reservationRepositoryMock, times(1)).deleteAll(reservations);
-        verify(branchRepositoryMock, times(1)).deleteById(1L);
+        verify(branchRepositoryMock, times(1)).deleteById(111L);
     }
+
+    @Test
+    void shouldAddCarToBranchByAccordingId() {
+        //given
+        given(branchRepositoryMock.findAll()).willReturn(List.of(branch));
+        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
+        given(carRepositoryMock.save(car)).willReturn(car);
+
+        //when
+        Car savedCar = branchService.addCarToBranchByAccordingId(1L, car);
+
+        //then
+        assertThat(savedCar).isNotNull();
+        assertThat(savedCar.getBranch()).isEqualTo(branch);
+        assertThat(branch.getCars()).contains(car);
+        verify(branchRepositoryMock, times(1)).findById(1L);
+        verify(carRepositoryMock, times(1)).save(car);
+    }
+
+    @Test
+    void shouldNotAddCarToBranchByAccordingId() {
+        //given
+        //when
+        ThrowableAssert.ThrowingCallable callable = () -> branchService.addCarToBranchByAccordingId(1L, car);
+
+        //then
+        assertThatThrownBy(callable)
+                .isInstanceOf(ObjectNotFoundInRepositoryException.class)
+                .hasMessage("There are no created branches currently");
+    }
+
+    @Test
+    void shouldRemoveCarFromBranch() {
+        //given
+        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
+        car.setCarId(1L);
+        branch.setCars(new HashSet<>(Set.of(car)));
+
+        //when
+        branchService.removeCarFromBranch(1L, 1L);
+
+        //then
+        assertThat(branch.getCars()).isEmpty();
+        assertThat(car.getBranch()).isNull();
+        verify(branchRepositoryMock, times(1)).save(branch);
+        verify(carRepositoryMock, times(1)).save(car);
+    }
+
+    @Test
+    void shouldNotRemoveCarFromBranch() {
+        //given
+        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
+        branch.setCars(new HashSet<>());
+
+        //when
+        ThrowableAssert.ThrowingCallable callable = () -> branchService.removeCarFromBranch(1L, 1L);
+
+        //then
+        verify(branchRepositoryMock, never()).save(branch);
+        verify(carRepositoryMock, never()).save(car);
+        assertThatThrownBy(callable)
+                .isInstanceOf(ObjectNotFoundInRepositoryException.class)
+                .hasMessage("No car under ID #1 is assigned to branch under ID #1");
+    }
+
+    @Test
+    void shouldAssignCarToBranch() {
+        //given
+        given(carRepositoryMock.findById(anyLong())).willReturn(Optional.of(car));
+        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
+
+        //when
+        branchService.assignCarToBranch(1L, 1L);
+
+        //then
+        verify(branchRepositoryMock, times(1)).save(branch);
+        verify(carRepositoryMock, times(1)).save(car);
+        assertThat(branch.getCars()).isNotEmpty();
+        assertThat(branch.getCars()).contains(car);
+        assertThat(car.getBranch()).isNotNull();
+        assertThat(car.getBranch()).isEqualTo(branch);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

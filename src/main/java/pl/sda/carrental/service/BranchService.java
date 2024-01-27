@@ -125,15 +125,15 @@ public class BranchService {
      * @throws ObjectNotFoundInRepositoryException if no branches exist or if no branch is found under the provided ID.
      */
     @Transactional
-    public void addCarToBranchByAccordingId(Long id, Car car) {
+    public Car addCarToBranchByAccordingId(Long id, Car car) {
         if (branchRepository.findAll().isEmpty()) {
             throw new ObjectNotFoundInRepositoryException("There are no created branches currently");
         }
 
         Branch foundBranch = getById(id);
         car.setBranch(foundBranch);
-        carRepository.save(car);
         foundBranch.getCars().add(car);
+        return carRepository.save(car);
     }
 
     /**
