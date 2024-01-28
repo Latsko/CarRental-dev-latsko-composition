@@ -255,10 +255,11 @@ public class BranchService {
         Employee potentialManager = employeeRepository.findById(managerId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Cannot find employee to assign as Manager!"));
 
+        branch.setManagerId(managerId);
         potentialManager.setPosition(Position.MANAGER);
         potentialManager.setBranch(branch);
-        employeeRepository.save(potentialManager);
 
+        employeeRepository.save(potentialManager);
         branchRepository.save(branch);
     }
 
