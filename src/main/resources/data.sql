@@ -99,3 +99,21 @@ VALUES ('Clean and tidy', '2024-01-15', 50.00, 1, 1),
        ('Issues with brakes', '2024-01-25', 60.00, 6, 6),
        ('Excellent condition', '2024-01-27', 15.00, 7, 7),
        ('Great experience', '2024-01-29', 25.00, 8, 8);
+
+-- Authentication and authorization
+insert into users(id, username, password, is_account_non_expired, is_account_non_locked, is_credentials_non_expired,
+                  is_enabled)
+values (1, 'jarek', 'jpassword', 1, 1, 1, 1),
+       (2, 'daniel', 'dpassword', 1, 1, 1, 1),
+       (3, 'marek', 'mpassword', 1, 1, 1, 1);
+
+insert into authority(id, authority)
+values (1, 'STUDENT'),
+       (2, 'ADMIN'),
+       (3, 'ADMINTRAINEE');
+
+
+insert into user_authorities(user_id, authority_id)
+values (1, 2),
+       (2, 3),
+       (3, 1)

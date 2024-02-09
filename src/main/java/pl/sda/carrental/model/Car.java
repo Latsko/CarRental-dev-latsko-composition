@@ -27,6 +27,11 @@ public class Car {
     private Long carId;
     private String make;
     private String model;
+
+    public String getModel() {
+        return model;
+    }
+
     @Column(name = "body_style")
     private String bodyStyle;
     private int year;

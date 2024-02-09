@@ -43,8 +43,6 @@ class BranchServiceTest {
     private Employee employee;
     private List<Reservation> reservations;
     private Car car;
-    private Set<Car> reservedCarsForBranch1;
-    private Set<Car> reservedCarsForBranch2;
     private Branch branch1;
     private Branch branch2;
 
@@ -58,8 +56,8 @@ class BranchServiceTest {
         employee = manager;
         reservations = new ArrayList<>() {
             {
-                add(new Reservation());
-                add(new Reservation());
+                add(new Reservation().withEndBranch(branchWithData));
+                add(new Reservation().withStartBranch(branchWithData));
                 add(new Reservation());
             }
         };
@@ -105,7 +103,7 @@ class BranchServiceTest {
         );
 
         car.setReservations(reservationsForCar);
-        reservedCarsForBranch1 = new HashSet<>();
+        Set<Car> reservedCarsForBranch1 = new HashSet<>();
         reservedCarsForBranch1.add(car);
         branch1.setCars(reservedCarsForBranch1);
 
@@ -140,7 +138,7 @@ class BranchServiceTest {
                 null, null)
         );
         anotherCar.setReservations(reservationsForAnotherCar);
-        reservedCarsForBranch2 = new HashSet<>();
+        Set<Car> reservedCarsForBranch2 = new HashSet<>();
         reservedCarsForBranch2.add(anotherCar);
         branch2.setCars(reservedCarsForBranch2);
 
@@ -253,6 +251,7 @@ class BranchServiceTest {
         assertThat(modified).isNotNull();
         assertThat(modified.getName()).isEqualTo("name");
         assertThat(modified.getAddress()).isEqualTo("address");
+        verify(branchRepositoryMock, times(1)).save(branch);
     }
 
     @Test
@@ -267,6 +266,7 @@ class BranchServiceTest {
         //then
         assertThat(foundBranch).isNotNull();
         assertThat(foundBranch.getBranchId()).isEqualTo(1L);
+        verify(branchRepositoryMock, times(1)).findById(1L);
     }
 
     @Test

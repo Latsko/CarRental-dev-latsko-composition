@@ -50,8 +50,8 @@ public class CarService {
      * @param car The Car object representing the new car to be added.
      */
     @Transactional
-    public void addCar(Car car) {
-        carRepository.save(car);
+    public Car addCar(Car car) {
+        return carRepository.save(car);
     }
 
     /**

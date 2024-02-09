@@ -20,8 +20,8 @@ CREATE TABLE car_rental
 
 CREATE TABLE revenue
 (
-    revenue_id BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
-    total_amount     DECIMAL
+    revenue_id   BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
+    total_amount DECIMAL
 );
 
 CREATE TABLE branch
@@ -29,9 +29,9 @@ CREATE TABLE branch
     branch_id     BIGINT AUTO_INCREMENT UNIQUE PRIMARY KEY,
     name          VARCHAR(255) NOT NULL,
     address       VARCHAR(255) NOT NULL,
-    manager_id BIGINT,
+    manager_id    BIGINT,
     car_rental_id BIGINT,
-    revenue_id BIGINT,
+    revenue_id    BIGINT,
     FOREIGN KEY (car_rental_id) REFERENCES car_rental (car_rental_id),
     FOREIGN KEY (revenue_id) REFERENCES revenue (revenue_id)
 
@@ -45,7 +45,7 @@ CREATE TABLE car
     body_style VARCHAR(255)  NOT NULL,
     year       INT,
     colour     VARCHAR(255)  NOT NULL,
-    mileage    DOUBLE,
+    mileage DOUBLE,
     status     TINYINT       NOT NULL,
     price      DECIMAL(9, 2) NOT NULL,
     branch_id  BIGINT,
@@ -95,9 +95,9 @@ CREATE TABLE rent
     comments       VARCHAR(255) NOT NULL,
     rent_date      DATE         NOT NULL,
     reservation_id BIGINT       NOT NULL,
-    employee_id BIGINT,
+    employee_id    BIGINT,
     FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
-    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
+    FOREIGN KEY (employee_id) REFERENCES employee (employee_id)
 );
 
 CREATE TABLE return_process
@@ -107,7 +107,39 @@ CREATE TABLE return_process
     return_date    DATE          NOT NULL,
     upcharge       DECIMAL(7, 2) NOT NULL,
     reservation_id BIGINT        NOT NULL,
-    employee_id BIGINT,
+    employee_id    BIGINT,
     FOREIGN KEY (reservation_id) REFERENCES reservation (reservation_id),
-    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
+    FOREIGN KEY (employee_id) REFERENCES employee (employee_id)
+);
+
+-- Authentication and authorization
+DROP TABLE IF EXISTS user_authorities;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS authority;
+
+
+CREATE TABLE users
+(
+    id                         INT PRIMARY KEY,
+    username                   VARCHAR(50) UNIQUE,
+    password                   VARCHAR(100),
+    is_account_non_expired     BOOLEAN,
+    is_account_non_locked      BOOLEAN,
+    is_credentials_non_expired BOOLEAN,
+    is_enabled                 BOOLEAN
+);
+
+CREATE TABLE authority
+(
+    id        INT PRIMARY KEY,
+    authority VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE user_authorities
+(
+    user_id      INT,
+    authority_id INT,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (authority_id) REFERENCES authority (id),
+    PRIMARY KEY (user_id, authority_id)
 );
