@@ -54,13 +54,10 @@ class BranchServiceTest {
         branchWithData = new Branch(111L, "name", "address", 1L, new HashSet<>(), new HashSet<>(), new HashSet<>(), carRental, new Revenue());
         manager = new Employee(1L, "", "", null, null);
         employee = manager;
-        reservations = new ArrayList<>() {
-            {
-                add(new Reservation().withEndBranch(branchWithData));
-                add(new Reservation().withStartBranch(branchWithData));
-                add(new Reservation());
-            }
-        };
+        reservations = List.of(new Reservation().withEndBranch(branchWithData),
+                new Reservation().withStartBranch(branchWithData),
+                new Reservation());
+
         for (Reservation reservation : reservations) {
             reservation.setStartBranch(branchWithData);
             reservation.setEndBranch(branchWithData);
@@ -584,5 +581,5 @@ class BranchServiceTest {
         assertThat(carsAvailableAtBranchOnDate).isNotNull();
         assertThat(carsAvailableAtBranchOnDate).isNotEmpty();
         assertThat(carsAvailableAtBranchOnDate.size()).isEqualTo(2);
-       }
+    }
 }
