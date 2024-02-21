@@ -154,8 +154,6 @@ public class BranchService {
                 .orElseThrow(() ->
                         new ObjectNotFoundInRepositoryException("No car under ID #"
                                 + carId + " is assigned to branch under ID #" + branchId));
-        //todo make a copy when car is removed from branch, because
-        // it is removed from database as well due to cascade type being set to ALL
 
         foundCar.setBranch(null);
         branchRepository.save(foundBranch);
