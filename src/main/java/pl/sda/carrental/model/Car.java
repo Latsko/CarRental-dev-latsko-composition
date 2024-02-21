@@ -26,11 +26,8 @@ public class Car {
     @Column(name = "car_id")
     private Long carId;
     private String make;
+    @Getter
     private String model;
-
-    public String getModel() {
-        return model;
-    }
 
     @Column(name = "body_style")
     private String bodyStyle;

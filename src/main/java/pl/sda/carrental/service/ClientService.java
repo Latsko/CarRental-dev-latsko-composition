@@ -165,10 +165,7 @@ public class ClientService {
                         new ObjectNotFoundInRepositoryException("No client under ID #"
                                 + clientId + " is assigned to branch under ID #" + branchId));
 
-        foundBranch.getClients().remove(foundClient);
         foundClient.setBranch(null);
-
         branchRepository.save(foundBranch);
-        clientRepository.save(foundClient);
     }
 }

@@ -37,19 +37,20 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
-    public void editCar(@PathVariable Long id, @RequestBody @Valid Car car) {
-        carService.editCar(id, car);
+    public Car editCar(@PathVariable Long id, @RequestBody @Valid Car car) {
+        return carService.editCar(id, car);
     }
 
     @PatchMapping("/setMileageAndPrice/{id}")
-    public void updateMileageAndPrice(@RequestParam double mileage, @RequestParam BigDecimal price, @PathVariable Long id) {
-        carService.updateMileageAndPrice(mileage, price, id);
+    public Car updateMileageAndPrice(@RequestParam double mileage, @RequestParam BigDecimal price, @PathVariable Long id) {
+        return carService.updateMileageAndPrice(mileage, price, id);
     }
 
     @PatchMapping("/setStatus/{id}")
-    public void updateStatus(@RequestParam String status, @PathVariable Long id) {
-        carService.updateStatus(status, id);
+    public Car updateStatus(@RequestParam String status, @PathVariable Long id) {
+        return carService.updateStatus(status, id);
     }
+
     @DeleteMapping("/{id}")
     public void deleteCar(@PathVariable Long id) {
         carService.deleteCarById(id);

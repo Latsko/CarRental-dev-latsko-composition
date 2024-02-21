@@ -53,7 +53,7 @@ public class CarRentalService {
      * @throws ObjectNotFoundInRepositoryException if there is no existing car rental company to edit.
      */
     @Transactional
-    public void editCarRental(CarRental carRental) {
+    public CarRental editCarRental(CarRental carRental) {
         CarRental edited = carRentalRepository.findAll().stream().findFirst()
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("There is no car rental company to edit"));
 
@@ -62,9 +62,8 @@ public class CarRentalService {
         edited.setAddress(carRental.getAddress());
         edited.setOwner(carRental.getOwner());
         edited.setLogo(carRental.getLogo());
-        edited.setBranches(carRental.getBranches());
 
-        carRentalRepository.save(edited);
+        return carRentalRepository.save(edited);
     }
 
     /**

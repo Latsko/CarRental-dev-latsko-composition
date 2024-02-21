@@ -66,29 +66,42 @@ public class CarService {
      * @throws ObjectNotFoundInRepositoryException if no car is found under the provided ID or if the car is not associated with a branch.
      */
     @Transactional
-    public void editCar(Long id, Car car) {
+    public Car editCar(Long id, Car car) {
         Car childCar = getCarById(id);
         Branch parentBranch = childCar.getBranch();
-
         if (parentBranch != null) {
             Car editedCar = parentBranch.getCars().stream()
                     .filter(filteredCar -> filteredCar.equals(childCar))
                     .findFirst().orElseThrow(() ->
                             new ObjectNotFoundInRepositoryException("No car under ID #" +
                                     id + " in that branch"));
-            editedCar.setCarId(id);
-            editedCar.setMake(car.getMake());
-            editedCar.setModel(car.getModel());
-            editedCar.setBodyStyle(car.getBodyStyle());
-            editedCar.setYear(car.getYear());
-            editedCar.setColour(car.getColour());
-            editedCar.setMileage(car.getMileage());
-            editedCar.setStatus(car.getStatus());
-            editedCar.setPrice(car.getPrice());
+            updateDetails(id, car, editedCar);
 
             branchRepository.save(parentBranch);
-            carRepository.save(editedCar);
+            return carRepository.save(editedCar);
+        } else {
+            updateDetails(id, car, childCar);
+            return carRepository.save(childCar);
         }
+    }
+
+    /**
+     * Copies all the fields from one car to another.
+     *
+     * @param id given car id
+     * @param car car with field values that will be given to another car
+     * @param editedCar car that will be edited
+     */
+    private void updateDetails(Long id, Car car, Car editedCar) {
+        editedCar.setCarId(id);
+        editedCar.setMake(car.getMake());
+        editedCar.setModel(car.getModel());
+        editedCar.setBodyStyle(car.getBodyStyle());
+        editedCar.setYear(car.getYear());
+        editedCar.setColour(car.getColour());
+        editedCar.setMileage(car.getMileage());
+        editedCar.setStatus(car.getStatus());
+        editedCar.setPrice(car.getPrice());
     }
 
     /**
@@ -113,12 +126,12 @@ public class CarService {
      * @param id      The ID of the car to be updated.
      */
     @Transactional
-    public void updateMileageAndPrice(double mileage, BigDecimal price, Long id) {
+    public Car updateMileageAndPrice(double mileage, BigDecimal price, Long id) {
         Car foundCar = getCarById(id);
         foundCar.setMileage(mileage);
         foundCar.setPrice(price);
 
-        carRepository.save(foundCar);
+        return carRepository.save(foundCar);
     }
 
     /**
@@ -129,7 +142,7 @@ public class CarService {
      * @throws IllegalArgumentForStatusException if the provided status does not match any predefined car status.
      */
     @Transactional
-    public void updateStatus(String status, Long id) {
+    public Car updateStatus(String status, Long id) {
         Car foundCar = getCarById(id);
 
         if (!checkIfStatusExists(status)) {
@@ -137,7 +150,7 @@ public class CarService {
         }
         foundCar.setStatus(Status.valueOf(status));
 
-        carRepository.save(foundCar);
+        return carRepository.save(foundCar);
     }
 
     /**

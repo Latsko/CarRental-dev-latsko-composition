@@ -28,8 +28,8 @@ public class CarRentalController {
     }
 
     @PutMapping
-    public void editCarRental(@RequestBody CarRental carRental){
-        carRentalService.editCarRental(carRental);
+    public CarRental editCarRental(@RequestBody CarRental carRental){
+        return carRentalService.editCarRental(carRental);
     }
 
     @DeleteMapping
