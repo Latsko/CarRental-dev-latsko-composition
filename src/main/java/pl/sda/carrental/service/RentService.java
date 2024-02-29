@@ -62,7 +62,6 @@ public class RentService {
                                 new ObjectNotFoundInRepositoryException("No rent under ID #" + id));
         updateRentDetails(rentDTO, rent);
 
-        rentRepository.deleteById(id);
         return rentRepository.save(rent);
     }
 
@@ -104,12 +103,10 @@ public class RentService {
         rent.setComments(rentDTO.comments());
         rent.setRentDate(rentDTO.rentDate());
 
-        // ======== tutaj nie muszę ustawiać rezerwację? ==========
         Reservation reservationFromRepository = reservationRepository.findById(rentDTO.reservationId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
                         + rentDTO.reservationId() + " not found"));
 
         rent.setReservation(reservationFromRepository);
-        // ======================================================
     }
 }
