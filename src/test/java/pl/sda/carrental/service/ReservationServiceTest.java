@@ -26,7 +26,6 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ReservationServiceTest {
-
     @Mock
     private CarRepository carRepositoryMock;
     @Mock

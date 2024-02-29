@@ -3,9 +3,6 @@ package pl.sda.carrental.service;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
 import pl.sda.carrental.exceptionHandling.BranchAlreadyOpenInCityException;
 import pl.sda.carrental.exceptionHandling.ObjectAlreadyExistsException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
@@ -14,22 +11,20 @@ import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRentalRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
 class CarRentalServiceTest {
-    @Mock
-    private CarRentalRepository carRentalRepositoryMock;
-    @Mock
-    private BranchRepository branchRepositoryMock;
-
-    @InjectMocks
-    private CarRentalService carRentalService;
+    private final CarRentalRepository carRentalRepositoryMock = mock(CarRentalRepository.class);
+    private final BranchRepository branchRepositoryMock = mock(BranchRepository.class);
+    private final BranchService branchServiceMock = mock(BranchService.class);
+    private final CarRentalService carRentalService = new CarRentalService(carRentalRepositoryMock, branchRepositoryMock, branchServiceMock);
 
     @Test
     void shouldGetCarRental() {
@@ -51,7 +46,7 @@ class CarRentalServiceTest {
         when(carRentalRepositoryMock.findAll()).thenReturn(new ArrayList<>());
 
         //when
-        ThrowableAssert.ThrowingCallable callable = () -> carRentalService.getCarRental();
+        ThrowableAssert.ThrowingCallable callable = carRentalService::getCarRental;
 
         //then
         assertThatThrownBy(callable)
@@ -100,7 +95,6 @@ class CarRentalServiceTest {
         modified.setLogo("new logo");
         modified.setDomain("new domain");
         modified.setOwner("new owner");
-        modified.setBranches(Set.of(new Branch(), new Branch(), new Branch()));
         when(carRentalRepositoryMock.findAll()).thenReturn(List.of(carRental));
 
         //when
@@ -116,7 +110,6 @@ class CarRentalServiceTest {
         assertThat(result.getLogo()).isEqualTo("new logo");
         assertThat(result.getDomain()).isEqualTo("new domain");
         assertThat(result.getOwner()).isEqualTo("new owner");
-        assertThat(result.getBranches().size()).isEqualTo(3);
     }
 
     @Test

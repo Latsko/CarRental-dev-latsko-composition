@@ -48,4 +48,5 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "carReservation-reference")
     private Set<Reservation> reservations = new HashSet<>();
+
 }

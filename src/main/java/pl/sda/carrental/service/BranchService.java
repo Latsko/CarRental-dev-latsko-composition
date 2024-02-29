@@ -156,6 +156,9 @@ public class BranchService {
                                 + carId + " is assigned to branch under ID #" + branchId));
 
         foundCar.setBranch(null);
+        foundBranch.getCars().remove(foundCar);
+
+        carRepository.save(foundCar);
         branchRepository.save(foundBranch);
     }
 
@@ -170,7 +173,7 @@ public class BranchService {
      * @throws ObjectAlreadyAssignedToBranchException if the car is already assigned to an existing branch.
      */
     @Transactional
-    public void assignCarToBranch(Long carId, Long branchId) {
+    public Car assignCarToBranch(Long carId, Long branchId) {
         Car foundCar = carRepository.findById(carId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under ID #" + carId));
         if (foundCar.getBranch() != null) {
@@ -181,7 +184,7 @@ public class BranchService {
         foundCar.setBranch(foundBranch);
 
         branchRepository.save(foundBranch);
-        carRepository.save(foundCar);
+        return carRepository.save(foundCar);
     }
 
     /**
@@ -195,7 +198,7 @@ public class BranchService {
      * @throws ObjectAlreadyAssignedToBranchException if the employee is already assigned to an existing branch.
      */
     @Transactional
-    public void assignEmployeeToBranch(Long employeeId, Long branchId) {
+    public Employee assignEmployeeToBranch(Long employeeId, Long branchId) {
         Employee foundEmployee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + employeeId));
         if (foundEmployee.getBranch() != null) {
@@ -206,7 +209,7 @@ public class BranchService {
         foundEmployee.setBranch(foundBranch);
 
         branchRepository.save(foundBranch);
-        employeeRepository.save(foundEmployee);
+        return employeeRepository.save(foundEmployee);
     }
 
     /**
@@ -229,6 +232,9 @@ public class BranchService {
                                 + employeeId + " is assigned to branch under ID #" + branchId));
 
         foundEmployee.setBranch(null);
+        foundBranch.getEmployees().remove(foundEmployee);
+
+        employeeRepository.save(foundEmployee);
         branchRepository.save(foundBranch);
     }
 
@@ -241,7 +247,7 @@ public class BranchService {
      * @throws ObjectNotFoundInRepositoryException    If no employee is found with the given manager ID.
      */
     @Transactional
-    public void addManagerForBranch(Long managerId, Long branchId) {
+    public Branch addManagerForBranch(Long managerId, Long branchId) {
         Branch branch = getById(branchId);
         if (branch.getManagerId() != null) {
             throw new ObjectAlreadyAssignedToBranchException("Branch already has Manager!");
@@ -254,7 +260,7 @@ public class BranchService {
         potentialManager.setBranch(branch);
 
         employeeRepository.save(potentialManager);
-        branchRepository.save(branch);
+        return branchRepository.save(branch);
     }
 
     /**
@@ -312,6 +318,9 @@ public class BranchService {
      * @return {@code true} if returnals exist at the specified branch on the given date; {@code false} otherwise.
      */
     private boolean hasReturnalsAtBranchOnDatePrior(Long id, Car car, LocalDate date) {
+        if(car.getReservations() == null) {
+            return false;
+        }
         return car.getReservations().stream()
                 .filter(reservation -> reservation.getEndBranch().getBranchId().equals(id))
                 .anyMatch(reservation -> reservation.getEndDate().plusDays(1).equals(date));
@@ -325,6 +334,9 @@ public class BranchService {
      * @return {@code true} if the date is available for the car; {@code false} otherwise.
      */
     private boolean isDateAvailableForCar(Car car, LocalDate date) {
+        if(car.getReservations() == null) {
+            return true;
+        }
         return car.getReservations().stream()
                 .noneMatch(reservation ->
                         (reservation.getStartDate().isBefore(date) ||

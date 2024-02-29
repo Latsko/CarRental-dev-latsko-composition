@@ -34,6 +34,7 @@ class BranchServiceTest {
     private final CarRentalRepository carRentalRepositoryMock = mock(CarRentalRepository.class);
 
     //@InjectMocks
+
     private final BranchService branchService = new BranchService(branchRepositoryMock, carRepositoryMock, employeeRepositoryMock, reservationRepositoryMock, carRentalRepositoryMock);
 
     private CarRental carRental;
@@ -328,11 +329,14 @@ class BranchServiceTest {
     void shouldRemoveCarFromBranch() {
         //given
         given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
+        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch);
+        given(carRepositoryMock.save(any(Car.class))).willReturn(car);
+        branch.setBranchId(1L);
         car.setCarId(1L);
         branch.setCars(new HashSet<>(Set.of(car)));
 
         //when
-        branchService.removeCarFromBranch(1L, 1L);
+       branchService.removeCarFromBranch(1L, 1L);
 
         //then
         assertThat(branch.getCars()).isEmpty();

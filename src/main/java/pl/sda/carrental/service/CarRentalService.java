@@ -38,11 +38,11 @@ public class CarRentalService {
      * @throws ObjectAlreadyExistsException if there already is car rental in repository
      */
     @Transactional
-    public void saveCarRental(CarRental carRental) {
+    public CarRental saveCarRental(CarRental carRental) {
         if(!carRentalRepository.findAll().isEmpty()) {
             throw new ObjectAlreadyExistsException("Car Rental already exists!");
         }
-        carRentalRepository.save(carRental);
+        return carRentalRepository.save(carRental);
     }
 
 
@@ -94,7 +94,7 @@ public class CarRentalService {
      * @throws BranchAlreadyOpenInCityException        if a branch with the same address is already open in the city.
      */
     @Transactional
-    public void openNewBranch(Branch branch) {
+    public Branch openNewBranch(Branch branch) {
         CarRental carRental = carRentalRepository.findAll().stream()
                 .findFirst()
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Car Rental has not been created yet"));
@@ -112,8 +112,8 @@ public class CarRentalService {
         carRental.getBranches().add(branch);
         branch.setCarRental(carRental);
 
-        branchRepository.save(branch);
         carRentalRepository.save(carRental);
+        return branchRepository.save(branch);
     }
 
     /**

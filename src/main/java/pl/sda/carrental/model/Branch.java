@@ -10,8 +10,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @With
 @Table(name = "branch")
 public class Branch {
@@ -24,13 +23,13 @@ public class Branch {
     @Column(name = "manager_id")
     private Long managerId;
     
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Car> cars = new HashSet<>();
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Client> clients = new HashSet<>();
 
     @ManyToOne

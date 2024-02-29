@@ -18,13 +18,13 @@ public class CarRentalController {
         return carRentalService.getCarRental();
     }
     @PostMapping
-    public void addCarRental(@RequestBody @Valid CarRental carRental){
-        carRentalService.saveCarRental(carRental);
+    public CarRental addCarRental(@RequestBody @Valid CarRental carRental){
+        return carRentalService.saveCarRental(carRental);
     }
 
     @PostMapping("/addBranch")
-    public void openBranch(@RequestBody @Valid Branch branch) {
-        carRentalService.openNewBranch(branch);
+    public Branch openBranch(@RequestBody @Valid Branch branch) {
+        return carRentalService.openNewBranch(branch);
     }
 
     @PutMapping

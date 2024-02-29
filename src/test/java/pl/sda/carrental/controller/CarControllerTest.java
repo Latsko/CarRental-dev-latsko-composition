@@ -48,7 +48,6 @@ class CarControllerTest {
 
     @BeforeEach
     void setUp() {
-
         car = new Car(1L, "make", "model", "bodyStyle", 1990, "RED",
                 2000.0, Status.AVAILABLE, new BigDecimal(100), null, new HashSet<>());
     }
