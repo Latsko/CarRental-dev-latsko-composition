@@ -47,8 +47,8 @@ public class ClientService {
      * @param client The Client object representing the new client to be added.
      */
     @Transactional
-    public void addClient(Client client) {
-        clientRepository.save(client);
+    public Client addClient(Client client) {
+        return clientRepository.save(client);
     }
 
     /**
@@ -63,26 +63,24 @@ public class ClientService {
      * @throws ObjectNotFoundInRepositoryException if no client is found under the provided ID.
      */
     @Transactional
-    public void editClient(Long id, Client client) {
+    public Client editClient(Long id, Client client) {
         Client childClient = clientRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No client under that ID!"));
         Branch parentBranch = childClient.getBranch();
 
-        if (parentBranch != null) {
-            Client editedClient = parentBranch.getClients().stream()
+        parentBranch.getClients().stream()
                     .filter(filteredClient -> filteredClient.equals(childClient))
                     .findFirst().orElseThrow(() ->
                             new ObjectNotFoundInRepositoryException("No client under ID #" +
                                     id + " in that branch"));
 
-            editedClient.setName(client.getName());
-            editedClient.setSurname(client.getSurname());
-            editedClient.setEmail(client.getEmail());
-            editedClient.setAddress(client.getAddress());
+        childClient.setName(client.getName());
+        childClient.setSurname(client.getSurname());
+        childClient.setEmail(client.getEmail());
+        childClient.setAddress(client.getAddress());
 
-            branchRepository.save(parentBranch);
-            clientRepository.save(editedClient);
-        }
+        branchRepository.save(parentBranch);
+        return clientRepository.save(childClient);
     }
 
     /**
@@ -130,7 +128,7 @@ public class ClientService {
      * @throws ObjectAlreadyAssignedToBranchException if the client is already assigned to an existing branch.
      */
     @Transactional
-    public void assignClientToBranch(Long clientId, Long branchId) {
+    public Client assignClientToBranch(Long clientId, Long branchId) {
         Client foundClient = clientRepository.findById(clientId)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No client under ID #" + clientId));
         if (foundClient.getBranch() != null) {
@@ -143,7 +141,7 @@ public class ClientService {
         foundClient.setBranch(foundBranch);
 
         branchRepository.save(foundBranch);
-        clientRepository.save(foundClient);
+        return clientRepository.save(foundClient);
     }
 
     /**

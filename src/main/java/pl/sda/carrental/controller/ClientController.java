@@ -24,13 +24,13 @@ public class ClientController {
     }
 
     @PostMapping
-    public void addClient(@RequestBody Client client) {
-        clientService.addClient(client);
+    public Client addClient(@RequestBody Client client) {
+        return clientService.addClient(client);
     }
 
     @PutMapping("/{id}")
-    public void modifyClient(@PathVariable Long id, @RequestBody Client client) {
-        clientService.editClient(id, client);
+    public Client modifyClient(@PathVariable Long id, @RequestBody Client client) {
+        return clientService.editClient(id, client);
     }
 
     @DeleteMapping("/{id}")
@@ -39,8 +39,8 @@ public class ClientController {
     }
 
     @PatchMapping("/client/{client_id}/assignToBranch/{branch_id}")
-    public void assignClientToBranch(@PathVariable Long client_id, @PathVariable Long branch_id) {
-        clientService.assignClientToBranch(client_id, branch_id);
+    public Client assignClientToBranch(@PathVariable Long client_id, @PathVariable Long branch_id) {
+        return clientService.assignClientToBranch(client_id, branch_id);
     }
 
     @PatchMapping("/client/{client_id}/detachFromBranch/{branch_id}")
