@@ -49,32 +49,30 @@ public class EmployeeService {
      * employee ID and updated employee details. It retrieves the employee by ID from the repository, updates its details, deletes the
      * existing employee, and then saves the modified employee back to the repository
      *
-     * @param id The identifier of the employee to be edited
-     * @param employee  An object containing updated employee data
+     * @param id       The identifier of the employee to be edited
+     * @param employee An object containing updated employee data
      * @return The modified employee object
      * @throws ObjectNotFoundInRepositoryException if no employee is found with the provided ID
      */
     @Transactional
-    public void editEmployee(Long id, Employee employee) {
-        Employee foundEmployee = employeeRepository.findById(id)
+    public Employee editEmployee(Long id, Employee employee) {
+        Employee childEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + id));
-        Branch parentBranch = foundEmployee.getBranch();
+        Branch parentBranch = childEmployee.getBranch();
 
-        if(parentBranch != null) {
-            Employee editedEmployee = parentBranch.getEmployees().stream()
-                    .filter(filteredEmployee -> filteredEmployee.equals(foundEmployee))
-                    .findFirst()
-                    .orElseThrow(() ->
-                            new ObjectNotFoundInRepositoryException("No employee under ID #" +
-                                    id + " in that branch"));
+        parentBranch.getEmployees().stream()
+                .filter(filteredEmployee -> filteredEmployee.equals(childEmployee))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ObjectNotFoundInRepositoryException("No employee under ID #" +
+                                id + " in that branch"));
 
-            editedEmployee.setName(employee.getName());
-            editedEmployee.setSurname(employee.getSurname());
-            editedEmployee.setPosition(employee.getPosition());
+        childEmployee.setName(employee.getName());
+        childEmployee.setSurname(employee.getSurname());
+        childEmployee.setPosition(employee.getPosition());
 
-            branchRepository.save(parentBranch);
-            employeeRepository.save(editedEmployee);
-        }
+        branchRepository.save(parentBranch);
+        return employeeRepository.save(childEmployee);
     }
 
     /**
@@ -84,7 +82,7 @@ public class EmployeeService {
      *
      * @param id The unique identifier of the employee to be deleted.
      * @throws ObjectNotFoundInRepositoryException if no employee is found under the provided ID.
-     *                                          If no employee is found, the deletion process fails.
+     *                                             If no employee is found, the deletion process fails.
      */
     @Transactional
     public void deleteEmployee(Long id) {
@@ -98,7 +96,7 @@ public class EmployeeService {
             rentRepository.save(rent);
         }
 
-        for(Returnal returnal : returnsWithEmployeeById) {
+        for (Returnal returnal : returnsWithEmployeeById) {
             returnal.setEmployee(null);
             returnRepository.save(returnal);
         }
