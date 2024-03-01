@@ -40,7 +40,7 @@ public class ReservationService {
      */
     public List<ReservationDTO> getAllReservations() {
         return reservationRepository.findAll().stream()
-                .map(this::mapReservationToDTO)
+                .map(ReservationService::mapReservationToDTO)
                 .toList();
     }
 
@@ -50,7 +50,7 @@ public class ReservationService {
      * @param reservation The Reservation entity to be mapped to a ReservationDTO.
      * @return A ReservationDTO representing the mapped data.
      */
-    private ReservationDTO mapReservationToDTO(Reservation reservation) {
+    public static ReservationDTO mapReservationToDTO(Reservation reservation) {
         return new ReservationDTO(
                 reservation.getReservationId(),
                 reservation.getClient().getClientId(),
