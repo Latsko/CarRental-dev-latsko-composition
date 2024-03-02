@@ -135,7 +135,7 @@ public class ClientService {
             throw new ObjectAlreadyAssignedToBranchException("This client is already assigned to existing branch!");
         }
         Branch foundBranch = branchRepository.findById(branchId)
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + clientId));
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No branch under ID #" + branchId));
 
         foundBranch.getClients().add(foundClient);
         foundClient.setBranch(foundBranch);
