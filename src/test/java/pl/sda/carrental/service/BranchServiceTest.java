@@ -20,20 +20,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
-//@ExtendWith(MockitoExtension.class)
 class BranchServiceTest {
-    //@Mock
     private final BranchRepository branchRepositoryMock = mock(BranchRepository.class);
-    //@Mock
     private final CarRepository carRepositoryMock = mock(CarRepository.class);
-    //@Mock
     private final EmployeeRepository employeeRepositoryMock = mock(EmployeeRepository.class);
-    //@Mock
     private final ReservationRepository reservationRepositoryMock = mock(ReservationRepository.class);
-    //@Mock
     private final CarRentalRepository carRentalRepositoryMock = mock(CarRentalRepository.class);
-
-    //@InjectMocks
 
     private final BranchService branchService = new BranchService(branchRepositoryMock, carRepositoryMock, employeeRepositoryMock, reservationRepositoryMock, carRentalRepositoryMock);
 

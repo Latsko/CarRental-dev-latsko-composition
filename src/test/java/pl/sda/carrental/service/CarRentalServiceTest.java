@@ -180,6 +180,18 @@ class CarRentalServiceTest {
     }
 
     @Test
+    void shouldCloseBranchUnderId() {
+        //given
+        doNothing().when(branchServiceMock).removeBranch(anyLong());
+
+        //when
+        carRentalService.closeBranchUnderId(1L);
+
+        //then
+        verify(branchServiceMock, times(1)).removeBranch(1L);
+    }
+
+    @Test
     void shouldNotFindCarRentalWhenOpeningNewBranch() {
         //given
         when(carRentalRepositoryMock.findAll()).thenReturn(new ArrayList<>());
