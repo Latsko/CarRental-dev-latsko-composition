@@ -17,12 +17,12 @@ public class RentController {
 
     @GetMapping
     public List<Rent> getAllRents() {
-        return rentService.allRents();
+        return rentService.getAllRents();
     }
 
     @PostMapping
     public Rent save(@RequestBody @Valid RentDTO rent) {
-        return rentService.save(rent);
+        return rentService.saveRent(rent);
     }
 
     @PutMapping("/{id}")

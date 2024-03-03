@@ -27,7 +27,7 @@ public class RentService {
      *
      * @return List of all Rent objects
      */
-    public List<Rent> allRents() {
+    public List<Rent> getAllRents() {
         return rentRepository.findAll();
     }
 
@@ -38,7 +38,7 @@ public class RentService {
      * @return The newly created and saved rent object
      */
     @Transactional
-    public Rent save(RentDTO rentDTO) {
+    public Rent saveRent(RentDTO rentDTO) {
         Rent rent = new Rent();
         updateRentDetails(rentDTO, rent);
 
@@ -91,7 +91,7 @@ public class RentService {
     private void updateRentDetails(RentDTO rentDTO, Rent rent) {
         List<Long> reservationsIds = rentRepository.findRentalsWithReservationId(rentDTO.reservationId());
         if(!reservationsIds.isEmpty()) {
-            throw new RentAlreadyExistsForReservationException("Rent already exists for reservation with id "
+            throw new RentAlreadyExistsForReservationException("Rent already exists for reservation with ID #"
                     + rentDTO.reservationId());
         }
 
@@ -104,7 +104,7 @@ public class RentService {
         rent.setRentDate(rentDTO.rentDate());
 
         Reservation reservationFromRepository = reservationRepository.findById(rentDTO.reservationId())
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with ID #"
                         + rentDTO.reservationId() + " not found"));
 
         rent.setReservation(reservationFromRepository);
