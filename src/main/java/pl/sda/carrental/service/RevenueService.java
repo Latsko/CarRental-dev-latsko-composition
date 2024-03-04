@@ -23,7 +23,7 @@ public class RevenueService {
      *
      * @return List of Revenue objects representing all revenues in the database.
      */
-    public List<Revenue> getRevenue() {
+    public List<Revenue> getAllRevenues() {
         return revenueRepository.findAll();
     }
 
@@ -72,12 +72,12 @@ public class RevenueService {
      * @param rentalAmount The additional rental amount to be added to the existing total amount.
      * @throws ObjectNotFoundInRepositoryException If no revenue is found with the given ID.
      */
-    public void updateRevenue(Long id, BigDecimal rentalAmount) {
+    public Revenue updateRevenue(Long id, BigDecimal rentalAmount) {
         Revenue revenue = getRevenueById(id);
         BigDecimal updatedRevenue = revenue.getTotalAmount().add(rentalAmount);
         revenue.setTotalAmount(updatedRevenue);
 
-        revenueRepository.save(revenue);
+        return revenueRepository.save(revenue);
     }
 
     /**

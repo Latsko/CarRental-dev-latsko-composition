@@ -15,7 +15,7 @@ public class RevenueController {
 
     @GetMapping
     public List<Revenue> getRevenue() {
-        return revenueService.getRevenue();
+        return revenueService.getAllRevenues();
     }
 
     @PostMapping
