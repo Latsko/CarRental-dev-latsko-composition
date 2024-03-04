@@ -32,6 +32,6 @@ public class ReturnController {
 
     @DeleteMapping("/{id}")
     public void deleteReturnal(@PathVariable Long id) {
-        returnService.deleteReturnal(id);
+        returnService.deleteReturnalById(id);
     }
 }

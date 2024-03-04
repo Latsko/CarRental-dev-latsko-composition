@@ -45,7 +45,7 @@ public class ReturnService {
     public Returnal saveReturn(ReturnDTO returnDTO) {
         List<Long> reservationsIds = returnRepository.findReturnsWithReservationId(returnDTO.reservationId());
         if(!reservationsIds.isEmpty()) {
-            throw new ReturnAlreadyExistsForReservationException("Return already exists for reservation with id " + returnDTO.reservationId());
+            throw new ReturnAlreadyExistsForReservationException("Return already exists for reservation with ID #" + returnDTO.reservationId());
         }
 
         Returnal returnal = new Returnal();
@@ -88,7 +88,7 @@ public class ReturnService {
                         .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + returnDTO.employee()));
 
         Reservation reservationFromRepository = reservationRepository.findById(returnDTO.reservationId())
-                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with id "
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("Reservation with ID #"
                         + returnDTO.reservationId() + " not found"));
 
         returnalToSave.setEmployee(employeeFromRepository);
@@ -106,7 +106,7 @@ public class ReturnService {
      * @throws ObjectNotFoundInRepositoryException if no returnal is found with the provided ID
      */
     @Transactional
-    public void deleteReturnal(Long id) {
+    public void deleteReturnalById(Long id) {
         returnRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No returnal under ID #" + id));
         returnRepository.deleteById(id);
