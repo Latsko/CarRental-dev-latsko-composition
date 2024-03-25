@@ -107,10 +107,9 @@ values (1, 'jarek', 'jpassword'),
        (3, 'marek', 'mpassword');
 
 insert into roles(id, name)
-values (1, 'STUDENT'),
-       (2, 'ADMIN'),
-       (3, 'ADMINTRAINEE');
-
+values (1, 'USER'),
+       (2, 'EMPLOYEE'),
+       (3, 'MANAGER');
 
 insert into users_roles(user_id, role_id)
 values (1, 2),
