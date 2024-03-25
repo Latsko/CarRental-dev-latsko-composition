@@ -1,54 +1,19 @@
 package pl.sda.carrental.configuration;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class BaseSecurityConfig {
-    //Create UserDetailsManager to handle users
+    private UserDetailsService userDetailsService;
+
     @Bean
-    public UserDetailsManager userDetailsManager () {
-        return new InMemoryUserDetailsManager();
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
-    //Create and save users using Initializer Bean
-    @Bean
-    public InitializingBean initializingBean(UserDetailsManager userDetailsManager) {
-            return () -> {
-                System.out.println("Hello from init bean");
-
-                UserDetails user = User
-                        .builder()
-                        .passwordEncoder(password ->
-                                PasswordEncoderFactories
-                                        .createDelegatingPasswordEncoder()
-                                        .encode(password))
-                        .username("user")
-                        .password("password")
-                        .roles("USER")
-                        .build();
-                userDetailsManager.createUser(user);
-
-                UserDetails admin = User
-                        .builder()
-                        .passwordEncoder(password ->
-                                PasswordEncoderFactories
-                                        .createDelegatingPasswordEncoder()
-                                        .encode(password))
-                        .username("admin")
-                        .password("password")
-                        .roles("ADMIN")
-                        .build();
-
-                userDetailsManager.createUser(admin);
-            };
-    }
-
 }

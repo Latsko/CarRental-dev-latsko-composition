@@ -113,33 +113,29 @@ CREATE TABLE return_process
 );
 
 -- Authentication and authorization
-DROP TABLE IF EXISTS user_authorities;
+DROP TABLE IF EXISTS users_roles;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS authority;
+DROP TABLE IF EXISTS roles;
 
 
 CREATE TABLE users
 (
-    id                         INT PRIMARY KEY,
-    username                   VARCHAR(50) UNIQUE,
-    password                   VARCHAR(100),
-    is_account_non_expired     BOOLEAN,
-    is_account_non_locked      BOOLEAN,
-    is_credentials_non_expired BOOLEAN,
-    is_enabled                 BOOLEAN
+    id       INT PRIMARY KEY,
+    name     VARCHAR(50) UNIQUE,
+    password VARCHAR(100)
 );
 
-CREATE TABLE authority
+CREATE TABLE roles
 (
-    id        INT PRIMARY KEY,
-    authority VARCHAR(50) UNIQUE
+    id   INT PRIMARY KEY,
+    name VARCHAR(50) UNIQUE
 );
 
-CREATE TABLE user_authorities
+CREATE TABLE users_roles
 (
-    user_id      INT,
-    authority_id INT,
+    user_id INT,
+    role_id INT,
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (authority_id) REFERENCES authority (id),
-    PRIMARY KEY (user_id, authority_id)
+    FOREIGN KEY (role_id) REFERENCES roles (id),
+    PRIMARY KEY (user_id, role_id)
 );
