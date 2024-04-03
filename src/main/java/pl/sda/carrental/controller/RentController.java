@@ -11,26 +11,26 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rents")
+@RequestMapping("/api")
 public class RentController {
     private final RentService rentService;
 
-    @GetMapping
+    @GetMapping("/manageL2/rents")
     public List<Rent> getAllRents() {
         return rentService.getAllRents();
     }
 
-    @PostMapping
+    @PostMapping("/authenticated/rents")
     public Rent save(@RequestBody @Valid RentDTO rent) {
         return rentService.saveRent(rent);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/authenticated/rents/{id}")
     public Rent editRent(@PathVariable Long id, @RequestBody RentDTO rent) {
         return rentService.editRent(id, rent);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/authenticated/rents/{id}")
     public void deleteRent(@PathVariable Long id) {
         rentService.deleteRentById(id);
     }

@@ -9,41 +9,41 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/clients")
+@RequestMapping("/api")
 public class ClientController {
     private final ClientService clientService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/manageL2/clients/{id}")
     public Client findById(@PathVariable Long id) {
         return clientService.findById(id);
     }
 
-    @GetMapping
+    @GetMapping("/manageL2/clients")
     public List<Client> getAllClients() {
         return clientService.getAllClients();
     }
 
-    @PostMapping
+    @PostMapping("/public/clients")
     public Client addClient(@RequestBody Client client) {
         return clientService.addClient(client);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/manageL2/clients/{id}")
     public Client modifyClient(@PathVariable Long id, @RequestBody Client client) {
         return clientService.editClient(id, client);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/manageL2/clients/{id}")
     public void removeClient(@PathVariable Long id) {
         clientService.removeClient(id);
     }
 
-    @PatchMapping("/client/{client_id}/assignToBranch/{branch_id}")
+    @PatchMapping("/manageL2/clients/client/{client_id}/assignToBranch/{branch_id}")
     public Client assignClientToBranch(@PathVariable Long client_id, @PathVariable Long branch_id) {
         return clientService.assignClientToBranch(client_id, branch_id);
     }
 
-    @PatchMapping("/client/{client_id}/detachFromBranch/{branch_id}")
+    @PatchMapping("/manageL2/clients/client/{client_id}/detachFromBranch/{branch_id}")
     public void detachClientFromBranch(@PathVariable Long client_id, @PathVariable Long branch_id) {
         clientService.removeClientFromBranch(client_id, branch_id);
     }

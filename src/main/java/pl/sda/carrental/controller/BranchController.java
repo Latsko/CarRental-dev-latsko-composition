@@ -13,24 +13,24 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/branches")
+@RequestMapping(value = "api/")
 public class BranchController {
     private final BranchService branchService;
 
-    @GetMapping
+    @GetMapping("/public/branches")
     public List<BranchDTO> getBranches() {
         return branchService.getAllBranches().stream()
                 .map(this::mapToBranchDTO)
                 .toList();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/authenticated/{id}")
     public BranchDTO getById(@PathVariable Long id) {
         Branch branch = branchService.getById(id);
         return mapToBranchDTO(branch);
     }
 
-    @GetMapping("/{id}/availableCarsOnDate/{date}")
+    @GetMapping("/authenticated/{id}/availableCarsOnDate/{date}")
     public List<CarDTO> getCarsAvailableOnDate(@PathVariable Long id, @PathVariable String date) {
         return branchService.getCarsAvailableAtBranchOnDate(id, date);
     }
@@ -57,52 +57,52 @@ public class BranchController {
         );
     }
 
-    @PostMapping
+    @PostMapping("/admin/branches")
     public Branch addBranch(@RequestBody Branch branch) {
         return branchService.addBranch(branch);
     }
 
-    @PutMapping("/addCar/toBranchUnderId/{id}")
+    @PutMapping("/admin/branches/addCar/toBranchUnderId/{id}")
     public Car addCarToBranch(@PathVariable Long id, @RequestBody Car car) {
         return branchService.addCarToBranchByAccordingId(id, car);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/branches/{id}")
     public Branch modifyBranch(@PathVariable Long id, @RequestBody Branch branch) {
         return branchService.editBranch(id, branch);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/branches/{id}")
     public void removeBranch(@PathVariable Long id) {
         branchService.removeBranch(id);
     }
 
-    @PatchMapping("/removeCar/{car_id}/fromBranch/{branch_id}")
+    @PatchMapping("/manageL1/branches/removeCar/{car_id}/fromBranch/{branch_id}")
     public void removeCarFromBranch(@PathVariable Long car_id, @PathVariable Long branch_id) {
          branchService.removeCarFromBranch(car_id, branch_id);
     }
 
-    @PatchMapping("/assignCar/{car_id}/toBranch/{branch_id}")
+    @PatchMapping("/manageL1/branches/assignCar/{car_id}/toBranch/{branch_id}")
     public Car assignCarToBranch(@PathVariable Long car_id, @PathVariable Long branch_id) {
         return branchService.assignCarToBranch(car_id, branch_id);
     }
 
-    @PatchMapping("/removeEmployee/{employee_id}/fromBranch/{branch_id}")
+    @PatchMapping("/manageL1/branches/removeEmployee/{employee_id}/fromBranch/{branch_id}")
     public void removeEmployeeFromBranch(@PathVariable Long employee_id, @PathVariable Long branch_id) {
         branchService.removeEmployeeFromBranch(employee_id, branch_id);
     }
 
-    @PatchMapping("/assignEmployee/{employee_id}/toBranch/{branch_id}")
+    @PatchMapping("/manageL1/branches/assignEmployee/{employee_id}/toBranch/{branch_id}")
     public Employee assignEmployeeToBranch(@PathVariable Long employee_id, @PathVariable Long branch_id) {
         return branchService.assignEmployeeToBranch(employee_id, branch_id);
     }
 
-    @PatchMapping("/assignManager/{manager_id}/forBranch/{branch_id}")
+    @PatchMapping("/admin/branches/assignManager/{manager_id}/forBranch/{branch_id}")
     public Branch assignManagerForBranch(@PathVariable Long manager_id, @PathVariable Long branch_id) {
         return branchService.addManagerForBranch(manager_id, branch_id);
     }
 
-    @PatchMapping("/removeManagerFromBranch/{branch_id}")
+    @PatchMapping("/admin/branches/removeManagerFromBranch/{branch_id}")
     public void removeManagerFromBranch(@PathVariable Long branch_id) {
         branchService.removeManagerFromBranch(branch_id);
     }

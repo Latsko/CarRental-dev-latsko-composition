@@ -9,35 +9,36 @@ import pl.sda.carrental.service.CarRentalService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/carRental")
+@RequestMapping("/api")
 public class CarRentalController {
     private final CarRentalService carRentalService;
 
-    @GetMapping
+    @GetMapping("/public/carRental")
     public CarRental getCarRental(){
         return carRentalService.getCarRental();
     }
-    @PostMapping
+
+    @PostMapping("/admin/carRental")
     public CarRental addCarRental(@RequestBody @Valid CarRental carRental){
         return carRentalService.saveCarRental(carRental);
     }
 
-    @PostMapping("/addBranch")
+    @PostMapping("/admin/carRental/addBranch")
     public Branch openBranch(@RequestBody @Valid Branch branch) {
         return carRentalService.openNewBranch(branch);
     }
 
-    @PutMapping
+    @PutMapping("/admin/carRental")
     public CarRental editCarRental(@RequestBody CarRental carRental){
         return carRentalService.editCarRental(carRental);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/admin/carRental")
     public void deleteCarRental(){
         carRentalService.deleteCarRental();
     }
 
-    @DeleteMapping("/deleteBranch/{id}")
+    @DeleteMapping("/admin/carRental/deleteBranch/{id}")
     public void closeBranch(@PathVariable Long id) {
         carRentalService.closeBranchUnderId(id);
     }

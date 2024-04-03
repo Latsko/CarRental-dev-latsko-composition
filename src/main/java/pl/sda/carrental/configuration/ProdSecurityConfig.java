@@ -23,10 +23,49 @@ public class ProdSecurityConfig {
 
         httpSecurity.authorizeHttpRequests(authorizationMatcher ->
                 authorizationMatcher
-                        .requestMatchers(HttpMethod.POST, "/cars")
+                        .requestMatchers(HttpMethod.GET, "/auth/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/public/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/authenticated/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/authenticated/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/authenticated/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/authenticated/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/authenticated/**").authenticated()
+
+                        .requestMatchers(HttpMethod.POST,"/api/admin/**")
                         .hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/carRental")
+                        .requestMatchers(HttpMethod.PUT, "/api/admin/**")
                         .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/admin/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/admin/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/manageL1/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.POST, "/api/manageL1/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/api/manageL1/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/manageL1/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers(HttpMethod.PATCH, "/api/manageL1/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        .requestMatchers(HttpMethod.GET, "/api/manageL2/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.POST, "/api/manageL2/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.PUT, "/api/manageL2/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/manageL2/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+                        .requestMatchers(HttpMethod.PATCH, "/api/manageL2/**")
+                        .hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+
                         .anyRequest()
                         .authenticated());
 

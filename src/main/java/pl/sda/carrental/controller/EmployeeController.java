@@ -9,26 +9,26 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/employees")
+@RequestMapping(value = "/api")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-    @GetMapping
+    @GetMapping("/manageL1/employees")
     public List<Employee> getEmployees() {
         return employeeService.getAllEmployees();
     }
 
-    @PostMapping
+    @PostMapping("/manageL1/employees")
     public Employee addEmployee(@RequestBody Employee employee) {
         return employeeService.addEmployee(employee);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/manageL1/employees/{id}")
     public Employee editEmployee(@PathVariable Long id, @RequestBody Employee employee) {
         return employeeService.editEmployee(id, employee);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/manageL1/employees/{id}")
     public void deleteEmployee(@PathVariable Long id) {
             employeeService.deleteEmployee(id);
     }

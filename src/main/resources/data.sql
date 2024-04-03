@@ -102,16 +102,19 @@ VALUES ('Clean and tidy', '2024-01-15', 50.00, 1, 1),
 
 -- Authentication and authorization
 insert into users(id, name, password)
-values (1, 'jarek', 'jpassword'),
-       (2, 'daniel', 'dpassword'),
-       (3, 'marek', 'mpassword');
+values (1, 'jarek', '$2a$10$JFtdUV4p3CbvLJxHlhvlkeYXyhI7d84yoS33Cp.EYvfcACRmUhOIK'),
+       (2, 'daniel', '$2a$10$lcSkYMyBmW0G.4hOVLjsBe3Vke5KZ/3q4xvk32uEGb6c4XIF6Ma2y'),
+       (3, 'piotr', '$2a$10$C6J0iO5dt4i44/.mz6onxeCAmU7tTFyMRyueLsEnx7mYiL15wd9ZK'),
+       (4, 'marek', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C');
 
 insert into roles(id, name)
-values (1, 'USER'),
-       (2, 'EMPLOYEE'),
-       (3, 'MANAGER');
+values (1, 'ROLE_USER'),
+       (2, 'ROLE_EMPLOYEE'),
+       (3, 'ROLE_ADMIN'),
+       (4, 'ROLE_MANAGER');
 
 insert into users_roles(user_id, role_id)
 values (1, 2),
        (2, 3),
-       (3, 1)
+       (3, 1),
+       (4, 4);

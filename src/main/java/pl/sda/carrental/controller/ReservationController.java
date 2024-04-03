@@ -11,31 +11,31 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reservations")
+@RequestMapping("/api")
 public class ReservationController {
     private final ReservationService reservationService;
 
-    @GetMapping
+    @GetMapping("/authenticated/reservations")
     public List<ReservationDTO> getReservations() {
         return reservationService.getAllReservations();
     }
 
-    @PostMapping
+    @PostMapping("/authenticated/reservations")
     public Reservation saveReservation(@RequestBody @Valid ReservationDTO reservation) {
         return reservationService.saveReservation(reservation);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/authenticated/reservations/{id}")
     public Reservation editReservation(@PathVariable Long id, @RequestBody ReservationDTO reservationDTO) {
         return reservationService.editReservation(id, reservationDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/authenticated/reservations/{id}")
     public void deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservationById(id);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/authenticated/reservations/{id}")
     public void cancelReservation(@PathVariable Long id) {
         reservationService.cancelReservationById(id);
     }

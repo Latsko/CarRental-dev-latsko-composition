@@ -11,26 +11,26 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/returnals")
+@RequestMapping("/api")
 public class ReturnController {
     private final ReturnService returnService;
 
-    @GetMapping
+    @GetMapping("/manageL2/returnals/")
     public List<Returnal> getReturnals() {
         return returnService.getAllReturnals();
     }
 
-    @PostMapping
+    @PostMapping("/manageL2/returnals/")
     public Returnal saveReturnal(@RequestBody @Valid ReturnDTO returnDTO) {
         return returnService.saveReturn(returnDTO);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/manageL2/returnals/{id}")
     public Returnal editReturnal(@PathVariable Long id, @RequestBody ReturnDTO returnDTO) {
         return returnService.editReturnal(id, returnDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/manageL2/returnals/{id}")
     public void deleteReturnal(@PathVariable Long id) {
         returnService.deleteReturnalById(id);
     }
