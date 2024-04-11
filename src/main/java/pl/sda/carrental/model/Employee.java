@@ -2,6 +2,7 @@ package pl.sda.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
     private Long employeeId;
+    @NotNull(message = "name cannot be null")
     private String name;
+    @NotNull(message = "surname cannot be null")
     private String surname;
     private Position position;
 

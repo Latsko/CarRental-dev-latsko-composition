@@ -23,7 +23,6 @@ public class Client {
     private String surname;
     @NotNull(message = "email cannot be null")
     private String email;
-    @NotNull(message = "address cannot be null")
     private String address;
 
     @ManyToOne
