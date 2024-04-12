@@ -225,7 +225,7 @@ public class BranchService {
     public void removeEmployeeFromBranch(Long employeeId, Long branchId) {
         Branch foundBranch = getById(branchId);
         Employee foundEmployee = foundBranch.getEmployees().stream()
-                .filter(employee -> Objects.equals(employee.getEmployeeId(), employeeId))
+                .filter(employee -> Objects.equals(employee.getId(), employeeId))
                 .findFirst()
                 .orElseThrow(() ->
                         new ObjectNotFoundInRepositoryException("No employee under ID #"

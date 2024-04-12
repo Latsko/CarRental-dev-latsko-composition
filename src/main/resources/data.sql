@@ -33,6 +33,7 @@ VALUES ('Toyota', 'Corolla', 'Sedan', 2023, 'Silver', 15000, 0, 250.00, 1),
        ('Porsche', '911', 'Coupe', 2023, 'Red', 8000, 0, 1200.00, 1),
        ('Ferrari', '488 GTB', 'Coupe', 2022, 'Yellow', 5000, 1, 2500.00, 2);
 
+# todo add id column for each employee and other new columns with values
 INSERT INTO employee (name, surname, position, branch_id)
 VALUES ('John', 'Doe', 0, 1),
        ('Jane', 'Smith', 1, 2),
@@ -55,6 +56,7 @@ VALUES ('John', 'Doe', 0, 1),
        ('Lucas', 'Wright', 0, 1),
        ('Madison', 'Baker', 1, 2);
 
+# todo add id column for each client and other new columns with values
 INSERT INTO client (name, surname, address, email, branch_id)
 VALUES ('Sophie', 'Bennett', '111 Hill St', 'sophie@example.com', 1),
        ('Jacob', 'Fisher', '222 River St', 'jacob@example.com', 2),

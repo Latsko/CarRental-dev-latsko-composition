@@ -9,5 +9,7 @@ public class PasswordGenerator {
         System.out.println(encoder.encode("dpassword"));
         System.out.println(encoder.encode("ppassword"));
         System.out.println(encoder.encode("mpassword"));
+        System.out.println(encoder.encode("password1"));
+        System.out.println(encoder.encode("changedPassword"));
     }
 }

@@ -42,6 +42,7 @@ public class CarRentalService {
         if(!carRentalRepository.findAll().isEmpty()) {
             throw new ObjectAlreadyExistsException("Car Rental already exists!");
         }
+
         return carRentalRepository.save(carRental);
     }
 

@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.configuration.security.dto.UserDto;
 import pl.sda.carrental.configuration.security.service.UserService;
-import pl.sda.carrental.service.ClientService;
-import pl.sda.carrental.service.EmployeeService;
 
 import java.util.List;
 
@@ -14,12 +12,10 @@ import java.util.List;
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
-    private final ClientService clientService;
-    private final EmployeeService employeeService;
 
     @GetMapping
-    public UserDto findUserByName(@RequestParam String name) {
-        return userService.findUserByName(name);
+    public UserDto findUserByLogin(@RequestParam String login) {
+        return userService.findUserByLogin(login);
     }
 
     @GetMapping("/users")
@@ -29,11 +25,11 @@ public class AuthController {
 
     @PostMapping("/newClient")
     public UserDto registerClient(@RequestBody UserDto userDto) {
-        return userService.saveUser(userDto);
+        return userService.saveClient(userDto);
     }
 
     @PostMapping("/newEmployee")
     public UserDto registerEmployee(@RequestBody UserDto userDto) {
-        return userService.saveUser(userDto);
+        return userService.saveEmployee(userDto);
     }
 }

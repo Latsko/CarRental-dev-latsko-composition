@@ -1,9 +1,10 @@
 package pl.sda.carrental.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import pl.sda.carrental.configuration.security.entity.User;
 
 @Entity
 @AllArgsConstructor
@@ -12,21 +13,8 @@ import lombok.*;
 @Setter
 @With
 @Table(name = "client")
-public class Client {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
-    private Long clientId;
-    @NotNull(message = "name cannot be null")
-    private String name;
-    @NotNull(message = "surname cannot be null")
-    private String surname;
+public class Client extends User {
     @NotNull(message = "email cannot be null")
     private String email;
     private String address;
-
-    @ManyToOne
-    @JoinColumn(name = "branch_id")
-    @JsonBackReference(value = "client-reference")
-    private Branch branch;
 }

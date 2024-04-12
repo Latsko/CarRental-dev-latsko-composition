@@ -53,7 +53,7 @@ public class ReservationService {
     public static ReservationDTO mapReservationToDTO(Reservation reservation) {
         return new ReservationDTO(
                 reservation.getReservationId(),
-                reservation.getClient().getClientId(),
+                reservation.getClient().getId(),
                 reservation.getCar().getCarId(),
                 reservation.getStartDate(),
                 reservation.getEndDate(),

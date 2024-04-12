@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.configuration.security.entity.User;
 import pl.sda.carrental.configuration.security.repository.UserRepository;
+import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 
 import java.util.stream.Collectors;
 
@@ -19,10 +20,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByName(username);
+        User user = userRepository.findByLogin(username)
+                .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No user found with login: " + username));
         if(user != null) {
             return new org.springframework.security.core.userdetails.User(
-                    user.getName(),
+                    user.getLogin(),
                     user.getPassword(),
                     user.getRoles().stream()
                             .map(role -> new SimpleGrantedAuthority(role.getName()))

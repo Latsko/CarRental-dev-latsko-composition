@@ -3,15 +3,13 @@ package pl.sda.carrental.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@EqualsAndHashCode(exclude = "branches")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -10,6 +10,6 @@ public interface ReturnRepository extends JpaRepository<Returnal, Long> {
     @Query("SELECT res.reservationId FROM Returnal r JOIN r.reservation res WHERE res.reservationId = :reservationId")
     List<Long> findReturnsWithReservationId(Long reservationId);
 
-    @Query("SELECT r FROM Returnal r JOIN r.employee e WHERE e.employeeId = :employeeId")
+    @Query("SELECT r FROM Returnal r JOIN r.employee e WHERE e.id = :employeeId")
     List<Returnal> findReturnalsByEmployeeId(Long employeeId);
 }

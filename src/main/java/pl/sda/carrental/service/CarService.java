@@ -3,7 +3,7 @@ package pl.sda.carrental.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.exceptionHandling.IllegalArgumentForStatusException;
+import pl.sda.carrental.exceptionHandling.IllegalArgumentForEnumException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
@@ -139,14 +139,14 @@ public class CarService {
      *
      * @param status The new status value to set for the car.
      * @param id     The ID of the car to be updated.
-     * @throws IllegalArgumentForStatusException if the provided status does not match any predefined car status.
+     * @throws IllegalArgumentForEnumException if the provided status does not match any predefined car status.
      */
     @Transactional
     public Car updateStatus(String status, Long id) {
         Car foundCar = getCarById(id);
 
         if (!checkIfStatusExists(status)) {
-            throw new IllegalArgumentForStatusException("Wrong argument for car Status!");
+            throw new IllegalArgumentForEnumException("Wrong argument for car Status!");
         }
         foundCar.setStatus(Status.valueOf(status));
 

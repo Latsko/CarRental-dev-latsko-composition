@@ -60,18 +60,19 @@ public class EmployeeService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + id));
         Branch parentBranch = childEmployee.getBranch();
 
-        parentBranch.getEmployees().stream()
-                .filter(filteredEmployee -> filteredEmployee.equals(childEmployee))
-                .findFirst()
-                .orElseThrow(() ->
-                        new ObjectNotFoundInRepositoryException("No employee under ID #" +
-                                id + " in that branch"));
-
         childEmployee.setName(employee.getName());
         childEmployee.setSurname(employee.getSurname());
         childEmployee.setPosition(employee.getPosition());
 
-        branchRepository.save(parentBranch);
+        if(parentBranch != null) {
+            parentBranch.getEmployees().stream()
+                    .filter(filteredEmployee -> filteredEmployee.equals(childEmployee))
+                    .findFirst()
+                    .orElseThrow(() ->
+                            new ObjectNotFoundInRepositoryException("No employee under ID #" +
+                                    id + " in that branch"));
+            branchRepository.save(parentBranch);
+        }
         return employeeRepository.save(childEmployee);
     }
 
