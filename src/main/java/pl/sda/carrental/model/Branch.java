@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @With
-@Table(name = "branch")
+@Table(name = "branches")
 public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import pl.sda.carrental.model.enums.Position;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "employee")
+@Table(name = "employees")
 public class Employee extends User {
     private Position position;
 }

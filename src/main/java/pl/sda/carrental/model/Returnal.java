@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @With
-@Table(name = "return_process")
+@Table(name = "returnals")
 public class Returnal {
 
     @Id

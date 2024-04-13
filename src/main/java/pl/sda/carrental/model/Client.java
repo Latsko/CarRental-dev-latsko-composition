@@ -12,7 +12,7 @@ import pl.sda.carrental.configuration.security.entity.User;
 @Getter
 @Setter
 @With
-@Table(name = "client")
+@Table(name = "clients")
 public class Client extends User {
     @NotNull(message = "email cannot be null")
     private String email;
