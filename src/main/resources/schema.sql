@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS employees;
 DROP TABLE IF EXISTS users_roles;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS hibernate_sequences;
 DROP TABLE IF EXISTS cars;
 DROP TABLE IF EXISTS branches;
 DROP TABLE IF EXISTS revenues;
@@ -35,7 +36,6 @@ CREATE TABLE branches
     manager_id    BIGINT,
     car_rental_id BIGINT,
     revenue_id    BIGINT,
---     UNIQUE (car_rental_id),
     FOREIGN KEY (car_rental_id) REFERENCES car_rental (car_rental_id),
     FOREIGN KEY (revenue_id) REFERENCES revenues (revenue_id)
 );
@@ -55,30 +55,51 @@ CREATE TABLE cars
     FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
 );
 
-CREATE TABLE users
+CREATE TABLE hibernate_sequences
 (
-    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
-    login     VARCHAR(50)  NOT NULL UNIQUE,
-    password  VARCHAR(100) NOT NULL,
-    name      VARCHAR(255),
-    surname   VARCHAR(255),
-    branch_id BIGINT,
-    FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
+    sequence_name varchar(255) NOT NULL,
+    next_val      bigint,
+    PRIMARY KEY (sequence_name)
 );
 
-CREATE TABLE employees
+CREATE TABLE users
 (
-    id       BIGINT PRIMARY KEY,
-    position TINYINT NOT NULL,
-    FOREIGN KEY (id) REFERENCES users (id)
+    id        BIGINT       NOT NULL,
+    login     VARCHAR(255) NOT NULL,
+    name      VARCHAR(255),
+    password  VARCHAR(255) NOT NULL,
+    surname   VARCHAR(255),
+    branch_id BIGINT,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE clients
 (
-    id      BIGINT PRIMARY KEY,
-    address VARCHAR(255),
-    email   VARCHAR(255) NOT NULL,
-    FOREIGN KEY (id) REFERENCES users (id)
+    id        BIGINT       NOT NULL,
+    login     VARCHAR(255) NOT NULL,
+    name      VARCHAR(255),
+    password  VARCHAR(255) NOT NULL,
+    surname   VARCHAR(255),
+    branch_id BIGINT,
+    address   VARCHAR(255),
+    email     VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT UK_riyp540u0yca4mqdvwmf7vmbv UNIQUE (login),
+    CONSTRAINT FK_jb62qduyfqkmnj3w0swbo0jrk FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
+);
+
+CREATE TABLE employees
+(
+    id        BIGINT       NOT NULL,
+    login     VARCHAR(255) NOT NULL,
+    name      VARCHAR(255),
+    password  VARCHAR(255) NOT NULL,
+    surname   VARCHAR(255),
+    branch_id BIGINT,
+    position  TINYINT CHECK (position BETWEEN 0 AND 2),
+    PRIMARY KEY (id),
+    CONSTRAINT UK_bxq95ffjulvwwma5nsllkdk6e UNIQUE (login),
+    CONSTRAINT FK_cmcru0ilds7m1p8xcqynloon4 FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
 );
 
 CREATE TABLE reservations
