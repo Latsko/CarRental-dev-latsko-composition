@@ -34,39 +34,45 @@ VALUES ('Toyota', 'Corolla', 'Sedan', 2023, 'Silver', 15000, 0, 250.00, 1),
        ('Ferrari', '488 GTB', 'Coupe', 2022, 'Yellow', 5000, 1, 2500.00, 2);
 
 INSERT INTO hibernate_sequences(sequence_name, next_val)
-VALUES ('default', 0);
+VALUES ('default', 100);
 
-INSERT INTO users(id, login, password, name, surname, branch_id)
-VALUES (1, 'employee1', 'Emma', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Brown', 1),
-       (2, 'employee2', 'Michael', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Jones', 2),
-       (3, 'employee3', 'Olivia', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Davis', 3),
-       (4, 'employee4', 'William', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Garcia', 1),
-       (5, 'employee5', 'Sophia', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Miller', 2),
-       (6, 'employee6', 'Liam', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Martinez', 3),
-       (7, 'employee7', 'Ava', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Wilson', 1),
-       (8, 'employee8', 'James', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Anderson', 2),
-       (9, 'employee9', 'Ella', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Taylor', 3),
-       (10, 'employee10', 'Alexander', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Clark', 1),
-       (11, 'employee11', 'Grace', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Hill', 2),
-       (12, 'employee12', 'Mia', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Scott', 3),
-       (13, 'employee13', 'Benjamin', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Green', 1),
-       (14, 'employee14', 'Chloe', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Adams', 2),
-       (15, 'employee15', 'Lucas', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Wright', 3),
-       (16, 'jarek', 'John', '$2a$10$JFtdUV4p3CbvLJxHlhvlkeYXyhI7d84yoS33Cp.EYvfcACRmUhOIK', 'Doe', 1),
-       (17, 'daniel', 'Jane', '$2a$10$lcSkYMyBmW0G.4hOVLjsBe3Vke5KZ/3q4xvk32uEGb6c4XIF6Ma2y', 'Smith', 2),
-       (18, 'piotr', 'Alice', '$2a$10$C6J0iO5dt4i44/.mz6onxeCAmU7tTFyMRyueLsEnx7mYiL15wd9ZK', 'Johnson', 3),
-       (19, 'marek', 'Bob', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Williams', 1),
-       (20, 'client0', 'Sophie', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Bennett', 1),
-       (21, 'client1', 'Sophie', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Bennett', 1),
-       (22, 'client2', 'Jacob', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Fisher', 2),
-       (23, 'client3', 'Nora', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Clarkson', 3),
-       (24, 'client4', 'Gabriel', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Powell', 1),
-       (25, 'client5', 'Lillian', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Roberts', 2),
-       (26, 'client6', 'Caleb', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Hughes', 3),
-       (27, 'client7', 'Violet', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Harrison', 1),
-       (28, 'client8', 'Levi', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Foster', 2),
-       (29, 'client9', 'Stella', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Murray', 3),
-       (30, 'client10', 'Hudson', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Simmons', 1);
+# INSERT INTO users(id, login, password, name, surname, branch_id)
+# VALUES (1, 'employee1', 'Emma', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Brown', 1),
+#        (2, 'employee2', 'Michael', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Jones', 2),
+#        (3, 'employee3', 'Olivia', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Davis', 3),
+#        (4, 'employee4', 'William', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Garcia', 1),
+#        (5, 'employee5', 'Sophia', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Miller', 2),
+#        (6, 'employee6', 'Liam', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Martinez', 3),
+#        (7, 'employee7', 'Ava', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Wilson', 1),
+#        (8, 'employee8', 'James', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Anderson', 2),
+#        (9, 'employee9', 'Ella', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Taylor', 3),
+#        (10, 'employee10', 'Alexander', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Clark', 1),
+#        (11, 'employee11', 'Grace', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Hill', 2),
+#        (12, 'employee12', 'Mia', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Scott', 3),
+#        (13, 'employee13', 'Benjamin', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Green', 1),
+#        (14, 'employee14', 'Chloe', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Adams', 2),
+#        (15, 'employee15', 'Lucas', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Wright', 3),
+#        (16, 'jarek', 'John', '$2a$10$JFtdUV4p3CbvLJxHlhvlkeYXyhI7d84yoS33Cp.EYvfcACRmUhOIK', 'Doe', 1),
+#        (17, 'daniel', 'Jane', '$2a$10$lcSkYMyBmW0G.4hOVLjsBe3Vke5KZ/3q4xvk32uEGb6c4XIF6Ma2y', 'Smith', 2),
+#        (18, 'piotr', 'Alice', '$2a$10$C6J0iO5dt4i44/.mz6onxeCAmU7tTFyMRyueLsEnx7mYiL15wd9ZK', 'Johnson', 3),
+#        (19, 'marek', 'Bob', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Williams', 1),
+#        (20, 'client0', 'Sophie', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Bennett', 1),
+#        (21, 'client1', 'Sophie', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Bennett', 1),
+#        (22, 'client2', 'Jacob', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Fisher', 2),
+#        (23, 'client3', 'Nora', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Clarkson', 3),
+#        (24, 'client4', 'Gabriel', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Powell', 1),
+#        (25, 'client5', 'Lillian', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Roberts', 2),
+#        (26, 'client6', 'Caleb', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Hughes', 3),
+#        (27, 'client7', 'Violet', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Harrison', 1),
+#        (28, 'client8', 'Levi', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Foster', 2),
+#        (29, 'client9', 'Stella', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Murray', 3),
+#        (30, 'client10', 'Hudson', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Simmons', 1);
+
+INSERT INTO roles(id, name)
+VALUES (1, 'ROLE_CLIENT'),
+       (2, 'ROLE_EMPLOYEE'),
+       (3, 'ROLE_ADMIN'),
+       (4, 'ROLE_MANAGER');
 
 INSERT INTO employees (id, login, name, password, surname, branch_id, position)
 VALUES (1, 'employee1', 'Emma', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Brown', 2, 1),
@@ -85,7 +91,6 @@ VALUES (1, 'employee1', 'Emma', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemV
        (14, 'employee14', 'Chloe', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Adams', 3, 0),
        (15, 'employee15', 'Lucas', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Wright', 1, 1);
 
--- Inserting clients
 INSERT INTO clients (id, login, name, password, surname, branch_id, address, email)
 VALUES (16, 'jarek', 'John', '$2a$10$JFtdUV4p3CbvLJxHlhvlkeYXyhI7d84yoS33Cp.EYvfcACRmUhOIK', 'Doe', 1, '123 Main St, Anytown, USA', 'john.doe@example.com'),
        (17, 'daniel', 'Jane', '$2a$10$lcSkYMyBmW0G.4hOVLjsBe3Vke5KZ/3q4xvk32uEGb6c4XIF6Ma2y', 'Smith', 2, '456 Elm St, Othertown, USA', 'jane.smith@example.com'),
@@ -102,6 +107,12 @@ VALUES (16, 'jarek', 'John', '$2a$10$JFtdUV4p3CbvLJxHlhvlkeYXyhI7d84yoS33Cp.EYvf
        (28, 'client8', 'Levi', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Foster', 2, '800 Pinesap St, Fifthtown, USA', 'levi.foster@example.com'),
        (29, 'client9', 'Stella', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Murray', 3, '900 Pinebark St, Sixthtown, USA', 'stella.murray@example.com'),
        (30, 'client10', 'Hudson', '$2a$10$SURgxM8zxzqksrtfXdN.2.6.83R9bUP2bNzpQemVGS6OE/gHsDR1C', 'Simmons', 1, '1000 Pineneedle St, Seventhtown, USA', 'hudson.simmons@example.com');
+
+# INSERT INTO users_roles(user_id, role_id)
+# VALUES (1, 2),
+#        (2, 3),
+#        (3, 1),
+#        (4, 4);
 
 INSERT INTO reservations (start_date, end_date, price, start_branch_id, end_branch_id, car_id, client_id)
 VALUES ('2024-01-10', '2024-01-15', 350.00, 1, 2, 1, 21),
@@ -136,15 +147,3 @@ VALUES ('Clean and tidy', '2024-01-15', 50.00, 1, 1),
        ('Great experience', '2024-01-29', 25.00, 8, 8);
 
 -- Authentication and authorization
-
-INSERT INTO roles(id, name)
-VALUES (1, 'ROLE_CLIENT'),
-       (2, 'ROLE_EMPLOYEE'),
-       (3, 'ROLE_ADMIN'),
-       (4, 'ROLE_MANAGER');
-
-INSERT INTO users_roles(user_id, role_id)
-VALUES (1, 2),
-       (2, 3),
-       (3, 1),
-       (4, 4);
