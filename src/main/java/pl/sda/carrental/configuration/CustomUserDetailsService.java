@@ -1,4 +1,4 @@
-package pl.sda.carrental.configuration.security;
+package pl.sda.carrental.configuration;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.configuration.security.entity.User;
-import pl.sda.carrental.configuration.security.repository.UserRepository;
+import pl.sda.carrental.configuration.auth.entity.User;
+import pl.sda.carrental.configuration.auth.repository.UserRepository;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 
 import java.util.stream.Collectors;

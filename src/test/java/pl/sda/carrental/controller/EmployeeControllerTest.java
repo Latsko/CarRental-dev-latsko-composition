@@ -12,12 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.model.Employee;
+import pl.sda.carrental.configuration.auth.entity.Employee;
 import pl.sda.carrental.model.Rent;
 import pl.sda.carrental.model.Returnal;
 import pl.sda.carrental.model.enums.Position;
 import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.repository.EmployeeRepository;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.RentRepository;
 import pl.sda.carrental.repository.ReturnRepository;
 
@@ -57,7 +57,7 @@ class EmployeeControllerTest {
     void setUp() {
         branch = new Branch(1L, "name", "address", null,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), null, null);
-        employee = new Employee(1L, "name", "surname", Position.ENTRY, branch);
+        employee = new Employee(1L, "name", "surname", Position.EMPLOYEE, branch);
         branch.getEmployees().add(employee);
     }
 

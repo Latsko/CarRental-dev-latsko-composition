@@ -3,6 +3,8 @@ package pl.sda.carrental.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.repository.ClientRepository;
 import pl.sda.carrental.exceptionHandling.ObjectAlreadyAssignedToBranchException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.*;

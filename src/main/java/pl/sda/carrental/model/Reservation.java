@@ -7,6 +7,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import pl.sda.carrental.configuration.auth.entity.Client;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

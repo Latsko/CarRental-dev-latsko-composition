@@ -1,4 +1,4 @@
-package pl.sda.carrental.configuration.security.entity;
+package pl.sda.carrental.configuration.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;

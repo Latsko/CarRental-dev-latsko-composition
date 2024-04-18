@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.model.Employee;
+import pl.sda.carrental.configuration.auth.entity.Employee;
 import pl.sda.carrental.model.Rent;
 import pl.sda.carrental.model.Returnal;
 import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.repository.EmployeeRepository;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.RentRepository;
 import pl.sda.carrental.repository.ReturnRepository;
 

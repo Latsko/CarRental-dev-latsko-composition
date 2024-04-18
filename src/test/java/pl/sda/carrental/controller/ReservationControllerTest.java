@@ -11,11 +11,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import pl.sda.carrental.configuration.auth.entity.Client;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.ReservationDTO;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.repository.ClientRepository;
+import pl.sda.carrental.configuration.auth.repository.ClientRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 import pl.sda.carrental.service.ReservationService;
 import pl.sda.carrental.service.RevenueService;
@@ -61,7 +62,7 @@ class ReservationControllerTest {
 
     @BeforeEach
     void setUp() {
-        client = new Client().withClientId(1L);
+        client = new Client().withId(1L);
         branch = new Branch().withBranchId(1L).withRevenue(new Revenue(1L, new BigDecimal("10000")));
         car = new Car().withCarId(1L).withPrice(new BigDecimal("100.0")).withBranch(branch);
         reservation = new Reservation(1L, new Client(), new Car().withBranch(branch),

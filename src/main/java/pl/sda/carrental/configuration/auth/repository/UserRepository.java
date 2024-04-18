@@ -1,7 +1,7 @@
-package pl.sda.carrental.configuration.security.repository;
+package pl.sda.carrental.configuration.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.sda.carrental.configuration.security.entity.User;
+import pl.sda.carrental.configuration.auth.entity.User;
 
 import java.util.Optional;
 

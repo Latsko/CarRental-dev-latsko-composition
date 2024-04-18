@@ -1,9 +1,11 @@
-package pl.sda.carrental.configuration.security.controller;
+package pl.sda.carrental.configuration.auth.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.configuration.security.dto.UserDto;
-import pl.sda.carrental.configuration.security.service.UserService;
+import pl.sda.carrental.configuration.auth.dto.ClientDto;
+import pl.sda.carrental.configuration.auth.dto.EmployeeDto;
+import pl.sda.carrental.configuration.auth.dto.UserDto;
+import pl.sda.carrental.configuration.auth.service.UserService;
 
 import java.util.List;
 
@@ -24,12 +26,12 @@ public class AuthController {
     }
 
     @PostMapping("/newClient")
-    public UserDto registerClient(@RequestBody UserDto userDto) {
-        return userService.saveClient(userDto);
+    public ClientDto registerClient(@RequestBody ClientDto clientDto) {
+        return userService.saveClient(clientDto);
     }
 
     @PostMapping("/newEmployee")
-    public UserDto registerEmployee(@RequestBody UserDto userDto) {
-        return userService.saveEmployee(userDto);
+    public EmployeeDto registerEmployee(@RequestBody EmployeeDto employeeDto) {
+        return userService.saveEmployee(employeeDto);
     }
 }

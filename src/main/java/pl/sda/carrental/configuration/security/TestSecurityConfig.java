@@ -1,4 +1,4 @@
-package pl.sda.carrental.configuration;
+package pl.sda.carrental.configuration.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,10 @@
-package pl.sda.carrental.configuration.security.dto;
+package pl.sda.carrental.configuration.auth.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +17,6 @@ public class UserDto {
     private String login;
     @NotEmpty(message = "Password should not be empty")
     private String password;
-    private String position;
-    private String email;
+    private String fullName;
+    private Long branchId;
 }

@@ -7,12 +7,12 @@ import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.exceptionHandling.ReservationTimeCollisionException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
-import pl.sda.carrental.model.Client;
+import pl.sda.carrental.configuration.auth.entity.Client;
 import pl.sda.carrental.model.DTO.ReservationDTO;
 import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.repository.ClientRepository;
+import pl.sda.carrental.configuration.auth.repository.ClientRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 
 import java.math.BigDecimal;

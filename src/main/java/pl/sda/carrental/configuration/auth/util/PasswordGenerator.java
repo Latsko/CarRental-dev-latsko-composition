@@ -1,4 +1,4 @@
-package pl.sda.carrental.configuration.security.util;
+package pl.sda.carrental.configuration.auth.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

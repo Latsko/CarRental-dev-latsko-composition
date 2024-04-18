@@ -11,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import pl.sda.carrental.configuration.auth.entity.Employee;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.CarDTO;
 import pl.sda.carrental.model.enums.Position;
@@ -84,12 +86,12 @@ class BranchControllerTest {
                 null, null);
 
         branch1.getCars().add(car1);
-        employee1 = new Employee(1L, "name1", "surname1", Position.ENTRY, branch1);
+        employee1 = new Employee(1L, "name1", "surname1", Position.EMPLOYEE, branch1);
         branch1.getEmployees().add(employee1);
 
-        employee2 = new Employee(2L, "name2", "surname2", Position.ENTRY, null);
+        employee2 = new Employee(2L, "name2", "surname2", Position.EMPLOYEE, null);
         branch2.getEmployees().add(employee2);
-        branch2.setManagerId(employee2.getEmployeeId());
+        branch2.setManagerId(employee2.getId());
 
     }
 

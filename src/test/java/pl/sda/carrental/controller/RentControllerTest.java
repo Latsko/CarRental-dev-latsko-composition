@@ -11,10 +11,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.entity.Employee;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.RentDTO;
 import pl.sda.carrental.model.enums.Position;
-import pl.sda.carrental.repository.EmployeeRepository;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.RentRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 

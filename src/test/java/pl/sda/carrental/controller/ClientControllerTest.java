@@ -11,8 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import pl.sda.carrental.configuration.auth.repository.ClientRepository;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.model.Client;
+import pl.sda.carrental.configuration.auth.entity.Client;
 import pl.sda.carrental.repository.*;
 
 import java.util.*;

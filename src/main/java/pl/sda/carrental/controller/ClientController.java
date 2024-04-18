@@ -2,7 +2,7 @@ package pl.sda.carrental.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.sda.carrental.model.Client;
+import pl.sda.carrental.configuration.auth.entity.Client;
 import pl.sda.carrental.service.ClientService;
 
 import java.util.List;

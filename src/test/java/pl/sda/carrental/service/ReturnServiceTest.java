@@ -3,11 +3,12 @@ package pl.sda.carrental.service;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.sda.carrental.configuration.auth.entity.Employee;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.exceptionHandling.ReturnAlreadyExistsForReservationException;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.ReturnDTO;
-import pl.sda.carrental.repository.EmployeeRepository;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 import pl.sda.carrental.repository.ReturnRepository;
 

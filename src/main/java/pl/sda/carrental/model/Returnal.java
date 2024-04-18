@@ -6,6 +6,7 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import lombok.*;
+import pl.sda.carrental.configuration.auth.entity.Employee;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

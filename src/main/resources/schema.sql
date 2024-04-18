@@ -146,18 +146,6 @@ CREATE TABLE roles
     PRIMARY KEY (id)
 );
 
-CREATE TABLE users
-(
-    id        BIGINT       NOT NULL,
-    login     VARCHAR(255) NOT NULL,
-    name      VARCHAR(255),
-    password  VARCHAR(255) NOT NULL,
-    surname   VARCHAR(255),
-    branch_id BIGINT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
-);
-
 CREATE TABLE users_roles
 (
     user_id BIGINT NOT NULL,

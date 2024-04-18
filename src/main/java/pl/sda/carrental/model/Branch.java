@@ -3,6 +3,8 @@ package pl.sda.carrental.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.entity.Employee;
 
 import java.util.HashSet;
 import java.util.Set;
