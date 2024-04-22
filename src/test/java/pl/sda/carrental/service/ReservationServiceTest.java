@@ -478,13 +478,15 @@ class ReservationServiceTest {
     }
 
     private Client createClient(String address, String name, String email, String surname) {
-        return new Client()
-                .withClientId(1L)
-                .withAddress(address)
-                .withName(name)
-                .withEmail(email)
-                .withBranch(new Branch())
-                .withSurname(surname);
+        return new Client(1L,
+                "login",
+                "password",
+                name,
+                surname,
+                new Branch(),
+                null,
+                email,
+                address);
     }
 
 

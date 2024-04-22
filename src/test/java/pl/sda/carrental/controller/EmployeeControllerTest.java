@@ -57,7 +57,7 @@ class EmployeeControllerTest {
     void setUp() {
         branch = new Branch(1L, "name", "address", null,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(), null, null);
-        employee = new Employee(1L, "name", "surname", Position.EMPLOYEE, branch);
+        employee = new Employee(1L, "login", "password", "name", "surname", branch, null, Position.EMPLOYEE);
         branch.getEmployees().add(employee);
     }
 
@@ -68,7 +68,7 @@ class EmployeeControllerTest {
         given(employeeRepositoryMock.findAll()).willReturn(list);
 
         //when
-        ResultActions response = mockMvc.perform(get("/employees"));
+        ResultActions response = mockMvc.perform(get("/api/manageL1/employees"));
 
         //then
         response.andDo(print())
@@ -85,17 +85,17 @@ class EmployeeControllerTest {
         given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee);
 
         //when
-        ResultActions response = mockMvc.perform(post("/employees")
+        ResultActions response = mockMvc.perform(post("/api/manageL1/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee)));
 
         //then
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.employeeId", is(1L), Long.class))
+                .andExpect(jsonPath("$.id", is(1L), Long.class))
                 .andExpect(jsonPath("$.name", is("name")))
                 .andExpect(jsonPath("$.surname", is("surname")))
-                .andExpect(jsonPath("$.position", is(Position.ENTRY.toString())));
+                .andExpect(jsonPath("$.position", is(Position.EMPLOYEE.toString())));
     }
 
     @Test
@@ -104,10 +104,10 @@ class EmployeeControllerTest {
         given(employeeRepositoryMock.findById(1L)).willReturn(Optional.of(employee));
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch);
         given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee);
-        Employee changed = new Employee(2L, "changedName", "changedSurname", Position.MANAGER, null);
+        Employee changed = new Employee(2L, "login", "password", "changedName", "changedSurname", null, null, Position.MANAGER);
 
         //when
-        ResultActions response = mockMvc.perform(put("/employees/1")
+        ResultActions response = mockMvc.perform(put("/api/manageL1/employees/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changed)));
 
@@ -130,7 +130,7 @@ class EmployeeControllerTest {
         doNothing().when(employeeRepositoryMock).deleteById(anyLong());
 
         //when
-        ResultActions response = mockMvc.perform(delete("/employees/1"));
+        ResultActions response = mockMvc.perform(delete("/api/manageL1/employees/1"));
 
         //then
         response.andExpect(status().isOk());

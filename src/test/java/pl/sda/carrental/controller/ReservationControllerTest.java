@@ -62,7 +62,8 @@ class ReservationControllerTest {
 
     @BeforeEach
     void setUp() {
-        client = new Client().withId(1L);
+        client = new Client();
+        client.setId(1L);
         branch = new Branch().withBranchId(1L).withRevenue(new Revenue(1L, new BigDecimal("10000")));
         car = new Car().withCarId(1L).withPrice(new BigDecimal("100.0")).withBranch(branch);
         reservation = new Reservation(1L, new Client(), new Car().withBranch(branch),
@@ -79,7 +80,7 @@ class ReservationControllerTest {
         given(reservationRepositoryMock.findAll()).willReturn(Collections.singletonList(reservation));
 
         //when
-        ResultActions response = mockMvc.perform(get("/reservations"));
+        ResultActions response = mockMvc.perform(get("/api/authenticated/reservations"));
 
         //then
         response.andDo(print())
@@ -97,14 +98,14 @@ class ReservationControllerTest {
         given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client));
         given(reservationRepositoryMock.findAll()).willReturn(List.of());
         given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
-        doNothing().when(revenueServiceMock).updateRevenue(anyLong(), any(BigDecimal.class));
+        when(revenueServiceMock.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
         given(reservationRepositoryMock.save(any(Reservation.class))).willReturn(reservation);
         ReservationDTO reservationDTO = new ReservationDTO(1L, 1L, 1L,
                 LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 12),
                 1L, 1L, null, null);
 
         //when
-        ResultActions response = mockMvc.perform(post("/reservations")
+        ResultActions response = mockMvc.perform(post("/api/authenticated/reservations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(reservationDTO)));
 
@@ -124,14 +125,14 @@ class ReservationControllerTest {
         given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client));
         given(reservationRepositoryMock.findAll()).willReturn(List.of());
         given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
-        doNothing().when(revenueServiceMock).updateRevenue(anyLong(), any(BigDecimal.class));
+        when(revenueServiceMock.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
         given(reservationRepositoryMock.save(any(Reservation.class))).willReturn(reservation);
         ReservationDTO reservationDTO = new ReservationDTO(1L, 1L, 1L,
                 LocalDate.of(2024, 10, 12), LocalDate.of(2024, 10, 22),
                 1L, 1L, null, null);
 
         //when
-        ResultActions response = mockMvc.perform(put("/reservations/1")
+        ResultActions response = mockMvc.perform(put("/api/authenticated/reservations/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(reservationDTO)));
 
@@ -150,7 +151,7 @@ class ReservationControllerTest {
         doNothing().when(reservationRepositoryMock).delete(any(Reservation.class));
 
         //when
-        ResultActions response = mockMvc.perform(delete("/reservations/1"));
+        ResultActions response = mockMvc.perform(delete("/api/authenticated/reservations/1"));
 
         //then
         response.andExpect(status().isOk());
@@ -161,10 +162,10 @@ class ReservationControllerTest {
     void shouldCancelReservation() throws Exception {
         //given
         given(reservationRepositoryMock.findById(anyLong())).willReturn(Optional.of(reservation));
-        doNothing().when(revenueServiceMock).updateRevenue(anyLong(), any(BigDecimal.class));
+        when(revenueServiceMock.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/reservations/1"));
+        ResultActions response = mockMvc.perform(patch("/api/authenticated/reservations/1"));
 
         //then
         response.andExpect(status().isOk());

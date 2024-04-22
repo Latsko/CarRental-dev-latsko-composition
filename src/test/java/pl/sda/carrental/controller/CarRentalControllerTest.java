@@ -52,7 +52,7 @@ class CarRentalControllerTest {
     void shouldGetCarRental() {
         Mockito.when(service.getCarRental()).thenReturn(carRental);
 
-        Flux<CarRental> responseBody = testClient.get().uri("/carRental")
+        Flux<CarRental> responseBody = testClient.get().uri("/api/public/carRental")
                 .exchange()
                 .expectStatus().isOk()
                 .returnResult(CarRental.class)
@@ -78,7 +78,7 @@ class CarRentalControllerTest {
 
         Flux<CarRental> responseBody = testClient
                 .post()
-                .uri("/carRental")
+                .uri("/api/admin/carRental")
                 .bodyValue(carRental)
                 .exchange()
                 .expectStatus()
@@ -106,7 +106,7 @@ class CarRentalControllerTest {
 
         Flux<Branch> responseBody = testClient
                 .post()
-                .uri("/carRental/addBranch")
+                .uri("/api/admin/carRental/addBranch")
                 .bodyValue(branch)
                 .exchange()
                 .expectStatus()
@@ -128,7 +128,7 @@ class CarRentalControllerTest {
 
         Flux<CarRental> responseBody = testClient
                 .put()
-                .uri("/carRental")
+                .uri("/api/admin/carRental")
                 .bodyValue(carRental)
                 .exchange()
                 .expectStatus()
@@ -154,7 +154,7 @@ class CarRentalControllerTest {
     void shouldDeleteCarRental() {
         testClient
                 .delete()
-                .uri("/carRental")
+                .uri("/api/admin/carRental")
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -165,7 +165,7 @@ class CarRentalControllerTest {
         Long resourceId = 1L;
         testClient
                 .delete()
-                .uri("/carRental/deleteBranch/{id}",resourceId)
+                .uri("/api/admin/carRental/deleteBranch/{id}",resourceId)
                 .exchange()
                 .expectStatus()
                 .isOk();

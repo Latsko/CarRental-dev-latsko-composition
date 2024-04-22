@@ -48,7 +48,7 @@ class BranchServiceTest {
         carRental = new CarRental();
         branch = new Branch();
         branchWithData = new Branch(111L, "name", "address", 1L, new HashSet<>(), new HashSet<>(), new HashSet<>(), carRental, new Revenue());
-        manager = new Employee(1L, "", "", null, null);
+        manager = new Employee(1L, "login", "password", "name", "surname", null, null, null);
         employee = manager;
         reservations = List.of(new Reservation().withEndBranch(branchWithData),
                 new Reservation().withStartBranch(branchWithData),
@@ -453,7 +453,7 @@ class BranchServiceTest {
         //given
         given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
         branch.getEmployees().add(employee);
-        employee.setEmployeeId(1L);
+        employee.setId(1L);
         employee.setBranch(branch);
 
         //when
@@ -470,7 +470,7 @@ class BranchServiceTest {
     void shouldNotRemoveEmployeeFromBranchWhenNoEmployeeWasFound() {
         given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch));
         branch.getEmployees().add(employee);
-        employee.setEmployeeId(1L);
+        employee.setId(1L);
         employee.setBranch(branch);
 
         //when

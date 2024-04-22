@@ -2,10 +2,7 @@ package pl.sda.carrental.configuration.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import pl.sda.carrental.model.Branch;
 
 import java.util.ArrayList;

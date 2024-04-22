@@ -24,13 +24,13 @@ public class BranchController {
                 .toList();
     }
 
-    @GetMapping("/authenticated/{id}")
+    @GetMapping("/authenticated/branches/{id}")
     public BranchDTO getById(@PathVariable Long id) {
         Branch branch = branchService.getById(id);
         return mapToBranchDTO(branch);
     }
 
-    @GetMapping("/authenticated/{id}/availableCarsOnDate/{date}")
+    @GetMapping("/authenticated/branches/{id}/availableCarsOnDate/{date}")
     public List<CarDTO> getCarsAvailableOnDate(@PathVariable Long id, @PathVariable String date) {
         return branchService.getCarsAvailableAtBranchOnDate(id, date);
     }

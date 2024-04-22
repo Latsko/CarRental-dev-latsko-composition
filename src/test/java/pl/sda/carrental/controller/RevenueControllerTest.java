@@ -57,7 +57,7 @@ class RevenueControllerTest {
         given(revenueRepositoryMock.findAll()).willReturn(list);
 
         //when
-        ResultActions response = mockMvc.perform(get("/revenues"));
+        ResultActions response = mockMvc.perform(get("/api/admin/revenues"));
 
         //then
         response.andDo(print())
@@ -74,7 +74,7 @@ class RevenueControllerTest {
         given(revenueRepositoryMock.save(any(Revenue.class))).willReturn(revenue);
 
         //when
-        ResultActions response = mockMvc.perform(post("/revenues")
+        ResultActions response = mockMvc.perform(post("/api/admin/revenues")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(revenue)));
 
@@ -93,7 +93,7 @@ class RevenueControllerTest {
         given(revenueRepositoryMock.save(any(Revenue.class))).willReturn(revenue);
 
         //when
-        ResultActions response = mockMvc.perform(put("/revenues/1")
+        ResultActions response = mockMvc.perform(put("/api/admin/revenues/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changed)));
 
@@ -112,7 +112,7 @@ class RevenueControllerTest {
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/revenues/assignRevenue/1/toBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/admin/revenues/assignRevenue/1/toBranch/1"));
 
         //then
         response.andExpect(status().isOk());
@@ -128,7 +128,7 @@ class RevenueControllerTest {
         doNothing().when(revenueRepositoryMock).deleteById(anyLong());
 
         //when
-        ResultActions response = mockMvc.perform(delete("/revenues/1"));
+        ResultActions response = mockMvc.perform(delete("/api/admin/revenues/1"));
 
         //then
         response.andExpect(status().isOk());

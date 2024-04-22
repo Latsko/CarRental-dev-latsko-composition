@@ -58,7 +58,7 @@ class CarControllerTest {
         given(carRepositoryMock.save(any(Car.class)))
                 .willReturn(car);
         //when
-        ResultActions response = mockMvc.perform(post("/cars")
+        ResultActions response = mockMvc.perform(post("/api/manageL1/cars")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(car)));
 
@@ -74,7 +74,7 @@ class CarControllerTest {
         given(carRepositoryMock.findById(anyLong()))
                 .willReturn(Optional.of(car));
         //when
-        ResultActions response = mockMvc.perform(get("/cars/1"));
+        ResultActions response = mockMvc.perform(get("/api/authenticated/cars/1"));
 
         //then
         response.andDo(print())
@@ -90,7 +90,7 @@ class CarControllerTest {
         given(carRepositoryMock.findAll()).willReturn(list);
 
         //when
-        ResultActions response = mockMvc.perform(get("/cars"));
+        ResultActions response = mockMvc.perform(get("/api/public/cars"));
 
         //then
         response.andDo(print())
@@ -107,7 +107,7 @@ class CarControllerTest {
         given(carRepositoryMock.findById(anyLong()))
                 .willReturn(Optional.of(car));
         //when
-        ResultActions response = mockMvc.perform(get("/cars/statusOnDate/1")
+        ResultActions response = mockMvc.perform(get("/api/authenticated/cars/statusOnDate/1")
                 .param("date", "2024-01-10"));
 
         //then
@@ -129,7 +129,7 @@ class CarControllerTest {
                 1000.0, Status.AVAILABLE, new BigDecimal(100), null, new HashSet<>());
 
         //when
-        ResultActions response = mockMvc.perform(put("/cars/1")
+        ResultActions response = mockMvc.perform(put("/api/manageL1/cars/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(anotherCar)));
 
@@ -148,7 +148,7 @@ class CarControllerTest {
         given(carRepositoryMock.save(any(Car.class))).willReturn(car);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/cars/setMileageAndPrice/1")
+        ResultActions response = mockMvc.perform(patch("/api/manageL2/cars/setMileageAndPrice/1")
                 .param("mileage","100.0")
                 .param("price", "200.0"));
 
@@ -166,7 +166,7 @@ class CarControllerTest {
         given(carRepositoryMock.save(any(Car.class))).willReturn(car);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/cars/setStatus/1")
+        ResultActions response = mockMvc.perform(patch("/api/manageL2/cars/setStatus/1")
                 .param("status", "RENTED"));
 
         //then
@@ -182,7 +182,7 @@ class CarControllerTest {
         doNothing().when(carRepositoryMock).deleteById(anyLong());
 
         //when
-        mockMvc.perform(delete("/cars/1"));
+        mockMvc.perform(delete("/api/manageL1/cars/1"));
 
         //then
         verify(carRepositoryMock, times(1)).deleteById(anyLong());

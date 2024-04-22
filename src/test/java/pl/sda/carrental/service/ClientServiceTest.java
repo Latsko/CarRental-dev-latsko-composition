@@ -35,7 +35,8 @@ class ClientServiceTest {
     @BeforeEach
     void setUp() {
         branch = new Branch();
-        client = new Client().withClientId(1L);
+        client = new Client();
+        client.setId(1L);
     }
 
     @Test
@@ -50,7 +51,7 @@ class ClientServiceTest {
         assertThat(foundClient)
                 .isNotNull()
                 .isInstanceOf(Client.class);
-        assertThat(foundClient.getClientId()).isEqualTo(1L);
+        assertThat(foundClient.getId()).isEqualTo(1L);
     }
 
     @Test
@@ -115,19 +116,21 @@ class ClientServiceTest {
         when(clientRepositoryMock.findById(anyLong())).thenReturn(Optional.of(client));
         when(clientRepositoryMock.save(any(Client.class))).thenReturn(client);
         when(branchRepositoryMock.save(any(Branch.class))).thenReturn(branch);
+        Client clientToEdit = new Client();
+        clientToEdit.setId(1L);
+        clientToEdit.setName("nameEdited");
+        clientToEdit.setSurname("surnameEdited");
+        clientToEdit.setEmail("emailEdited");
+        clientToEdit.setAddress("addressEdited");
 
         //when
-        Client editedClient = clientService.editClient(1L, new Client()
-                .withName("nameEdited")
-                .withSurname("surnameEdited")
-                .withEmail("emailEdited")
-                .withAddress("addressEdited"));
+        Client editedClient = clientService.editClient(1L, clientToEdit);
 
         //then
         assertThat(editedClient)
                 .isNotNull()
                 .isInstanceOf(Client.class);
-        assertThat(editedClient.getClientId()).isEqualTo(1L);
+        assertThat(editedClient.getId()).isEqualTo(1L);
         assertThat(editedClient.getName()).isEqualTo("nameEdited");
         assertThat(editedClient.getSurname()).isEqualTo("surnameEdited");
         assertThat(editedClient.getEmail()).isEqualTo("emailEdited");

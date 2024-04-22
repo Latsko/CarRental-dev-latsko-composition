@@ -56,8 +56,24 @@ class ClientControllerTest {
                 new HashSet<>(), new HashSet<>(), new HashSet<>(),
                 null, null);
 
-        client1 = new Client(1L, "name1", "surname1", "email1@email.pl", "address1", branch1);
-        client2 = new Client(2L, "name2", "surname2", "email2@email.pl", "address2", null);
+        client1 = new Client(1L,
+                "login",
+                "password",
+                "name1",
+                "surname1",
+                branch1,
+                null,
+                "email1@email.pl",
+                "address1");
+        client2 = new Client(2L,
+                "login",
+                "password",
+                "name2",
+                "surname2",
+                null,
+                null,
+                "email2@email.pl",
+                "address2");
         branch1.getClients().add(client1);
     }
 
@@ -67,12 +83,12 @@ class ClientControllerTest {
         given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client1));
 
         //when
-        ResultActions response = mockMvc.perform(get("/clients/1"));
+        ResultActions response = mockMvc.perform(get("/api/manageL2/clients/1"));
 
         //then
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.clientId", is(1L), Long.class));
+                .andExpect(jsonPath("$.id", is(1L), Long.class));
     }
 
     @Test
@@ -82,7 +98,7 @@ class ClientControllerTest {
         given(clientRepositoryMock.findAll()).willReturn(list);
 
         //when
-        ResultActions response = mockMvc.perform(get("/clients"));
+        ResultActions response = mockMvc.perform(get("/api/manageL2/clients"));
 
         //then
         response.andDo(print())
@@ -99,14 +115,14 @@ class ClientControllerTest {
         given(clientRepositoryMock.save(any(Client.class))).willReturn(client1);
 
         //when
-        ResultActions response = mockMvc.perform(post("/clients")
+        ResultActions response = mockMvc.perform(post("/api/public/clients")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(client1)));
 
         //then
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.clientId", is(1L), Long.class))
+                .andExpect(jsonPath("$.id", is(1L), Long.class))
                 .andExpect(jsonPath("$.name", is("name1")))
                 .andExpect(jsonPath("$.surname", is("surname1")))
                 .andExpect(jsonPath("$.email", is("email1@email.pl")))
@@ -119,11 +135,11 @@ class ClientControllerTest {
         given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client1));
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
         given(clientRepositoryMock.save(any(Client.class))).willReturn(client1);
-        Client changed = new Client(123L, "changedName", "changedSurname",
-                "changedEmail", "changedAddress", branch1);
+        Client changed = new Client(123L, "login", "password", "changedName", "changedSurname", branch1, null,
+                "changedEmail", "changedAddress");
 
         //when
-        ResultActions response = mockMvc.perform(put("/clients/1")
+        ResultActions response = mockMvc.perform(put("/api/manageL2/clients/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changed)));
 
@@ -147,7 +163,7 @@ class ClientControllerTest {
         doNothing().when(reservationRepositoryMock).deleteAll(List.of());
 
         //when
-        ResultActions response = mockMvc.perform(delete("/clients/1"));
+        ResultActions response = mockMvc.perform(delete("/api/manageL2/clients/1"));
 
         //then
         response.andExpect(status().isOk());
@@ -166,7 +182,7 @@ class ClientControllerTest {
         given(clientRepositoryMock.save(any(Client.class))).willReturn(client2);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/clients/client/2/assignToBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/manageL2/clients/client/2/assignToBranch/1"));
 
         //then
         response.andDo(print())
@@ -184,7 +200,7 @@ class ClientControllerTest {
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/clients/client/1/detachFromBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/manageL2/clients/client/1/detachFromBranch/1"));
 
         //then
         response.andExpect(status().isOk());

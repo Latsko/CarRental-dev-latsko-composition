@@ -86,10 +86,24 @@ class BranchControllerTest {
                 null, null);
 
         branch1.getCars().add(car1);
-        employee1 = new Employee(1L, "name1", "surname1", Position.EMPLOYEE, branch1);
+        employee1 = new Employee(1L,
+                "login",
+                "password",
+                "name1",
+                "surname1",
+                branch1,
+                null,
+                Position.EMPLOYEE);
         branch1.getEmployees().add(employee1);
 
-        employee2 = new Employee(2L, "name2", "surname2", Position.EMPLOYEE, null);
+        employee2 = new Employee(2L,
+                "login",
+                "password",
+                "name2",
+                "surname2",
+                null,
+                null,
+                Position.EMPLOYEE);
         branch2.getEmployees().add(employee2);
         branch2.setManagerId(employee2.getId());
 
@@ -105,7 +119,7 @@ class BranchControllerTest {
         }
 
         //when
-        ResultActions response = mockMvc.perform(get("/branches"));
+        ResultActions response = mockMvc.perform(get("/api/public/branches"));
 
         //then
         response.andDo(print())
@@ -124,7 +138,7 @@ class BranchControllerTest {
         BranchDTO branchDTO = new BranchDTO(branch1.getBranchId(), branch1.getName(), null);
 
         //when
-        ResultActions response = mockMvc.perform(get("/branches/1"));
+        ResultActions response = mockMvc.perform(get("/api/authenticated/branches/1"));
 
         //then
         response.andDo(print())
@@ -144,7 +158,7 @@ class BranchControllerTest {
                 2000, "color1", 1000.0, new BigDecimal("100.0")));
 
         //when
-        ResultActions response = mockMvc.perform(get("/branches/1/availableCarsOnDate/2024-01-01"));
+        ResultActions response = mockMvc.perform(get("/api/authenticated/branches/1/availableCarsOnDate/2024-01-01"));
 
         //then
         response.andDo(print())
@@ -162,7 +176,7 @@ class BranchControllerTest {
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch3);
 
         //when
-        ResultActions response = mockMvc.perform(post("/branches")
+        ResultActions response = mockMvc.perform(post("/api/admin/branches")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(branch3)));
 
@@ -182,7 +196,7 @@ class BranchControllerTest {
         given(carRepositoryMock.save(any(Car.class))).willReturn(car2);
 
         //when
-        ResultActions response = mockMvc.perform(put("/branches/addCar/toBranchUnderId/1")
+        ResultActions response = mockMvc.perform(put("/api/admin/branches/addCar/toBranchUnderId/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(branch1)));
 
@@ -202,7 +216,7 @@ class BranchControllerTest {
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
 
         //when
-        ResultActions response = mockMvc.perform(put("/branches/1")
+        ResultActions response = mockMvc.perform(put("/api/admin/branches/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new Branch(123L, "changedName", "changedAddress", null,
                         null, null, null, null, null))));
@@ -223,7 +237,7 @@ class BranchControllerTest {
         doNothing().when(branchRepositoryMock).deleteById(anyLong());
 
         //when
-        ResultActions response = mockMvc.perform(delete("/branches/1"));
+        ResultActions response = mockMvc.perform(delete("/api/admin/branches/1"));
 
         //then
         response.andExpect(status().isOk());
@@ -239,7 +253,7 @@ class BranchControllerTest {
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/branches/removeCar/1/fromBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/removeCar/1/fromBranch/1"));
 
         //then
         response.andExpect(status().isOk());
@@ -256,7 +270,7 @@ class BranchControllerTest {
         given(carRepositoryMock.save(any(Car.class))).willReturn(car2);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/branches/assignCar/2/toBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/assignCar/2/toBranch/1"));
 
         //then
         response.andDo(print())
@@ -275,12 +289,12 @@ class BranchControllerTest {
         given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee2);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/branches/assignEmployee/2/toBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/assignEmployee/2/toBranch/1"));
 
         //then
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.employeeId", is(2L), Long.class))
+                .andExpect(jsonPath("$.id", is(2L), Long.class))
                 .andExpect(jsonPath("$.name", is("name2")))
                 .andExpect(jsonPath("$.surname", is("surname2")));
     }
@@ -293,7 +307,7 @@ class BranchControllerTest {
         given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee1);
 
         //when
-        mockMvc.perform(patch("/branches/removeEmployee/1/fromBranch/1"));
+        mockMvc.perform(patch("/api/manageL1/branches/removeEmployee/1/fromBranch/1"));
 
         //then
         verify(branchRepositoryMock, times(1)).save(branch1);
@@ -309,7 +323,7 @@ class BranchControllerTest {
         given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee1);
 
         //when
-        ResultActions response = mockMvc.perform(patch("/branches/assignManager/1/forBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/admin/branches/assignManager/1/forBranch/1"));
 
         //then
         response.andDo(print())
@@ -324,7 +338,7 @@ class BranchControllerTest {
         given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch2);
 
         //when
-        mockMvc.perform(patch("/branches/removeManagerFromBranch/2"));
+        mockMvc.perform(patch("/api/admin/branches/removeManagerFromBranch/2"));
 
         //then
         verify(branchRepositoryMock, times(1)).save(branch2);

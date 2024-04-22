@@ -88,7 +88,7 @@ class ReturnServiceTest {
         when(reservationRepositoryMock.findById(anyLong())).thenReturn(Optional.of(reservation));
         when(returnRepositoryMock.save(any(Returnal.class))).thenReturn(new Returnal(1L, "comments",
                 LocalDate.of(2024, 10, 10), new BigDecimal("20.0"), employee, reservation));
-        doNothing().when(revenueService).updateRevenue(anyLong(), any(BigDecimal.class));
+        when(revenueService.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
 
         //when
         Returnal savedReturnal = returnService.saveReturn(returnDTO);
@@ -160,7 +160,7 @@ class ReturnServiceTest {
         when(employeeRepositoryMock.findById(anyLong())).thenReturn(Optional.of(employee));
         when(reservationRepositoryMock.findById(anyLong())).thenReturn(Optional.of(reservation));
         when(returnRepositoryMock.save(any(Returnal.class))).thenReturn(returnal);
-        doNothing().when(revenueService).updateRevenue(anyLong(), any(BigDecimal.class));
+        when(revenueService.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
 
         //when
         Returnal editedReturnal = returnService.editReturnal(1L, returnDTO);

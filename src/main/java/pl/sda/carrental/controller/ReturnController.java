@@ -15,12 +15,12 @@ import java.util.List;
 public class ReturnController {
     private final ReturnService returnService;
 
-    @GetMapping("/manageL2/returnals/")
+    @GetMapping("/manageL2/returnals")
     public List<Returnal> getReturnals() {
         return returnService.getAllReturnals();
     }
 
-    @PostMapping("/manageL2/returnals/")
+    @PostMapping("/manageL2/returnals")
     public Returnal saveReturnal(@RequestBody @Valid ReturnDTO returnDTO) {
         return returnService.saveReturn(returnDTO);
     }

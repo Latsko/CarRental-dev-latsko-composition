@@ -55,7 +55,7 @@ class RentControllerTest {
 
     @BeforeEach
     void setUp() {
-        employee = new Employee(1L, "name", "surname", Position.ENTRY, null);
+        employee = new Employee(1L, "login", "password", "name", "surname", null, null, Position.EMPLOYEE);
         rent = new Rent(1L, "comments",
                 LocalDate.of(2024, 12,12), null, null);
         reservation = new Reservation(1L, new Client(), new Car(),
@@ -70,7 +70,7 @@ class RentControllerTest {
         given(rentRepositoryMock.findAll()).willReturn(list);
 
         //when
-        ResultActions response = mockMvc.perform(get("/rents"));
+        ResultActions response = mockMvc.perform(get("/api/manageL2/rents"));
 
         //then
         response.andDo(print())
@@ -92,7 +92,7 @@ class RentControllerTest {
                 LocalDate.of(2024, 12, 12), 1L);
 
         //when
-        ResultActions response = mockMvc.perform(post("/rents")
+        ResultActions response = mockMvc.perform(post("/api/authenticated/rents")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)));
 
@@ -117,7 +117,7 @@ class RentControllerTest {
 
 
         //when
-        ResultActions response = mockMvc.perform(put("/rents/1")
+        ResultActions response = mockMvc.perform(put("/api/authenticated/rents/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rentDTO)
         ));
@@ -136,7 +136,7 @@ class RentControllerTest {
         doNothing().when(rentRepositoryMock).deleteById(anyLong());
 
         //when
-        ResultActions response = mockMvc.perform(delete("/rents/1"));
+        ResultActions response = mockMvc.perform(delete("/api/authenticated/rents/1"));
 
         //then
         response.andExpect(status().isOk());
