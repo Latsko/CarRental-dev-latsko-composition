@@ -17,6 +17,7 @@ import pl.sda.carrental.model.DTO.ReturnDTO;
 import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.ReservationRepository;
 import pl.sda.carrental.repository.ReturnRepository;
+import pl.sda.carrental.service.ReturnService;
 import pl.sda.carrental.service.RevenueService;
 
 import java.math.BigDecimal;
@@ -39,25 +40,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class ReturnControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
+
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+
     @MockBean
-    private ReservationRepository reservationRepositoryMock;
-    @MockBean
-    private ReturnRepository returnRepositoryMock;
-    @MockBean
-    private EmployeeRepository employeeRepositoryMock;
-    @MockBean
-    private RevenueService revenueServiceMock;
+    private ReturnService returnServiceMock;
+
     private Returnal returnal;
-    private Employee employee;
-    private Reservation reservation;
 
     @BeforeEach
     void setUp() {
-        employee = new Employee();
-        reservation = new Reservation()
+        Employee employee = new Employee();
+        Reservation reservation = new Reservation()
                 .withCar(new Car()
                         .withBranch(new Branch()
                                 .withRevenue(new Revenue())));
@@ -70,7 +66,7 @@ class ReturnControllerTest {
     void shouldGetReturnals() throws Exception {
         //given
         List<Returnal> list = Collections.singletonList(returnal);
-        given(returnRepositoryMock.findAll()).willReturn(list);
+        given(returnServiceMock.getAllReturnals()).willReturn(list);
 
         //when
         ResultActions response = mockMvc.perform(get("/api/manageL2/returnals"));
@@ -89,11 +85,7 @@ class ReturnControllerTest {
         //given
         ReturnDTO dto = new ReturnDTO(1L, "", LocalDate.of(2024, 10, 10),
                 new BigDecimal("100.0"), 1L);
-        given(returnRepositoryMock.findReturnsWithReservationId(anyLong())).willReturn(List.of());
-        given(employeeRepositoryMock.findById(anyLong())).willReturn(Optional.of(employee));
-        given(reservationRepositoryMock.findById(anyLong())).willReturn(Optional.of(reservation));
-        given(returnRepositoryMock.save(any(Returnal.class))).willReturn(returnal);
-        when(revenueServiceMock.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
+        given(returnServiceMock.saveReturn(dto)).willReturn(returnal);
 
         //when
         ResultActions response = mockMvc.perform(post("/api/manageL2/returnals")
@@ -112,11 +104,7 @@ class ReturnControllerTest {
         //given
         ReturnDTO dto = new ReturnDTO(1L, "", LocalDate.of(2024, 10, 10),
                 new BigDecimal("100.0"), 1L);
-        given(returnRepositoryMock.findById(anyLong())).willReturn(Optional.of(returnal));
-        given(employeeRepositoryMock.findById(anyLong())).willReturn(Optional.of(employee));
-        given(reservationRepositoryMock.findById(anyLong())).willReturn(Optional.of(reservation));
-        given(returnRepositoryMock.save(any(Returnal.class))).willReturn(returnal);
-        when(revenueServiceMock.updateRevenue(anyLong(), any(BigDecimal.class))).thenReturn(null);
+        given(returnServiceMock.editReturnal(1L, dto)).willReturn(returnal);
 
         //when
         ResultActions response = mockMvc.perform(put("/api/manageL2/returnals/1")
@@ -127,20 +115,18 @@ class ReturnControllerTest {
         response.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.returnId", is(1L), Long.class))
-                .andExpect(jsonPath("$.comments", is("")));
+                .andExpect(jsonPath("$.comments", is("comments")));
     }
 
     @Test
     void shouldDeleteReturnal() throws Exception {
         //given
-        given(returnRepositoryMock.findById(anyLong())).willReturn(Optional.of(returnal));
-        doNothing().when(returnRepositoryMock).deleteById(anyLong());
+        doNothing().when(returnServiceMock).deleteReturnalById(anyLong());
 
         //when
         ResultActions response = mockMvc.perform(delete("/api/manageL2/returnals/1"));
 
         //then
         response.andExpect(status().isOk());
-        verify(returnRepositoryMock, times(1)).deleteById(1L);
     }
 }

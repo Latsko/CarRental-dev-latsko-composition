@@ -24,8 +24,10 @@ import static org.mockito.ArgumentMatchers.any;
 class CarRentalControllerTest {
     @Autowired
     private WebTestClient testClient;
+
     @MockBean
     private CarRentalService service;
+
     private CarRental carRental;
     private Branch branch;
     private Set<Branch> branches;

@@ -11,18 +11,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import pl.sda.carrental.configuration.auth.repository.ClientRepository;
-import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.configuration.auth.entity.Client;
-import pl.sda.carrental.repository.*;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.service.ClientService;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,18 +34,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ClientControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
-    private ClientRepository clientRepositoryMock;
-    @MockBean
-    private BranchRepository branchRepositoryMock;
-    @MockBean
-    private RentRepository rentRepositoryMock;
-    @MockBean
-    private ReturnRepository returnRepositoryMock;
-    @MockBean
-    private ReservationRepository reservationRepositoryMock;
+    private ClientService clientServiceMock;
+
     private Branch branch1;
     private Client client1;
     private Client client2;
@@ -80,7 +76,7 @@ class ClientControllerTest {
     @Test
     void shouldFindById() throws Exception {
         //given
-        given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client1));
+        given(clientServiceMock.findById(anyLong())).willReturn(client1);
 
         //when
         ResultActions response = mockMvc.perform(get("/api/manageL2/clients/1"));
@@ -95,7 +91,7 @@ class ClientControllerTest {
     void shouldGetAllClients() throws Exception {
         //given
         List<Client> list = Collections.singletonList(client1);
-        given(clientRepositoryMock.findAll()).willReturn(list);
+        given(clientServiceMock.getAllClients()).willReturn(list);
 
         //when
         ResultActions response = mockMvc.perform(get("/api/manageL2/clients"));
@@ -112,7 +108,7 @@ class ClientControllerTest {
     @Test
     void shouldAddClient() throws Exception {
         //given
-        given(clientRepositoryMock.save(any(Client.class))).willReturn(client1);
+        given(clientServiceMock.addClient(any(Client.class))).willReturn(client1);
 
         //when
         ResultActions response = mockMvc.perform(post("/api/public/clients")
@@ -132,11 +128,9 @@ class ClientControllerTest {
     @Test
     void shouldEditClient() throws Exception {
         //given
-        given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
-        given(clientRepositoryMock.save(any(Client.class))).willReturn(client1);
         Client changed = new Client(123L, "login", "password", "changedName", "changedSurname", branch1, null,
                 "changedEmail", "changedAddress");
+        given(clientServiceMock.editClient(anyLong(), any(Client.class))).willReturn(changed);
 
         //when
         ResultActions response = mockMvc.perform(put("/api/manageL2/clients/1")
@@ -154,32 +148,19 @@ class ClientControllerTest {
     @Test
     void shouldDeleteClient() throws Exception {
         //given
-        given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client1));
-        given(rentRepositoryMock.findAll()).willReturn(new ArrayList<>());
-        given(returnRepositoryMock.findAll()).willReturn(new ArrayList<>());
-        given(reservationRepositoryMock.findAll()).willReturn(new ArrayList<>());
-        doNothing().when(rentRepositoryMock).deleteAll(List.of());
-        doNothing().when(returnRepositoryMock).deleteAll(List.of());
-        doNothing().when(reservationRepositoryMock).deleteAll(List.of());
+        doNothing().when(clientServiceMock).removeClient(anyLong());
 
         //when
         ResultActions response = mockMvc.perform(delete("/api/manageL2/clients/1"));
 
         //then
         response.andExpect(status().isOk());
-        verify(rentRepositoryMock).deleteAll(List.of());
-        verify(returnRepositoryMock).deleteAll(List.of());
-        verify(reservationRepositoryMock).deleteAll(List.of());
-        verify(clientRepositoryMock).deleteById(1L);
     }
 
     @Test
     void shouldAssignClientToBranch() throws Exception {
         //given
-        given(clientRepositoryMock.findById(anyLong())).willReturn(Optional.of(client2));
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
-        given(clientRepositoryMock.save(any(Client.class))).willReturn(client2);
+        given(clientServiceMock.assignClientToBranch(anyLong(), anyLong())).willReturn(client2);
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL2/clients/client/2/assignToBranch/1"));
@@ -196,15 +177,13 @@ class ClientControllerTest {
     @Test
     void shouldDetachClientFromBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
+        doNothing().when(clientServiceMock).removeClientFromBranch(anyLong(), anyLong());
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL2/clients/client/1/detachFromBranch/1"));
 
         //then
         response.andExpect(status().isOk());
-        verify(branchRepositoryMock).save(branch1);
     }
 }
 

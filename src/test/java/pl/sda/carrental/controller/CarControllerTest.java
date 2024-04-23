@@ -16,8 +16,11 @@ import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.enums.Status;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRepository;
+import pl.sda.carrental.service.BranchService;
+import pl.sda.carrental.service.CarService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -38,12 +41,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CarControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
-    private CarRepository carRepositoryMock;
-    @MockBean
-    BranchRepository branchRepositoryMock;
+    private CarService carServiceMock;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     private Car car;
 
     @BeforeEach
@@ -55,7 +59,7 @@ class CarControllerTest {
     @Test
     void shouldSaveCarObject() throws Exception {
         //given
-        given(carRepositoryMock.save(any(Car.class)))
+        given(carServiceMock.addCar(any(Car.class)))
                 .willReturn(car);
         //when
         ResultActions response = mockMvc.perform(post("/api/manageL1/cars")
@@ -71,8 +75,8 @@ class CarControllerTest {
     @Test
     void shouldGetCarById() throws Exception {
         //given
-        given(carRepositoryMock.findById(anyLong()))
-                .willReturn(Optional.of(car));
+        given(carServiceMock.getCarById(anyLong()))
+                .willReturn(car);
         //when
         ResultActions response = mockMvc.perform(get("/api/authenticated/cars/1"));
 
@@ -87,7 +91,7 @@ class CarControllerTest {
     void shouldGetCars() throws Exception {
         //given
         List<Car> list = Collections.singletonList(car);
-        given(carRepositoryMock.findAll()).willReturn(list);
+        given(carServiceMock.getCars()).willReturn(list);
 
         //when
         ResultActions response = mockMvc.perform(get("/api/public/cars"));
@@ -104,8 +108,8 @@ class CarControllerTest {
     @Test
     void shouldGetCarStatusOnDate() throws Exception{
         //given
-        given(carRepositoryMock.findById(anyLong()))
-                .willReturn(Optional.of(car));
+        given(carServiceMock.getStatusOnDateForCarUnderId(anyLong(), any(LocalDate.class)))
+                .willReturn(Status.AVAILABLE);
         //when
         ResultActions response = mockMvc.perform(get("/api/authenticated/cars/statusOnDate/1")
                 .param("date", "2024-01-10"));
@@ -122,11 +126,9 @@ class CarControllerTest {
     @Test
     void shouldEditCar() throws Exception {
         //given
-        given(carRepositoryMock.findById(anyLong())).willReturn(Optional.of(car));
-        given(carRepositoryMock.save(any(Car.class))).willReturn(car);
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(null);
         Car anotherCar = new Car(1L, "changed", "changed", "changed", 1990, "changed",
                 1000.0, Status.AVAILABLE, new BigDecimal(100), null, new HashSet<>());
+        given(carServiceMock.editCar(anyLong(), any(Car.class))).willReturn(anotherCar);
 
         //when
         ResultActions response = mockMvc.perform(put("/api/manageL1/cars/1")
@@ -144,8 +146,10 @@ class CarControllerTest {
     @Test
     void shouldSetMileageAndPrice() throws Exception {
         //given
-        given(carRepositoryMock.findById(anyLong())).willReturn(Optional.of(car));
-        given(carRepositoryMock.save(any(Car.class))).willReturn(car);
+        car.setPrice(BigDecimal.valueOf(200.0));
+        car.setMileage(100.0);
+        given(carServiceMock.updateMileageAndPrice(anyDouble(), any(BigDecimal.class), anyLong()))
+        .willReturn(car);
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL2/cars/setMileageAndPrice/1")
@@ -162,8 +166,8 @@ class CarControllerTest {
     @Test
     void shouldSetStatus() throws Exception {
         //given
-        given(carRepositoryMock.findById(anyLong())).willReturn(Optional.of(car));
-        given(carRepositoryMock.save(any(Car.class))).willReturn(car);
+        car.setStatus(Status.RENTED);
+        given(carServiceMock.updateStatus(anyString(), anyLong())).willReturn(car);
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL2/cars/setStatus/1")
@@ -178,14 +182,14 @@ class CarControllerTest {
     @Test
     void shouldDeleteCar() throws Exception {
         //given
-        given(carRepositoryMock.findById(anyLong())).willReturn(Optional.of(car));
-        doNothing().when(carRepositoryMock).deleteById(anyLong());
+        doNothing().when(carServiceMock).deleteCarById(anyLong());
 
         //when
-        mockMvc.perform(delete("/api/manageL1/cars/1"));
+        ResultActions response = mockMvc.perform(delete("/api/manageL1/cars/1"));
 
         //then
-        verify(carRepositoryMock, times(1)).deleteById(anyLong());
+        response.andDo(print())
+                .andExpect(status().isOk());
 
     }
 }

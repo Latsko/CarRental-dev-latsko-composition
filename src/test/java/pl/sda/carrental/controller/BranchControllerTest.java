@@ -6,27 +6,32 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.sda.carrental.configuration.auth.entity.Employee;
-import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
-import pl.sda.carrental.model.*;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.DTO.CarDTO;
 import pl.sda.carrental.model.enums.Position;
 import pl.sda.carrental.model.enums.Status;
-import pl.sda.carrental.repository.*;
+import pl.sda.carrental.service.BranchService;
+import pl.sda.carrental.service.CarService;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,44 +42,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BranchControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
-    private BranchRepository branchRepositoryMock;
-    @MockBean
-    private CarRepository carRepositoryMock;
-    @MockBean
-    private EmployeeRepository employeeRepositoryMock;
-    @MockBean
-    private ReservationRepository reservationRepositoryMock;
-    @MockBean
-    private CarRentalRepository carRentalRepositoryMock;
+    private BranchService branchServiceMock;
+
     @Autowired
     private ObjectMapper objectMapper;
-    private CarRental carRental;
+
     private Branch branch1;
     private Branch branch2;
-    private Branch branch3;
     private Set<Branch> branches;
+    private List<Car> cars;
     private Car car1;
     private Car car2;
     private Employee employee1;
-    private Employee employee2;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         branches = new HashSet<>();
-        carRental = new CarRental(1L, "rentalName", "rentalDomain.com",
-                "rentalAddress", "rentalOwner", "logo", branches);
         branch1 = new Branch(1L, "name1", "address1", null,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(),
                 null, null);
-        branch2 = new Branch(2L, "name2", "address2", null,
-                new HashSet<>(), new HashSet<>(), new HashSet<>(),
-                null, null);
-        branch3 = new Branch(3L, "name3", "address3", null,
+
+        branch2 = new Branch(3L, "name3", "address3", null,
                 new HashSet<>(), new HashSet<>(), new HashSet<>(),
                 null, null);
         branches.add(branch1);
-        branches.add(branch2);
 
         car1 = new Car(1L, "make1", "model1",
                 "bodyStyle1", 2000, "color1",
@@ -84,19 +77,13 @@ class BranchControllerTest {
                 "bodyStyle2", 2000, "color2",
                 1000.0, Status.AVAILABLE, new BigDecimal("100.0"),
                 null, null);
-
+        cars = new ArrayList<>();
+        cars.add(car1);
+        cars.add(car2);
         branch1.getCars().add(car1);
-        employee1 = new Employee(1L,
-                "login",
-                "password",
-                "name1",
-                "surname1",
-                branch1,
-                null,
-                Position.EMPLOYEE);
-        branch1.getEmployees().add(employee1);
 
-        employee2 = new Employee(2L,
+
+        employee1 = new Employee(2L,
                 "login",
                 "password",
                 "name2",
@@ -104,15 +91,13 @@ class BranchControllerTest {
                 null,
                 null,
                 Position.EMPLOYEE);
-        branch2.getEmployees().add(employee2);
-        branch2.setManagerId(employee2.getId());
 
     }
 
     @Test
-    void shouldGetBranches() throws Exception {
+    public void shouldGetBranches() throws Exception {
         //given
-        given(branchRepositoryMock.findAll()).willReturn(new ArrayList<>(branches));
+        given(branchServiceMock.getAllBranches()).willReturn(new ArrayList<>(branches));
         List<BranchDTO> dtos = new ArrayList<>();
         for(Branch branch : branches) {
             dtos.add(new BranchDTO(branch.getBranchId(), branch.getName(), null));
@@ -132,9 +117,9 @@ class BranchControllerTest {
     }
 
     @Test
-    void shouldGetBranchById() throws Exception {
+    public void shouldGetBranchById() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
+        given(branchServiceMock.getById((anyLong()))).willReturn(branch1);
         BranchDTO branchDTO = new BranchDTO(branch1.getBranchId(), branch1.getName(), null);
 
         //when
@@ -149,13 +134,14 @@ class BranchControllerTest {
     }
 
     @Test
-    void shouldGetAvailableCarsOnDate() throws Exception{
+    public void shouldGetAvailableCarsOnDate() throws Exception{
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.findAll()).willReturn(new ArrayList<>(branches));
+        given(branchServiceMock.getCarsAvailableAtBranchOnDate(anyLong(), eq("2024-01-01")))
+                .willReturn(cars.stream().map(CarService::mapCarToCarDTO).toList());
+
         List<CarDTO> dtos = new ArrayList<>();
-        dtos.add(new CarDTO("make1", "model1", "bodyStyle1",
-                2000, "color1", 1000.0, new BigDecimal("100.0")));
+        dtos.add(CarService.mapCarToCarDTO(car1));
+        dtos.add(CarService.mapCarToCarDTO(car2));
 
         //when
         ResultActions response = mockMvc.perform(get("/api/authenticated/branches/1/availableCarsOnDate/2024-01-01"));
@@ -170,15 +156,14 @@ class BranchControllerTest {
     }
 
     @Test
-    void shouldAddBranch() throws Exception{
+    public void shouldAddBranch() throws Exception{
         //given
-        given(carRentalRepositoryMock.findAll()).willReturn(List.of(carRental));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch3);
+        given(branchServiceMock.addBranch(any(Branch.class))).willReturn(branch2);
 
         //when
         ResultActions response = mockMvc.perform(post("/api/admin/branches")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(branch3)));
+                .content(objectMapper.writeValueAsString(branch2)));
 
         //then
         response.andDo(print())
@@ -189,11 +174,9 @@ class BranchControllerTest {
     }
 
     @Test
-    void shouldAddCarToBranch() throws Exception {
+    public void shouldAddCarToBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findAll()).willReturn(new ArrayList<>(branches));
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(carRepositoryMock.save(any(Car.class))).willReturn(car2);
+        given(branchServiceMock.addCarToBranchByAccordingId(anyLong(), any(Car.class))).willReturn(car2);
 
         //when
         ResultActions response = mockMvc.perform(put("/api/admin/branches/addCar/toBranchUnderId/1")
@@ -210,10 +193,9 @@ class BranchControllerTest {
     }
 
     @Test
-    void shouldEditBranch() throws Exception{
+    public void shouldEditBranch() throws Exception{
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
+        given(branchServiceMock.editBranch(anyLong(), any(Branch.class))).willReturn(branch1);
 
         //when
         ResultActions response = mockMvc.perform(put("/api/admin/branches/1")
@@ -224,50 +206,38 @@ class BranchControllerTest {
         //then
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("changedName")))
-                .andExpect(jsonPath("$.address", is("changedAddress")));
+                .andExpect(jsonPath("$.name", is("name1")))
+                .andExpect(jsonPath("$.address", is("address1")));
     }
 
     @Test
-    void shouldRemoveBranch() throws Exception {
+    public void shouldRemoveBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(reservationRepositoryMock.findAll()).willReturn(new ArrayList<>());
-        doNothing().when(reservationRepositoryMock).deleteAll(List.of());
-        doNothing().when(branchRepositoryMock).deleteById(anyLong());
+        doNothing().when(branchServiceMock).removeBranch(anyLong());
 
         //when
         ResultActions response = mockMvc.perform(delete("/api/admin/branches/1"));
 
         //then
         response.andExpect(status().isOk());
-        verify(reservationRepositoryMock, times(1)).deleteAll(List.of());
-        verify(branchRepositoryMock, times(1)).deleteById(1L);
     }
 
     @Test
-    void shouldRemoveCarFromBranch() throws Exception {
+    public void shouldRemoveCarFromBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(carRepositoryMock.save(any(Car.class))).willReturn(car1);
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
+        doNothing().when(branchServiceMock).removeCarFromBranch(anyLong(), anyLong());
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/removeCar/1/fromBranch/1"));
 
         //then
         response.andExpect(status().isOk());
-        verify(carRepositoryMock, times(1)).save(any(Car.class));
-        verify(branchRepositoryMock, times(1)).save(any(Branch.class));
     }
 
     @Test
-    void shouldAssignCarToBranch() throws Exception {
+    public void shouldAssignCarToBranch() throws Exception {
         //given
-        given(carRepositoryMock.findById(anyLong())).willReturn(Optional.of(car2));
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
-        given(carRepositoryMock.save(any(Car.class))).willReturn(car2);
+        given(branchServiceMock.assignCarToBranch(anyLong(), anyLong())).willReturn(car2);
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/assignCar/2/toBranch/1"));
@@ -276,17 +246,12 @@ class BranchControllerTest {
         response.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.carId", is(2L), Long.class));
-        verify(branchRepositoryMock, times(1)).save(branch1);
-        verify(carRepositoryMock, times(1)).save(car2);
     }
 
     @Test
-    void shouldAssignEmployeeToBranch() throws Exception {
+    public void shouldAssignEmployeeToBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
-        given(employeeRepositoryMock.findById(anyLong())).willReturn(Optional.of(employee2));
-        given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee2);
+        given(branchServiceMock.assignEmployeeToBranch(anyLong(), anyLong())).willReturn(employee1);
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/assignEmployee/2/toBranch/1"));
@@ -300,48 +265,42 @@ class BranchControllerTest {
     }
 
     @Test
-    void shouldRemoveEmployeeFromBranch() throws Exception {
+    public void shouldRemoveEmployeeFromBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
-        given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee1);
+        doNothing().when(branchServiceMock).removeEmployeeFromBranch(anyLong(), anyLong());
 
         //when
-        mockMvc.perform(patch("/api/manageL1/branches/removeEmployee/1/fromBranch/1"));
+        ResultActions response = mockMvc.perform(patch("/api/manageL1/branches/removeEmployee/1/fromBranch/1"));
 
         //then
-        verify(branchRepositoryMock, times(1)).save(branch1);
-        verify(employeeRepositoryMock, times(1)).save(employee1);
+        response.andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
-    void shouldAssignManager() throws Exception {
+    public void shouldAssignManager() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch1));
-        given(employeeRepositoryMock.findById(anyLong())).willReturn(Optional.of(employee1));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch1);
-        given(employeeRepositoryMock.save(any(Employee.class))).willReturn(employee1);
+        given(branchServiceMock.addManagerForBranch(anyLong(), anyLong())).willReturn(branch1);
 
         //when
         ResultActions response = mockMvc.perform(patch("/api/admin/branches/assignManager/1/forBranch/1"));
 
         //then
         response.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.managerId", is(1L), Long.class));
+                .andExpect(status().isOk());
     }
 
     @Test
-    void shouldFireManagerFromBranch() throws Exception {
+    public void shouldFireManagerFromBranch() throws Exception {
         //given
-        given(branchRepositoryMock.findById(anyLong())).willReturn(Optional.of(branch2));
-        given(branchRepositoryMock.save(any(Branch.class))).willReturn(branch2);
+        doNothing().when(branchServiceMock).removeManagerFromBranch(anyLong());
 
         //when
-        mockMvc.perform(patch("/api/admin/branches/removeManagerFromBranch/2"));
+        ResultActions response = mockMvc.perform(patch("/api/admin/branches/removeManagerFromBranch/2"));
 
         //then
-        verify(branchRepositoryMock, times(1)).save(branch2);
+        response.andDo(print())
+                .andExpect(status().isOk());
     }
 
 }

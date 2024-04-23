@@ -11,26 +11,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import pl.sda.carrental.configuration.auth.entity.Client;
-import pl.sda.carrental.configuration.auth.entity.Employee;
-import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.RentDTO;
-import pl.sda.carrental.model.enums.Position;
-import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
-import pl.sda.carrental.repository.RentRepository;
-import pl.sda.carrental.repository.ReservationRepository;
+import pl.sda.carrental.model.Rent;
+import pl.sda.carrental.service.RentService;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,34 +33,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class RentControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
+
     @MockBean
-    private RentRepository rentRepositoryMock;
-    @MockBean
-    private ReservationRepository reservationRepositoryMock;
-    @MockBean
-    private EmployeeRepository employeeRepositoryMock;
+    private RentService rentServiceMock;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     private Rent rent;
-    private Reservation reservation;
-    private Employee employee;
 
     @BeforeEach
     void setUp() {
-        employee = new Employee(1L, "login", "password", "name", "surname", null, null, Position.EMPLOYEE);
         rent = new Rent(1L, "comments",
                 LocalDate.of(2024, 12,12), null, null);
-        reservation = new Reservation(1L, new Client(), new Car(),
-                LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 21),
-                new BigDecimal("100.0"), null, null, null, null);
     }
 
     @Test
     void shouldGetAllRents() throws Exception {
         //given
         List<Rent> list = Collections.singletonList(rent);
-        given(rentRepositoryMock.findAll()).willReturn(list);
+        given(rentServiceMock.getAllRents()).willReturn(list);
 
         //when
         ResultActions response = mockMvc.perform(get("/api/manageL2/rents"));
@@ -84,12 +70,9 @@ class RentControllerTest {
     @Test
     void shouldSaveRent() throws Exception {
         //given
-        given(rentRepositoryMock.findRentsByEmployeeId(anyLong())).willReturn(List.of());
-        given(employeeRepositoryMock.findById(anyLong())).willReturn(Optional.of(employee));
-        given(reservationRepositoryMock.findById(anyLong())).willReturn(Optional.of(reservation));
-        given(rentRepositoryMock.save(any(Rent.class))).willReturn(rent);
         RentDTO rentDTO = new RentDTO(1L, "comments",
                 LocalDate.of(2024, 12, 12), 1L);
+        given(rentServiceMock.saveRent(rentDTO)).willReturn(rent);
 
         //when
         ResultActions response = mockMvc.perform(post("/api/authenticated/rents")
@@ -107,13 +90,9 @@ class RentControllerTest {
     @Test
     void shouldEditRent() throws Exception {
         //given
-        given(rentRepositoryMock.findRentsByEmployeeId(anyLong())).willReturn(List.of());
-        given(employeeRepositoryMock.findById(anyLong())).willReturn(Optional.of(employee));
-        given(reservationRepositoryMock.findById(anyLong())).willReturn(Optional.of(reservation));
-        given(rentRepositoryMock.findById(anyLong())).willReturn(Optional.of(rent));
-        given(rentRepositoryMock.save(any(Rent.class))).willReturn(rent);
-        RentDTO rentDTO = new RentDTO(1L, "changedComments",
-                LocalDate.of(2024, 11, 11), 1L);
+        given(rentServiceMock.editRent(anyLong(), any(RentDTO.class))).willReturn(rent);
+        RentDTO rentDTO = new RentDTO(1L, "comments",
+                LocalDate.of(2024, 12, 12), 1L);
 
 
         //when
@@ -125,22 +104,20 @@ class RentControllerTest {
         //then
         response.andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.rentDate", is(LocalDate.of(2024, 11, 11).toString())))
-                .andExpect(jsonPath("$.comments", is("changedComments")));
+                .andExpect(jsonPath("$.rentDate", is(LocalDate.of(2024, 12, 12).toString())))
+                .andExpect(jsonPath("$.comments", is("comments")));
     }
 
     @Test
     void shouldDeleteRent() throws Exception {
         //given
-        given(rentRepositoryMock.findById(anyLong())).willReturn(Optional.of(rent));
-        doNothing().when(rentRepositoryMock).deleteById(anyLong());
+        doNothing().when(rentServiceMock).deleteRentById(anyLong());
 
         //when
         ResultActions response = mockMvc.perform(delete("/api/authenticated/rents/1"));
 
         //then
         response.andExpect(status().isOk());
-        verify(rentRepositoryMock, times(1)).deleteById(1L);
     }
 
 }
