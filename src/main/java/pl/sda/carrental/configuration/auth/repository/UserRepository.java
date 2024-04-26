@@ -6,5 +6,5 @@ import pl.sda.carrental.configuration.auth.entity.User;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByLogin(String name);
+    Optional<User> findByLogin(String login);
 }

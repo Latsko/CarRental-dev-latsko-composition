@@ -97,7 +97,7 @@ public class CarService {
         editedCar.setMake(car.getMake());
         editedCar.setModel(car.getModel());
         editedCar.setBodyStyle(car.getBodyStyle());
-        editedCar.setYear(car.getYear());
+        editedCar.setYearOfManufacture(car.getYearOfManufacture());
         editedCar.setColour(car.getColour());
         editedCar.setMileage(car.getMileage());
         editedCar.setStatus(car.getStatus());
@@ -213,7 +213,7 @@ public class CarService {
         return new CarDTO(car.getMake(),
                 car.getModel(),
                 car.getBodyStyle(),
-                car.getYear(),
+                car.getYearOfManufacture(),
                 car.getColour(),
                 car.getMileage(),
                 car.getPrice());

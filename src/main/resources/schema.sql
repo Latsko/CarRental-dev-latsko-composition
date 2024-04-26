@@ -53,7 +53,7 @@ CREATE TABLE cars
     model      VARCHAR(255),
     price      DECIMAL(11, 2),
     status     TINYINT CHECK (status BETWEEN 0 AND 4),
-    year       INT    NOT NULL,
+    year_of_manufacture       INT    NOT NULL,
     branch_id  BIGINT,
     PRIMARY KEY (car_id),
     FOREIGN KEY (branch_id) REFERENCES branches (branch_id)

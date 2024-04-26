@@ -11,7 +11,7 @@ VALUES ('Krakow Branch', '567 Parkowa Street', 1, 1),
        ('Gdansk Branch', '890 Portowa Avenue', 1, 2),
        ('Warsaw Branch', '234 Sienkiewicza Street', 1, 3);
 
-INSERT INTO cars (make, model, body_style, year, colour, mileage, status, price, branch_id)
+INSERT INTO cars (make, model, body_style, year_of_manufacture, colour, mileage, status, price, branch_id)
 VALUES ('Toyota', 'Corolla', 'Sedan', 2023, 'Silver', 15000, 0, 250.00, 1),
        ('Honda', 'Civic', 'Hatchback', 2022, 'Blue', 20000, 1, 220.00, 2),
        ('Ford', 'Mustang', 'Coupe', 2023, 'Red', 12000, 2, 350.00, 3),

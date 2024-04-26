@@ -31,7 +31,8 @@ public class Car {
 
     @Column(name = "body_style")
     private String bodyStyle;
-    private int year;
+    @Column(name = "year_of_manufacture")
+    private int yearOfManufacture;
     private String colour;
     private double mileage;
     private Status status;

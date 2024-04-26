@@ -54,7 +54,7 @@ class CarServiceTest {
         assertThat(carById.getMake()).isEqualTo("make");
         assertThat(carById.getModel()).isEqualTo("model");
         assertThat(carById.getBodyStyle()).isEqualTo("bodyStyle");
-        assertThat(carById.getYear()).isEqualTo(2000);
+        assertThat(carById.getYearOfManufacture()).isEqualTo(2000);
         assertThat(carById.getColour()).isEqualTo("colour");
         assertThat(carById.getMileage()).isEqualTo(10000.0);
         assertThat(carById.getPrice()).isEqualTo(new BigDecimal("100.0"));
@@ -123,7 +123,7 @@ class CarServiceTest {
         assertThat(savedCar.getMake()).isEqualTo("make");
         assertThat(savedCar.getModel()).isEqualTo("model");
         assertThat(savedCar.getBodyStyle()).isEqualTo("bodyStyle");
-        assertThat(savedCar.getYear()).isEqualTo(2000);
+        assertThat(savedCar.getYearOfManufacture()).isEqualTo(2000);
         assertThat(savedCar.getColour()).isEqualTo("colour");
         assertThat(savedCar.getMileage()).isEqualTo(10000.0);
         assertThat(savedCar.getPrice()).isEqualTo(new BigDecimal("100.0"));
@@ -142,7 +142,7 @@ class CarServiceTest {
                 .withMake("changedMake")
                 .withModel("changedModel")
                 .withBodyStyle("changedBodyStyle")
-                .withYear(1990)
+                .withYearOfManufacture(1990)
                 .withColour("changedColour")
                 .withMileage(12345.6)
                 .withPrice(new BigDecimal("222.2")));
@@ -156,7 +156,7 @@ class CarServiceTest {
         assertThat(editedCar.getMake()).isEqualTo("changedMake");
         assertThat(editedCar.getModel()).isEqualTo("changedModel");
         assertThat(editedCar.getBodyStyle()).isEqualTo("changedBodyStyle");
-        assertThat(editedCar.getYear()).isEqualTo(1990);
+        assertThat(editedCar.getYearOfManufacture()).isEqualTo(1990);
         assertThat(editedCar.getColour()).isEqualTo("changedColour");
         assertThat(editedCar.getMileage()).isEqualTo(12345.6);
         assertThat(editedCar.getPrice()).isEqualTo(new BigDecimal("222.2"));
@@ -174,7 +174,7 @@ class CarServiceTest {
                 .withMake("changedMake")
                 .withModel("changedModel")
                 .withBodyStyle("changedBodyStyle")
-                .withYear(1990)
+                .withYearOfManufacture(1990)
                 .withColour("changedColour")
                 .withMileage(12345.6)
                 .withPrice(new BigDecimal("222.2")));
@@ -188,7 +188,7 @@ class CarServiceTest {
         assertThat(editedCar.getMake()).isEqualTo("changedMake");
         assertThat(editedCar.getModel()).isEqualTo("changedModel");
         assertThat(editedCar.getBodyStyle()).isEqualTo("changedBodyStyle");
-        assertThat(editedCar.getYear()).isEqualTo(1990);
+        assertThat(editedCar.getYearOfManufacture()).isEqualTo(1990);
         assertThat(editedCar.getColour()).isEqualTo("changedColour");
         assertThat(editedCar.getMileage()).isEqualTo(12345.6);
         assertThat(editedCar.getPrice()).isEqualTo(new BigDecimal("222.2"));

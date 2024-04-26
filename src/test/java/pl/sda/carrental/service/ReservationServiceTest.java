@@ -473,7 +473,7 @@ class ReservationServiceTest {
                 .withMake(make)
                 .withBranch(createBranch(1L))
                 .withMileage(0)
-                .withYear(2005)
+                .withYearOfManufacture(2005)
                 .withStatus(Status.AVAILABLE);
     }
 
