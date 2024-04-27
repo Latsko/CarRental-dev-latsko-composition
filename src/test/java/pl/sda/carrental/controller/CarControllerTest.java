@@ -11,12 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.enums.Status;
-import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.repository.CarRepository;
-import pl.sda.carrental.service.BranchService;
 import pl.sda.carrental.service.CarService;
 
 import java.math.BigDecimal;
@@ -24,7 +20,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;

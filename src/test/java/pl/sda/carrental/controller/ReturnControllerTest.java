@@ -14,23 +14,17 @@ import org.springframework.test.web.servlet.ResultActions;
 import pl.sda.carrental.configuration.auth.entity.Employee;
 import pl.sda.carrental.model.*;
 import pl.sda.carrental.model.DTO.ReturnDTO;
-import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
-import pl.sda.carrental.repository.ReservationRepository;
-import pl.sda.carrental.repository.ReturnRepository;
 import pl.sda.carrental.service.ReturnService;
-import pl.sda.carrental.service.RevenueService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

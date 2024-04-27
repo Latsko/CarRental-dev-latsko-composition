@@ -23,8 +23,8 @@ public class ProdSecurityConfig {
 
         httpSecurity.authorizeHttpRequests(authorizationMatcher ->
                 authorizationMatcher
-                        .requestMatchers(HttpMethod.GET, "/auth/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/auth/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "api/auth/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/public/**").permitAll()

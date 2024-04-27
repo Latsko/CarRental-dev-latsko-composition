@@ -11,4 +11,14 @@ import lombok.*;
 public class EmployeeDto extends UserDto {
     @NotEmpty
     private String position;
+
+    public EmployeeDto(Long id,
+                       String login,
+                       String password,
+                       String fullName,
+                       Long branch,
+                       String position) {
+        super(id, login, password, fullName, branch);
+        this.position = position;
+    }
 }
