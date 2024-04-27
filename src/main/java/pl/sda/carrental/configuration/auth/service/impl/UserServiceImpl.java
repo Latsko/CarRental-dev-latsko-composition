@@ -1,5 +1,6 @@
 package pl.sda.carrental.configuration.auth.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,22 @@ public class UserServiceImpl implements UserService {
     private final BranchRepository branchRepository;
 
     @Override
+    public UserDto findUserByLogin(String login) {
+        return mapToUserDto(userRepository.findByLogin(login)
+                .orElseThrow(() ->
+                        new ObjectNotFoundInRepositoryException("No user found with login: " + login)));
+    }
+
+    @Override
+    public List<UserDto> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::mapToUserDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
     public ClientDto saveClient(ClientDto clientDTO) {
         Client client = new Client();
         setUserFields(client, clientDTO);
@@ -47,6 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public EmployeeDto saveEmployee(EmployeeDto employeeDTO) {
         Employee employee = new Employee();
 
@@ -81,21 +99,6 @@ public class UserServiceImpl implements UserService {
         user.setRoles(List.of(role));
     }
 
-    @Override
-    public UserDto findUserByLogin(String login) {
-        return mapToUserDto(userRepository.findByLogin(login)
-                .orElseThrow(() ->
-                        new ObjectNotFoundInRepositoryException("No user found with login: " + login)));
-    }
-
-    @Override
-    public List<UserDto> findAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(this::mapToUserDto)
-                .toList();
-    }
-
     private Role createRoleIfNotExists(final String name) {
         Role role = new Role();
         role.setName("ROLE_" + name);
@@ -125,8 +128,7 @@ public class UserServiceImpl implements UserService {
     private EmployeeDto mapToEmployeeDto(Employee employee) {
         EmployeeDto employeeDto = new EmployeeDto();
 
-        employeeDto.setPosition(employeeDto.getPosition());
-
+        employeeDto.setPosition(String.valueOf(employee.getPosition()));
         setUserDtoFields(employee, employeeDto);
 
         return employeeDto;
