@@ -2,6 +2,7 @@ package pl.sda.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -41,11 +42,13 @@ public class Car {
     @Digits(integer = 9, fraction = 2, message = "Price must have up to 7 digits in total and 2 decimal places")
     private BigDecimal price;
 
+    @Schema(hidden = true)
     @ManyToOne
     @JoinColumn(name = "branch_id")
     @JsonBackReference(value = "car-reference")
     private Branch branch;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "carReservation-reference")
     private Set<Reservation> reservations = new HashSet<>();

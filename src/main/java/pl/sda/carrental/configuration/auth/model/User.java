@@ -1,4 +1,4 @@
-package pl.sda.carrental.configuration.auth.entity;
+package pl.sda.carrental.configuration.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

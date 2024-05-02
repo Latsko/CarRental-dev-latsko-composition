@@ -1,10 +1,11 @@
 package pl.sda.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
-import pl.sda.carrental.configuration.auth.entity.Client;
-import pl.sda.carrental.configuration.auth.entity.Employee;
+import pl.sda.carrental.configuration.auth.model.Client;
+import pl.sda.carrental.configuration.auth.model.Employee;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,21 +25,26 @@ public class Branch {
     private String address;
     @Column(name = "manager_id")
     private Long managerId;
-    
+
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Employee> employees = new HashSet<>();
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Car> cars = new HashSet<>();
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Client> clients = new HashSet<>();
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
     @JsonBackReference(value = "carRental-reference")
     private CarRental carRental;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @OneToOne
     @JsonBackReference
     @JoinColumn(name = "revenue_id")

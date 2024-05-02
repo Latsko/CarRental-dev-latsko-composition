@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.sda.carrental.configuration.auth.entity.User;
+import pl.sda.carrental.configuration.auth.model.User;
 import pl.sda.carrental.configuration.auth.repository.UserRepository;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 

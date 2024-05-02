@@ -11,8 +11,8 @@
 	<groupId>pl.sda</groupId>
 	<artifactId>CarRental</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CarRental</name>
-	<description>CarRental</description>
+	<name>CarRental API</name>
+	<description>CarRental - Spring REST API</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -60,23 +60,18 @@
 			<version>8.0.33</version>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.skyscreamer</groupId>
 			<artifactId>jsonassert</artifactId>
 			<version>1.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.5.0</version>
 		</dependency>
 	</dependencies>
 		<build>

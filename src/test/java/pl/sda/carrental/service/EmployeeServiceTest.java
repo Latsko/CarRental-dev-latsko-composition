@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.configuration.auth.entity.Employee;
+import pl.sda.carrental.configuration.auth.model.Employee;
 import pl.sda.carrental.model.Rent;
 import pl.sda.carrental.model.Returnal;
 import pl.sda.carrental.model.enums.Position;

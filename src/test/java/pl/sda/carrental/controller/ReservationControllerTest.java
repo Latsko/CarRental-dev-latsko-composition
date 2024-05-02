@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.DTO.ReservationDTO;
@@ -81,7 +81,7 @@ class ReservationControllerTest {
         //given
         ReservationDTO reservationDTO = new ReservationDTO(1L, 1L, 1L,
                 LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 12),
-                1L, 1L, null, null);
+                1L, 1L);
         given(reservationServiceMock.saveReservation(reservationDTO)).willReturn(reservation);
 
         //when
@@ -102,7 +102,7 @@ class ReservationControllerTest {
         //given
         ReservationDTO reservationDTO = new ReservationDTO(1L, 1L, 1L,
                 LocalDate.of(2024, 10, 12), LocalDate.of(2024, 10, 22),
-                1L, 1L, null, null);
+                1L, 1L);
         given(reservationServiceMock.editReservation(anyLong(), any(ReservationDTO.class))).willReturn(reservation);
 
         //when

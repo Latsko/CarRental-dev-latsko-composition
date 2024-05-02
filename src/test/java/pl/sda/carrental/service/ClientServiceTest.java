@@ -8,7 +8,7 @@ import pl.sda.carrental.configuration.auth.repository.ClientRepository;
 import pl.sda.carrental.exceptionHandling.ObjectAlreadyAssignedToBranchException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.repository.*;
 
 import java.util.ArrayList;

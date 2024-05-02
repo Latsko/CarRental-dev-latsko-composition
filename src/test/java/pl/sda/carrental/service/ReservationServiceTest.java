@@ -6,7 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.exceptionHandling.ReservationTimeCollisionException;
 import pl.sda.carrental.model.*;
@@ -498,9 +498,7 @@ class ReservationServiceTest {
                 start,
                 end,
                 1L,
-                endBranchId,
-                null,
-                null
+                endBranchId
         );
     }
 

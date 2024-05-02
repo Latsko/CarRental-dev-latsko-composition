@@ -1,4 +1,4 @@
-package pl.sda.carrental.configuration.auth.entity;
+package pl.sda.carrental.configuration.auth.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

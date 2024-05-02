@@ -3,7 +3,7 @@ package pl.sda.carrental.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-import pl.sda.carrental.configuration.auth.entity.Employee;
+import pl.sda.carrental.configuration.auth.model.Employee;
 
 import java.time.LocalDate;
 

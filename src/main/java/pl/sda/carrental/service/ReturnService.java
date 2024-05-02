@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.exceptionHandling.ReturnAlreadyExistsForReservationException;
 import pl.sda.carrental.model.DTO.ReturnDTO;
-import pl.sda.carrental.configuration.auth.entity.Employee;
+import pl.sda.carrental.configuration.auth.model.Employee;
 import pl.sda.carrental.model.Reservation;
 import pl.sda.carrental.model.Returnal;
 import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;

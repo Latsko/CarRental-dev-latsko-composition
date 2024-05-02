@@ -6,7 +6,7 @@ import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.model.DTO.CarDTO;
-import pl.sda.carrental.configuration.auth.entity.Employee;
+import pl.sda.carrental.configuration.auth.model.Employee;
 import pl.sda.carrental.service.BranchService;
 
 import java.util.List;

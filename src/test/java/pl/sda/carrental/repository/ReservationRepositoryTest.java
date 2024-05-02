@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
-import pl.sda.carrental.configuration.auth.entity.Client;
+import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.configuration.auth.repository.ClientRepository;
 import pl.sda.carrental.model.Car;
 import pl.sda.carrental.model.Reservation;
