@@ -23,8 +23,10 @@ public class ProdSecurityConfig {
 
         httpSecurity.authorizeHttpRequests(authorizationMatcher ->
                 authorizationMatcher
-                        .requestMatchers(HttpMethod.GET, "api/auth/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "api/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/public/**").permitAll()
