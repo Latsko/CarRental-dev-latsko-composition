@@ -14,7 +14,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Profile("prod")
 public class ProdSecurityConfig {
-     @Bean
+
+    private static final String[] WHITELIST = {
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic(Customizer.withDefaults());
 
@@ -23,8 +31,8 @@ public class ProdSecurityConfig {
 
         httpSecurity.authorizeHttpRequests(authorizationMatcher ->
                 authorizationMatcher
-                        .requestMatchers("/swagger-ui/**")
-                        .permitAll()
+                        .requestMatchers(WHITELIST).permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/api/auth/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 
@@ -37,7 +45,7 @@ public class ProdSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/authenticated/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/authenticated/**").authenticated()
 
-                        .requestMatchers(HttpMethod.POST,"/api/admin/**")
+                        .requestMatchers(HttpMethod.POST, "/api/admin/**")
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/admin/**")
                         .hasRole("ADMIN")

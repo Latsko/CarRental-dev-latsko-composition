@@ -1,6 +1,7 @@
 package pl.sda.carrental.configuration.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.sda.carrental.model.Branch;
@@ -26,11 +27,13 @@ public abstract class User {
     private String name;
     private String surname;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @ManyToOne
     @JoinColumn(name = "branch_id")
     @JsonBackReference(value = "user-reference")
     private Branch branch;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
