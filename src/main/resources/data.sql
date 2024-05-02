@@ -1,5 +1,5 @@
 INSERT INTO car_rental (name, domain, address, owner, logo)
-VALUES ("name", "domain", "address", "owner", "logo");
+VALUES ('name', 'domain', 'address', 'owner', 'logo');
 
 INSERT INTO revenues (total_amount)
 VALUES (0),
