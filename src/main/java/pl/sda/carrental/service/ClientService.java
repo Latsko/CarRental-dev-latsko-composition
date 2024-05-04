@@ -44,16 +44,6 @@ public class ClientService {
     }
 
     /**
-     * Adds a new client to the repository.
-     *
-     * @param client The Client object representing the new client to be added.
-     */
-    @Transactional
-    public Client addClient(Client client) {
-        return clientRepository.save(client);
-    }
-
-    /**
      * Edits the details of a client identified by the provided ID.
      * Retrieves the client with the given ID from the repository or throws an exception if not found.
      * Then found Client is retrieved from parent branch and modified according to given parameter.

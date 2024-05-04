@@ -1,5 +1,6 @@
 package pl.sda.carrental.configuration.auth.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.configuration.auth.dto.ClientDto;
@@ -10,6 +11,7 @@ import pl.sda.carrental.configuration.auth.service.UserService;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @AllArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {

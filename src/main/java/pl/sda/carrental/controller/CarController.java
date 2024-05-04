@@ -1,5 +1,6 @@
 package pl.sda.carrental.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CarController {

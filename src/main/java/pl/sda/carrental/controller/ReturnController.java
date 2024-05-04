@@ -1,5 +1,6 @@
 package pl.sda.carrental.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import pl.sda.carrental.service.ReturnService;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ReturnController {

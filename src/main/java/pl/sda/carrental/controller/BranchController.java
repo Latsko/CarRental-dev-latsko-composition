@@ -1,5 +1,6 @@
 package pl.sda.carrental.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.model.Branch;
@@ -12,6 +13,7 @@ import pl.sda.carrental.service.BranchService;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @RequiredArgsConstructor
 @RequestMapping(value = "api/")
 public class BranchController {

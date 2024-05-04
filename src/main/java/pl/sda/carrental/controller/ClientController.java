@@ -1,5 +1,6 @@
 package pl.sda.carrental.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.configuration.auth.model.Client;
@@ -8,6 +9,7 @@ import pl.sda.carrental.service.ClientService;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ClientController {
@@ -21,11 +23,6 @@ public class ClientController {
     @GetMapping("/manageL2/clients")
     public List<Client> getAllClients() {
         return clientService.getAllClients();
-    }
-
-    @PostMapping("/public/clients")
-    public Client addClient(@RequestBody Client client) {
-        return clientService.addClient(client);
     }
 
     @PutMapping("/manageL2/clients/{id}")

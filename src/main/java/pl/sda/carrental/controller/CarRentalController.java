@@ -1,5 +1,6 @@
 package pl.sda.carrental.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.service.CarRentalService;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class CarRentalController {

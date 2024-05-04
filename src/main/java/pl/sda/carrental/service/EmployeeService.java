@@ -32,18 +32,6 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-
-    /**
-     * The addEmployee method is responsible for adding a new employee by saving the provided Employee object to the repository
-     *
-     * @param employee Object to be added to the repository
-     * @return The newly created and saved employee object
-     */
-    @Transactional
-    public Employee addEmployee(Employee employee) {
-        return employeeRepository.save(employee);
-    }
-
     /**
      * The editEmployee method is a transactional operation that allows for the modification of an existing employee based on the provided
      * employee ID and updated employee details. It retrieves the employee by ID from the repository, updates its details, deletes the

@@ -1,5 +1,6 @@
 package pl.sda.carrental.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.sda.carrental.configuration.auth.model.Employee;
@@ -8,6 +9,7 @@ import pl.sda.carrental.service.EmployeeService;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "basicAuth")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class EmployeeController {
@@ -16,11 +18,6 @@ public class EmployeeController {
     @GetMapping("/manageL1/employees")
     public List<Employee> getEmployees() {
         return employeeService.getAllEmployees();
-    }
-
-    @PostMapping("/manageL1/employees")
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
     }
 
     @PutMapping("/manageL1/employees/{id}")
