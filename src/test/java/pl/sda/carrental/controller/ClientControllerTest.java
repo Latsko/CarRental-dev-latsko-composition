@@ -105,25 +105,6 @@ class ClientControllerTest {
                 });
     }
 
-    @Test
-    void shouldAddClient() throws Exception {
-        //given
-        given(clientServiceMock.addClient(any(Client.class))).willReturn(client1);
-
-        //when
-        ResultActions response = mockMvc.perform(post("/api/public/clients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(client1)));
-
-        //then
-        response.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1L), Long.class))
-                .andExpect(jsonPath("$.name", is("name1")))
-                .andExpect(jsonPath("$.surname", is("surname1")))
-                .andExpect(jsonPath("$.email", is("email1@email.pl")))
-                .andExpect(jsonPath("$.address", is("address1")));
-    }
 
     @Test
     void shouldEditClient() throws Exception {

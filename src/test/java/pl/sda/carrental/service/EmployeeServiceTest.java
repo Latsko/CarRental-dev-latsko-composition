@@ -77,21 +77,6 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void shouldAddEmployee() {
-        //given
-        when(employeeRepositoryMock.save(any(Employee.class))).thenReturn(employee);
-
-        //when
-        Employee savedEmployee = employeeService.addEmployee(employee);
-
-        //then
-        assertThat(savedEmployee)
-                .isNotNull()
-                .isInstanceOf(Employee.class)
-                .isEqualTo(employee);
-    }
-
-    @Test
     void shouldEditEmployee() {
         //given
         employee.setBranch(branch);

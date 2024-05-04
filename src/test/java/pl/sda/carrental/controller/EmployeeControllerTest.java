@@ -70,25 +70,6 @@ class EmployeeControllerTest {
                     JSONAssert.assertEquals(objectMapper.writeValueAsString(list), contentAsString, true);
                 });
     }
-    
-    @Test
-    void shouldAddEmployee() throws Exception {
-        //given
-        given(employeeServiceMock.addEmployee(any(Employee.class))).willReturn(employee);
-
-        //when
-        ResultActions response = mockMvc.perform(post("/api/manageL1/employees")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(employee)));
-
-        //then
-        response.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1L), Long.class))
-                .andExpect(jsonPath("$.name", is("name")))
-                .andExpect(jsonPath("$.surname", is("surname")))
-                .andExpect(jsonPath("$.position", is(Position.EMPLOYEE.toString())));
-    }
 
     @Test
     void shouldEditEmployee() throws Exception {

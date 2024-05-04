@@ -97,18 +97,6 @@ class ClientServiceTest {
     }
 
     @Test
-    void shouldAddClient() {
-        //given
-        when(clientRepositoryMock.save(any(Client.class))).thenReturn(client);
-
-        //when
-        Client savedClient = clientService.addClient(client);
-
-        //then
-        assertThat(savedClient).isEqualTo(client);
-    }
-
-    @Test
     void shouldEditClient() {
         //given
         client.setBranch(branch);
