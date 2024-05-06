@@ -40,11 +40,22 @@ and make multiple reservation for cars that are available for rental.
        * data populated from data.sql file
      
 ## Application Logic Description
-There are three levels of Car Rental management: Admin, Manager, Employee.
 
-Client can make multiple reservations for multiple cars.
+### Car Rental Management
+There are three levels of Car Rental management: Admin, Manager and Employee. Admin - can update Car Rental details, manage branches, revenues and assign or dismiss managers
+and see all users. Manager - has L1 (level one clearance) that allows them to manage, employ and fire employees, add, edit, assign and discard cars. Employee has L2 
+(level two clearance) that allows them to mainly help clients make reservations. Employees can manage reservation returnals, see rents and client general information,
+set and update car status, mileage and price.
 
-In order to successfully make reservation for a car there has to be no time collisions, car needs to have status set to AVAILABLE and be assigned to selected rent branch. 
+### Client capabilities
+Client can make multiple reservations for multiple cars. Client creates reservation and rent objects and can manage them. Clients are able to check which cars are available
+at the given date. Clients also can see general information about Car Rental, branches and cars. 
+
+### Reservation policy
+In order to successfully make a reservation for a car there has to be no time collisions, car needs to have status set to AVAILABLE and be assigned to selected rent branch.
+A reservation cannot be made if there is less than one day for the car to return to the desired rental branch after a previous return was made at a different branch. 
+Reservations can be cancelled for a full refund up to two days prior to the rental date; after this time, only an 80% refund is provided. Additionally, a late return fee
+applies for rented cars returned after the scheduled return time. If the vehicle is found to be littered, damaged, or improperly used, additional charges may be applied to the rental.
  
 ## Technologies Used
 <div align="center">
