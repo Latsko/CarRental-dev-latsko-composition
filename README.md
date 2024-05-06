@@ -3,7 +3,7 @@
 ## Overview
 ### This repository contains prototype of a simple Car Rental REST API using Spring Framework. 
 This API has a set of endpoints that allows to manage simple Car Rental, register and login new users
-and make multiple reservation for cars that are available for rental.
+and make multiple reservation for cars that are available for a rent.
 
 ## Key Features
 ### General:
