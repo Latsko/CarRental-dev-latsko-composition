@@ -2,6 +2,7 @@ package pl.sda.carrental.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
@@ -22,6 +23,7 @@ public class EmployeeService {
     private final RentRepository rentRepository;
     private final ReturnRepository returnRepository;
     private final BranchRepository branchRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Gets all Employees objects
@@ -48,6 +50,8 @@ public class EmployeeService {
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + id));
         Branch parentBranch = childEmployee.getBranch();
 
+        childEmployee.setLogin(employee.getLogin());
+        childEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));
         childEmployee.setName(employee.getName());
         childEmployee.setSurname(employee.getSurname());
         childEmployee.setPosition(employee.getPosition());

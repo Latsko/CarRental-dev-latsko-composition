@@ -2,6 +2,7 @@ package pl.sda.carrental.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.configuration.auth.repository.ClientRepository;
@@ -21,6 +22,7 @@ public class ClientService {
     private final RentRepository rentRepository;
     private final ReturnRepository returnRepository;
     private final ReservationRepository reservationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Retrieves a client by their unique ID.
@@ -66,6 +68,8 @@ public class ClientService {
                             new ObjectNotFoundInRepositoryException("No client under ID #" +
                                     id + " in that branch"));
 
+        childClient.setLogin(client.getLogin());
+        childClient.setPassword(passwordEncoder.encode(client.getPassword()));
         childClient.setName(client.getName());
         childClient.setSurname(client.getSurname());
         childClient.setEmail(client.getEmail());

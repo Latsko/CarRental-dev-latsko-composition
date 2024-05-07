@@ -26,7 +26,7 @@ public class RevenueController {
     }
 
     @PutMapping("/admin/revenues/{id}")
-    public Revenue editRevenue(@PathVariable Long id ,@RequestBody Revenue revenue) {
+    public Revenue editRevenue(@PathVariable Long id, @RequestBody Revenue revenue) {
         return revenueService.editRevenue(id, revenue);
     }
 

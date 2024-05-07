@@ -110,4 +110,3 @@ VALUES ('Clean and tidy', '2024-01-15', 50.00, 1, 1),
        ('Issues with brakes', '2024-01-25', 60.00, 6, 6),
        ('Excellent condition', '2024-01-27', 15.00, 7, 7),
        ('Great experience', '2024-01-29', 25.00, 8, 8);
-

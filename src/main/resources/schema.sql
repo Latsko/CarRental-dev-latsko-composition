@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS hibernate_sequences;
+DROP TABLE IF EXISTS ID_GEN;
 DROP TABLE IF EXISTS rents;
 DROP TABLE IF EXISTS returnals;
 DROP TABLE IF EXISTS employees;
@@ -45,16 +45,16 @@ CREATE TABLE branches
 
 CREATE TABLE cars
 (
-    car_id     BIGINT NOT NULL AUTO_INCREMENT,
-    body_style VARCHAR(255),
-    colour     VARCHAR(255),
-    make       VARCHAR(255),
-    mileage    FLOAT  NOT NULL,
-    model      VARCHAR(255),
-    price      DECIMAL(11, 2),
-    status     TINYINT CHECK (status BETWEEN 0 AND 4),
-    year_of_manufacture       INT    NOT NULL,
-    branch_id  BIGINT,
+    car_id              BIGINT NOT NULL AUTO_INCREMENT,
+    body_style          VARCHAR(255),
+    colour              VARCHAR(255),
+    make                VARCHAR(255),
+    mileage             FLOAT  NOT NULL,
+    model               VARCHAR(255),
+    price               DECIMAL(11, 2),
+    status              TINYINT CHECK (status BETWEEN 0 AND 4),
+    year_of_manufacture INT    NOT NULL,
+    branch_id           BIGINT,
     PRIMARY KEY (car_id),
     FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
 );
@@ -85,17 +85,6 @@ CREATE TABLE employees
     PRIMARY KEY (id),
     FOREIGN KEY (branch_id) REFERENCES branches (branch_id)
 );
-
-CREATE TABLE hibernate_sequences
-(
-    sequence_name VARCHAR(255) NOT NULL,
-    next_val      BIGINT,
-    PRIMARY KEY (sequence_name)
-);
-
--- Insert initial
-INSERT INTO hibernate_sequences (sequence_name, next_val)
-VALUES ('default', 100);
 
 CREATE TABLE reservations
 (
@@ -153,3 +142,8 @@ CREATE TABLE users_roles
     FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
+CREATE TABLE ID_GEN
+(
+    GEN_NAME VARCHAR(255) NOT NULL PRIMARY KEY,
+    GEN_VAL  BIGINT       NOT NULL
+);

@@ -15,10 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@TableGenerator(
+        name = "tableGen",
+        table = "ID_GEN",
+        pkColumnName = "GEN_NAME",
+        valueColumnName = "GEN_VAL",
+        pkColumnValue = "USER_ID",
+        initialValue = 100,
+        allocationSize = 1
+)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "tableGen")
     private Long id;
     @Column(nullable = false, unique = true)
     private String login;

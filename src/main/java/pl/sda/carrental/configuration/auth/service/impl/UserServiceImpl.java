@@ -7,18 +7,19 @@ import org.springframework.stereotype.Service;
 import pl.sda.carrental.configuration.auth.dto.ClientDto;
 import pl.sda.carrental.configuration.auth.dto.EmployeeDto;
 import pl.sda.carrental.configuration.auth.dto.UserDto;
+import pl.sda.carrental.configuration.auth.model.Client;
+import pl.sda.carrental.configuration.auth.model.Employee;
 import pl.sda.carrental.configuration.auth.model.Role;
 import pl.sda.carrental.configuration.auth.model.User;
+import pl.sda.carrental.configuration.auth.repository.ClientRepository;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.configuration.auth.repository.RoleRepository;
 import pl.sda.carrental.configuration.auth.repository.UserRepository;
 import pl.sda.carrental.configuration.auth.service.UserService;
 import pl.sda.carrental.exceptionHandling.IllegalArgumentForEnumException;
+import pl.sda.carrental.exceptionHandling.IllegalArgumentFullNameException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.configuration.auth.model.Client;
-import pl.sda.carrental.configuration.auth.model.Employee;
 import pl.sda.carrental.model.enums.Position;
-import pl.sda.carrental.configuration.auth.repository.ClientRepository;
-import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.BranchRepository;
 
 import java.util.Arrays;
@@ -116,6 +117,9 @@ public class UserServiceImpl implements UserService {
     private void setUserFields(User user, UserDto userDto) {
         user.setLogin(userDto.getLogin());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if(!userDto.getFullName().contains(" ")) {
+            throw new IllegalArgumentFullNameException("Full name must contain spaces!");
+        }
         user.setName(userDto.getFullName().split(" ")[0]);
         user.setSurname(userDto.getFullName().split(" ")[1]);
         user.setBranch(branchRepository.findById(userDto.getBranchId())
