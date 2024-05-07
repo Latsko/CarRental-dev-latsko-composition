@@ -100,6 +100,7 @@ public class BranchService {
         Branch found = getById(id);
         found.setAddress(branch.getAddress());
         found.setName(branch.getName());
+        addManagerForBranch(branch.getManagerId(), id);
 
         return branchRepository.save(found);
     }

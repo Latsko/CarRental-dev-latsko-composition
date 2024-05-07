@@ -4,13 +4,15 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.sda.carrental.configuration.auth.model.Employee;
+import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
+import pl.sda.carrental.configuration.auth.repository.UserRepository;
+import pl.sda.carrental.configuration.auth.util.LoginUtils;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.configuration.auth.model.Employee;
 import pl.sda.carrental.model.Rent;
 import pl.sda.carrental.model.Returnal;
 import pl.sda.carrental.repository.BranchRepository;
-import pl.sda.carrental.configuration.auth.repository.EmployeeRepository;
 import pl.sda.carrental.repository.RentRepository;
 import pl.sda.carrental.repository.ReturnRepository;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
+    private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
     private final RentRepository rentRepository;
     private final ReturnRepository returnRepository;
@@ -49,6 +52,8 @@ public class EmployeeService {
         Employee childEmployee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #" + id));
         Branch parentBranch = childEmployee.getBranch();
+
+        LoginUtils.checkDuplicateLogin(employee.getLogin(), userRepository);
 
         childEmployee.setLogin(employee.getLogin());
         childEmployee.setPassword(passwordEncoder.encode(employee.getPassword()));

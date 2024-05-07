@@ -36,7 +36,7 @@ public abstract class User {
     private String name;
     private String surname;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(hidden = true)
     @ManyToOne
     @JoinColumn(name = "branch_id")
     @JsonBackReference(value = "user-reference")

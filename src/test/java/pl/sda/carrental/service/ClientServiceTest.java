@@ -4,12 +4,17 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.configuration.auth.repository.ClientRepository;
+import pl.sda.carrental.configuration.auth.repository.UserRepository;
 import pl.sda.carrental.exceptionHandling.ObjectAlreadyAssignedToBranchException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
-import pl.sda.carrental.configuration.auth.model.Client;
-import pl.sda.carrental.repository.*;
+import pl.sda.carrental.repository.BranchRepository;
+import pl.sda.carrental.repository.RentRepository;
+import pl.sda.carrental.repository.ReservationRepository;
+import pl.sda.carrental.repository.ReturnRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,14 +26,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class ClientServiceTest {
+    private final UserRepository userRepositoryMock = mock(UserRepository.class);
     private final ClientRepository clientRepositoryMock = mock(ClientRepository.class);
     private final BranchRepository branchRepositoryMock = mock(BranchRepository.class);
     private final RentRepository rentRepositoryMock = mock(RentRepository.class);
     private final ReturnRepository returnRepositoryMock = mock(ReturnRepository.class);
     private final ReservationRepository reservationRepositoryMock = mock(ReservationRepository.class);
+    private final PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
 
-    private final ClientService clientService = new ClientService(clientRepositoryMock, branchRepositoryMock,
-            rentRepositoryMock, returnRepositoryMock, reservationRepositoryMock);
+    private final ClientService clientService = new ClientService(userRepositoryMock, clientRepositoryMock, branchRepositoryMock,
+            rentRepositoryMock, returnRepositoryMock, reservationRepositoryMock, passwordEncoderMock);
 
     private Branch branch;
     private Client client;

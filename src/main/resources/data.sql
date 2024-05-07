@@ -40,9 +40,9 @@ VALUES (1, 'ROLE_ADMIN'),
        (4, 'ROLE_CLIENT');
 
 INSERT INTO employees (id, login, name, password, surname, branch_id, position)
-VALUES (1, 'admin', 'Emma', '$2a$10$q2NyK/W0sEdi4tbgYjOx/u6YTkDAloPMPTLCTlGewONfzW.U.E1.m', 'Brown', 2, 1),
-       (2, 'manager', 'Michael', '$2a$10$KhB6m4q/.QMXe2Zh74RnQeUw8/ikRvXvRaNhu.uZl5DNpHtkQXdmW', 'Jones', 3, 2),
-       (3, 'employee', 'Olivia', '$2a$10$Minluq0Dyag/VJo8i9prKO7W64ozNZO9wkkq6LEu/b1KIuRejDoTS', 'Davis', 1, 0),
+VALUES (1, 'admin', 'Emma', '$2a$10$XbiEQFPu99EuAiwzYbih6.BBDt4kVi2POVpHrnC.L9TLrW16UpPQC', 'Brown', 2, 1),
+       (2, 'manager', 'Michael', '$2a$10$HX37tvcJJ74ay8LUr9WuhOfDaFM3qpkNZGtaVzS7CnY0bYbRXmA9a', 'Jones', 3, 2),
+       (3, 'employee', 'Olivia', '$2a$10$WKLl2FkYPX6R..qD2F7YjO9rST8tFBd0Pl20bYpB2RMCIYkwPA8g2', 'Davis', 1, 0),
        (4, 'employee4', 'William', '$2a$10$Minluq0Dyag/VJo8i9prKO7W64ozNZO9wkkq6LEu/b1KIuRejDoTS', 'Garcia', 2, 1),
        (5, 'employee5', 'Sophia', '$2a$10$Minluq0Dyag/VJo8i9prKO7W64ozNZO9wkkq6LEu/b1KIuRejDoTS', 'Miller', 3, 2),
        (6, 'employee6', 'Liam', '$2a$10$Minluq0Dyag/VJo8i9prKO7W64ozNZO9wkkq6LEu/b1KIuRejDoTS', 'Martinez', 1, 0),
@@ -57,7 +57,7 @@ VALUES (1, 'admin', 'Emma', '$2a$10$q2NyK/W0sEdi4tbgYjOx/u6YTkDAloPMPTLCTlGewONf
        (15, 'employee15', 'Lucas', '$2a$10$Minluq0Dyag/VJo8i9prKO7W64ozNZO9wkkq6LEu/b1KIuRejDoTS', 'Wright', 1, 1);
 
 INSERT INTO clients (id, login, name, password, surname, branch_id, address, email)
-VALUES (16, 'client', 'John', '$2a$10$HY1dLwMauKZ91FgixtS5E.3OnGW9XNjU9NUPn3OhjPW89hQ38xtnC', 'Doe', 1, '123 Main St, Anytown, USA', 'john.doe@example.com'),
+VALUES (16, 'client', 'John', '$2a$10$jajiaDblFlwzJ08ZAKrtAOdg1pCrG.Eqk0m4kU9GFlkckdyyxAhqC', 'Doe', 1, '123 Main St, Anytown, USA', 'john.doe@example.com'),
        (17, 'client2', 'Jane', '$2a$10$HY1dLwMauKZ91FgixtS5E.3OnGW9XNjU9NUPn3OhjPW89hQ38xtnC', 'Smith', 2, '456 Elm St, Othertown, USA', 'jane.smith@example.com'),
        (18, 'client3', 'Alice', '$2a$10$HY1dLwMauKZ91FgixtS5E.3OnGW9XNjU9NUPn3OhjPW89hQ38xtnC', 'Johnson', 3, '789 Oak St, Anothertown, USA', 'alice.johnson@example.com'),
        (19, 'client4', 'Bob', '$2a$10$HY1dLwMauKZ91FgixtS5E.3OnGW9XNjU9NUPn3OhjPW89hQ38xtnC', 'Williams', 1, '321 Maple St, Yetanothertown, USA', 'bob.williams@example.com'),

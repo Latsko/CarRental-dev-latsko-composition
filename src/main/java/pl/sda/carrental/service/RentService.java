@@ -39,6 +39,11 @@ public class RentService {
      */
     @Transactional
     public Rent saveRent(RentDTO rentDTO) {
+        List<Long> reservationsIds = rentRepository.findRentalsWithReservationId(rentDTO.reservationId());
+        if(!reservationsIds.isEmpty()) {
+            throw new RentAlreadyExistsForReservationException("Rent already exists for reservation with ID #"
+                    + rentDTO.reservationId());
+        }
         Rent rent = new Rent();
         updateRentDetails(rentDTO, rent);
 
@@ -89,12 +94,6 @@ public class RentService {
      * @throws ObjectNotFoundInRepositoryException if no employee or reservation is found with the provided ID
      */
     private void updateRentDetails(RentDTO rentDTO, Rent rent) {
-        List<Long> reservationsIds = rentRepository.findRentalsWithReservationId(rentDTO.reservationId());
-        if(!reservationsIds.isEmpty()) {
-            throw new RentAlreadyExistsForReservationException("Rent already exists for reservation with ID #"
-                    + rentDTO.reservationId());
-        }
-
         Employee foundEmployee = employeeRepository.findById(rentDTO.employeeId())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No employee under ID #"
                         + rentDTO.employeeId()));

@@ -3,6 +3,8 @@ package pl.sda.carrental.service;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.sda.carrental.configuration.auth.repository.UserRepository;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
 import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.configuration.auth.model.Employee;
@@ -24,13 +26,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class EmployeeServiceTest {
+    private final UserRepository userRepositoryMock = mock(UserRepository.class);
     private final EmployeeRepository employeeRepositoryMock = mock(EmployeeRepository.class);
     private final RentRepository rentRepositoryMock = mock(RentRepository.class);
     private final ReturnRepository returnRepositoryMock = mock(ReturnRepository.class);
     private final BranchRepository branchRepositoryMock = mock(BranchRepository.class);
+    private final PasswordEncoder passwordEncoderMock = mock(PasswordEncoder.class);
 
-    private final EmployeeService employeeService = new EmployeeService(employeeRepositoryMock, rentRepositoryMock,
-            returnRepositoryMock, branchRepositoryMock);
+    private final EmployeeService employeeService = new EmployeeService(userRepositoryMock, employeeRepositoryMock, rentRepositoryMock,
+            returnRepositoryMock, branchRepositoryMock, passwordEncoderMock);
 
     private Branch branch;
     private Employee employee;

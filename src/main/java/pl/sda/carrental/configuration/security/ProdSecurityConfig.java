@@ -18,7 +18,7 @@ public class ProdSecurityConfig {
     private static final String[] WHITELIST = {
             "/v3/api-docs/**",
             "/v3/api-docs.yaml",
-            "/swagger-ui/swagger-ui-car-rental.html",
+            "/swagger-ui/**",
             "/swagger-ui.html"
     };
 
@@ -45,6 +45,8 @@ public class ProdSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/authenticated/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/authenticated/**").authenticated()
 
+                        .requestMatchers(HttpMethod.GET, "/api/admin/**")
+                        .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/admin/**")
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/admin/**")

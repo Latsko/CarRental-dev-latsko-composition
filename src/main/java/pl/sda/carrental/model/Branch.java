@@ -38,7 +38,7 @@ public class Branch {
     @OneToMany(mappedBy = "branch", orphanRemoval = true)
     private Set<Client> clients = new HashSet<>();
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(hidden = true)
     @ManyToOne
     @JoinColumn(name = "car_rental_id", nullable = false)
     @JsonBackReference(value = "carRental-reference")

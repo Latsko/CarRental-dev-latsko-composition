@@ -6,10 +6,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.carrental.configuration.auth.model.Client;
 import pl.sda.carrental.configuration.auth.repository.ClientRepository;
+import pl.sda.carrental.configuration.auth.repository.UserRepository;
+import pl.sda.carrental.configuration.auth.util.LoginUtils;
 import pl.sda.carrental.exceptionHandling.ObjectAlreadyAssignedToBranchException;
 import pl.sda.carrental.exceptionHandling.ObjectNotFoundInRepositoryException;
-import pl.sda.carrental.model.*;
-import pl.sda.carrental.repository.*;
+import pl.sda.carrental.model.Branch;
+import pl.sda.carrental.model.Rent;
+import pl.sda.carrental.model.Reservation;
+import pl.sda.carrental.model.Returnal;
+import pl.sda.carrental.repository.BranchRepository;
+import pl.sda.carrental.repository.RentRepository;
+import pl.sda.carrental.repository.ReservationRepository;
+import pl.sda.carrental.repository.ReturnRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +25,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class ClientService {
+    private final UserRepository userRepository;
     private final ClientRepository clientRepository;
     private final BranchRepository branchRepository;
     private final RentRepository rentRepository;
@@ -67,6 +76,8 @@ public class ClientService {
                     .findFirst().orElseThrow(() ->
                             new ObjectNotFoundInRepositoryException("No client under ID #" +
                                     id + " in that branch"));
+
+        LoginUtils.checkDuplicateLogin(client.getLogin(), userRepository);
 
         childClient.setLogin(client.getLogin());
         childClient.setPassword(passwordEncoder.encode(client.getPassword()));

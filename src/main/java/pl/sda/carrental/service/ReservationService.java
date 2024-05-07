@@ -108,6 +108,10 @@ public class ReservationService {
      * @throws ReservationTimeCollisionException if there are time collisions with existing reservations for the selected car
      */
     private void updateReservationDetails(ReservationDTO reservationDto, Reservation reservation) {
+        if(reservationDto.startDate().isEqual(reservationDto.endDate())) {
+            throw new ReservationTimeCollisionException("Car should be reserved for at least one day!");
+        }
+
         Car carFromRepo = carRepository.findById(reservationDto.car_id())
                 .orElseThrow(() -> new ObjectNotFoundInRepositoryException("No car under that ID"));
 
