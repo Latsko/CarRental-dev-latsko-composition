@@ -18,7 +18,7 @@ public class ProdSecurityConfig {
     private static final String[] WHITELIST = {
             "/v3/api-docs/**",
             "/v3/api-docs.yaml",
-            "/swagger-ui/**",
+            "/swagger-ui/swagger-ui-car-rental.html",
             "/swagger-ui.html"
     };
 
