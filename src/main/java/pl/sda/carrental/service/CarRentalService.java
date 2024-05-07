@@ -10,6 +10,7 @@ import pl.sda.carrental.model.Branch;
 import pl.sda.carrental.model.CarRental;
 import pl.sda.carrental.repository.BranchRepository;
 import pl.sda.carrental.repository.CarRentalRepository;
+import pl.sda.carrental.repository.RevenueRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class CarRentalService {
     private final CarRentalRepository carRentalRepository;
     private final BranchRepository branchRepository;
     private final BranchService branchService;
+    private final RevenueRepository revenueRepository;
 
     /**
      * Retrieves the car rental company details.
@@ -80,6 +82,7 @@ public class CarRentalService {
 
         carRental.getBranches().clear();
 
+        revenueRepository.deleteAll();
         carRentalRepository.delete(carRental);
     }
 
@@ -123,8 +126,6 @@ public class CarRentalService {
      * @param id The ID of the branch to be deleted.
      * @throws ObjectNotFoundInRepositoryException if no branch is found under the provided ID.
      */
-    //todo learn how to test this thing
-    // (do i need to mock all the repositories for BranchService?)
     @Transactional
     public void closeBranchUnderId(Long id) {
         branchService.removeBranch(id);
