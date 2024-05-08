@@ -135,7 +135,7 @@ public class BranchController {
                              @io.swagger.v3.oas.annotations.parameters.RequestBody(
                                      content = @Content(
                                              mediaType = "application/json",
-                                             schema = @Schema(implementation = Car.class),
+                                             schema = @Schema(implementation = Branch.class),
                                              examples = @io.swagger.v3.oas.annotations.media.ExampleObject(
                                                      name = "exampleBranch",
                                                      value = "{\"name\": \"string\"," +
@@ -144,14 +144,14 @@ public class BranchController {
                                              )
                                      )
                              )
-
                              @RequestBody Branch branch) {
         return branchService.editBranch(id, branch);
     }
 
     @Operation(
             summary = "Deletes selected branch",
-            description = "Set of available branch IDs to chose from: {1, 2, 3}"
+            description = "Set of available branch IDs to chose from: {1, 2, 3}" +
+                    "<br>When a branch is deleted, all assigned cars, employees and clients are deleted as well"
     )
     @DeleteMapping("/admin/branches/{id}")
     public void removeBranch(@Parameter(name = "id", example = "1", description = "branch ID")
