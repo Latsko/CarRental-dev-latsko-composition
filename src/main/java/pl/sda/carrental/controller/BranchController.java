@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @SecurityRequirement(name = "basicAuth")
 @RequiredArgsConstructor
-@RequestMapping(value = "api/")
+@RequestMapping(value = "/api")
 @Tag(name = "Branches")
 public class BranchController {
     private final BranchService branchService;
