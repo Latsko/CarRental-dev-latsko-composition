@@ -65,6 +65,7 @@ public class RentService {
         Rent rent = rentRepository.findById(id)
                         .orElseThrow(() ->
                                 new ObjectNotFoundInRepositoryException("No rent under ID #" + id));
+
         updateRentDetails(rentDTO, rent);
 
         return rentRepository.save(rent);
@@ -99,6 +100,7 @@ public class RentService {
                         + rentDTO.employeeId()));
 
         rent.setEmployee(foundEmployee);
+
         rent.setComments(rentDTO.comments());
         rent.setRentDate(rentDTO.rentDate());
 

@@ -22,7 +22,7 @@ public class Rent {
     private String comments;
     private LocalDate rentDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
