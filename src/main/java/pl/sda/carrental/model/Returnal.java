@@ -32,7 +32,7 @@ public class Returnal {
     @Digits(integer = 9, fraction = 2, message = "Upcharge must have up to 7 digits in total and 2 decimal places")
     private BigDecimal upcharge;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
