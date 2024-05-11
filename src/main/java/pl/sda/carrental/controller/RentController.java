@@ -74,7 +74,7 @@ public class RentController {
 
     @Operation(summary = "Deletes selected rental")
     @DeleteMapping("/authenticated/rents/{id}")
-    public void deleteRent(@Parameter(name = "id ", example = "5", description = "rental ID")
+    public void deleteRent(@Parameter(name = "id", example = "5", description = "rental ID")
                            @PathVariable Long id) {
         rentService.deleteRentById(id);
     }

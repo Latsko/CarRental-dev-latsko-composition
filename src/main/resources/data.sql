@@ -2,9 +2,9 @@ INSERT INTO car_rental (name, domain, address, owner, logo)
 VALUES ('name', 'domain', 'address', 'owner', 'logo');
 
 INSERT INTO revenues (total_amount)
-VALUES (0),
-       (0),
-       (0);
+VALUES (10000),
+       (25000),
+       (32000);
 
 INSERT INTO branches (name, address, car_rental_id, revenue_id)
 VALUES ('Krakow Branch', '567 Parkowa Street', 1, 1),
