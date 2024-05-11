@@ -4,6 +4,7 @@ VALUES ('name', 'domain', 'address', 'owner', 'logo');
 INSERT INTO revenues (total_amount)
 VALUES (10000),
        (25000),
+       (25000),
        (32000);
 
 INSERT INTO branches (name, address, car_rental_id, revenue_id)
